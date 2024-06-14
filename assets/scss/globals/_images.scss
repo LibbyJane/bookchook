@@ -1,0 +1,24 @@
+:root {
+    --icon-size-xs: 0.66em;
+    --icon-size-sm: 1em;
+    --icon-size: calc(1em + var(--space-xs));
+}
+
+.icon {
+    display: inline-block;
+    fill: currentColor;
+    height: var(--icon-size);
+    width: var(--icon-size);
+    transition: var(--transition);
+}
+
+.icon--sm {
+    height: var(--icon-size-sm);
+    width: var(--icon-size-sm);
+}
+
+
+.icon--xs {
+    height: var(--icon-size-xs);
+    width: var(--icon-size-xs);
+}

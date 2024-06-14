@@ -1,0 +1,17 @@
+:root {
+    --h1: 2.4rem;
+    --h2: 2.0rem;
+    --h3: 1.6rem;
+    --h4: 1.4rem;
+    --h5: 1.2rem;
+    --h6: 1rem;
+    --p: 1rem;
+    --p-sm: 0.85rem;
+    --sm: 0.75rem;
+    --xs: 0.65rem;
+
+    // @include breakpoint(med) {
+    //     --h1: 3rem;
+    //     --h4: 2.4rem;
+    // }
+}

@@ -1,0 +1,16 @@
+:root {
+    --transition-speed: 200ms; // default
+    --transition-speed-fast: 150ms;
+
+    --transition-type: ease-in-out; // default
+    --transition-type-show: ease-out;
+    --transition-type-hide: ease-in-out;
+    --transition-type-remove: ease-in;
+    --transition-type-motionless: linear;
+
+    --transition: all var(--transition-speed) var(--transition-type);
+
+    @include breakpoint(med) {
+        --transition-speed: 250ms;
+    }
+}

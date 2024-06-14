@@ -1,0 +1,46 @@
+// split out into subfiles if needed
+
+summary {
+    display: grid;
+        grid-template-areas: "text icon";
+    list-style: none;
+    overflow: hidden;
+
+    .icon {
+        grid-area: icon;
+        pointer-events: none;
+    }
+
+    span {
+        grid-area: text;
+    }
+
+    [data-close] {
+        opacity: 0;
+    }
+}
+
+details {
+    #{$hover} {
+        .icon {
+            transform: translateY(2px) scale(1.2);
+        }
+    }
+    &[open] {
+        [data-close] {
+            opacity: 1;
+        }
+
+        [data-open] {
+            opacity: 0;
+        }
+
+        .details-content {
+            visibility: visible;
+        }
+    }
+}
+
+.details-content {
+    visibility: hidden;
+}

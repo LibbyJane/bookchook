@@ -1,0 +1,17 @@
+.btn {
+    background: var(--c-accent);
+    border-radius: var(--border-radius);
+    color: hsla(var(--c-accent-contrast-hsl), 0.85);
+    display: flex;
+        align-items: center;
+        justify-content: center;
+    font-size: var(--font-size-p);
+    padding: var(--space-sm) var(--space);
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+        box-shadow: var(--box-shadow-soft);
+        color: var(--c-accent-contrast);
+    }
+}
