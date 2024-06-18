@@ -1,4 +1,5 @@
 :root {
+    --h0: 2.8rem;
     --h1: 2.4rem;
     --h2: 2.0rem;
     --h3: 1.6rem;
@@ -6,9 +7,11 @@
     --h5: 1.2rem;
     --h6: 1rem;
     --p: 1rem;
-    --p-sm: 0.85rem;
-    --sm: 0.75rem;
-    --xs: 0.65rem;
+    --p-sm: 0.9rem;
+    --sm: 0.8rem;
+    --xs: 0.7rem;
+    --font-body: 'lexend', sans-serif;
+    --font-heading: 'Passion One', sans-serif;
 
     // @include breakpoint(med) {
     //     --h1: 3rem;

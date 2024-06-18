@@ -1,21 +1,13 @@
 <template>
-    <header class="main-header" :class="{ 'menu-open': menuOpen }">
+    <header id="header" class="main-header" :class="{ 'menu-open': menuOpen }" ref="headerRef">
+        <!-- <h1 style="position: fixed; top: 5rem; background-color: blue; color: white; padding: 1rem">todo: {{  status }}</h1> -->
         <button type="button" v-on:click="() => menuOpen = !menuOpen" class="main-header__nav-toggle" aria-controls="main-menu" :aria-expanded="menuOpen">
             <MenuIcon />
         </button>
 
-        <a class="main-header__brand">Book<em>Chook</em></a>
-
-        <!-- <div class="content">
-            <RouterLink class="site-logo" to="/">
-                <img :src="Logo" alt="logo" />
-            </RouterLink>
-
-            <h1 class="page-title">
-                {{ siteStore.pageTitle }}
-            </h1>
-        </div>-->
-
+        <RouterLink class="main-header__brand" to="/" >
+            <BrandImage :svgAlt="siteStore.siteName" />
+        </RouterLink>
 
         <nav id="main-menu" class="main-menu">
             <button type="button" v-on:click="() => menuOpen = false" class="main-header__nav-close" aria-controls="main-menu">
@@ -29,10 +21,10 @@
                     </div>
 
                     <ul class="main-menu__dropdown">
-                        <li><a href="/class-booking-system">Class booking</a></li>
-                        <li><a href="/course-booking-system">Course booking</a></li>
-                        <li><a href="/virtual-class-booking-system">Virtual classes</a></li>
-                        <li><a href="/event-booking-system">Event booking</a></li>
+                        <li><a href="/bookings/class">Class booking</a></li>
+                        <li><a href="/bookings/course">Course booking</a></li>
+                        <li><a href="/bookings/virtual">Virtual classes</a></li>
+                        <li><a href="/bookings/events">Event booking</a></li>
                     </ul>
                 </li>
                 <li>
@@ -41,46 +33,46 @@
                 <li>
                     <a class="main-menu__item" href="/features">Features</a>
                 </li>
+                <li>
+                    <a class="main-menu__item" href="/contact">Contact</a>
+                </li>
             </ul>
         </nav>
+        <!-- <h1 style="position: fixed; top: 5rem; background-color: blue; color: white; padding: 1rem">todo: {{$route.path }} {{$route.path.indexOf('/signup') }} {{$route.path.indexOf('/signup') < 0}}</h1> -->
 
-        <Button v-if="!authenticated" class="main-header__cta" text="Get Started" href="/signup" />
+        <Button v-if="!authenticated && $route.path.indexOf('signup') < 0 " class="main-header__cta" text="Get Started" href="/signup" />
     </header>
 </template>
 
 <script setup>
-    import { ref } from 'vue';
-    // import { storeToRefs } from 'pinia';
+    import { ref, onMounted } from 'vue';
+    import { useRoute } from 'vue-router'
+    import { useSiteStore } from '@/stores/site';
+    import BrandImage from '@/components/icons/brand.vue';
     import MenuIcon from '@/components/icons/menu.vue';
     import CloseIcon from '@/components/icons/cross.vue';
     import CaretIcon from '@/components/icons/caret-down.vue';
     import Button from '@/components/Button.vue'
 
+    const siteStore = useSiteStore();
     const menuOpen = ref(false);
-    // todo, placeholder for now
+    // TODO
     const authenticated = false;
-
-    // import CreateIcon from '@/assets/icons/note.svg';
-    // import LogoutIcon from '@/assets/icons/log-out.svg';
-
-    // import { useUserStore } from '@/stores/user';
-    // import { useSiteStore } from '@/stores/site';
-
-    // const userStore = useUserStore();
-    // const storeRef = storeToRefs(userStore);
-    // const authenticated = storeRef.getAuth;
-    // const siteStore = useSiteStore();
 </script>
-
 
 <style lang="scss">
     .main-header {
+        background-color: var(--c-background);
+        box-shadow: var(--box-shadow-soft);
         display: grid;
             gap: var(--space-med);
-        grid-template-areas: 'hamburger brand cta' 'nav nav blank';
-        grid-template-columns: max-content 1fr auto;
-        align-items: center;
-        padding: var(--content-padding-all);
+            grid-template-areas: 'hamburger brand cta' 'nav nav blank';
+            grid-template-columns: max-content 1fr max-content;
+            align-items: center;
+        padding: var(--space-sm) var(--content-padding) var(--space-sm);
+        position: sticky;
+            top: 0;
+            left: 0;
 
         @include breakpoint(lg) {
             grid-template-areas: 'brand nav cta';
@@ -115,9 +107,8 @@
 
     .main-header__brand {
         grid-area: brand;
-
-        font-size: var(--h1);
-        font-weight: bold;
+        max-width: 11rem;
+        margin-right: var(--space-med);
     }
 
     .main-menu {
@@ -263,6 +254,7 @@
         @include breakpoint(med) {
             --shape-size: 16px;
             font-size: var(--p);
+            margin-left: var(--space-med);
         }
 
         &:hover,

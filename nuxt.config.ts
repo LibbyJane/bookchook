@@ -21,7 +21,9 @@ export default defineNuxtConfig({
             }
         }
     }
-
+    , modules: [
+        '@pinia/nuxt',
+    ]
 
     // , runtimeConfig: {
     //     // The private keys which are only available server-side

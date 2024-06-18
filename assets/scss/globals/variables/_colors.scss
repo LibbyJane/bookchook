@@ -1,6 +1,8 @@
 // #002D55 rgb(0, 45, 85) hsl(208, 100%, 17%)
 // #FDF1E3 rgb(253, 241, 227) hsl(32, 87%, 94%)
-// #C1BFBA // rgb(193, 191, 186) hsl(43, 5%, 75%)
+// #C1BFBA rgb(193, 191, 186) hsl(43, 5%, 75%)
+// #BAD1D8 rgb(186, 209, 216) hsl(193, 13%, 84%)
+// #E6EEF1 rgb(230, 238, 241) hsl(196, 4%, 94%)
 // #ff694c rgb(255, 105, 76) hsl(10, 100%, 65%)
 
 :root {
@@ -9,12 +11,17 @@
     --c-text-hsl: 208, 100%, 17%;
     --c-text: hsl(var(--c-text-hsl));
 
-    // --c-background-hsl: 32, 80%, 98%;
-    // --c-background: hsl(var(--c-background-hsl));
+    --c-background-hsl: 32, 80%, 98%;
+    --c-background: hsl(var(--c-background-hsl));
     --c-background-hue: 32;
     --c-background-sat: 80%;
     --c-background-bri: 98%;
     --c-background: hsl(var(--c-background-hue), var(--c-background-sat), var(--c-background-bri));
+    // --c-background-hue: 186;
+    // --c-background-sat: 5%;
+    // --c-background-bri: 96%;
+    // --c-background: hsl(var(--c-background-hue), var(--c-background-sat), var(--c-background-bri));
+    // --c-background-2: hsl(193, 13%, 84%);
 
     --c-neutral-hsl: 43, 5%, 75%;
     --c-neutral: hsl(var(--c-neutral-hsl));
@@ -26,8 +33,10 @@
 
     --c-accent-hsl: 10, 100%, 64%;
     --c-accent: hsl(var(--c-accent-hsl));
-    --c-accent-contrast-hsl: 32, 90%, 99%;
+    --c-accent-contrast-hsl: 32, 90%, 100%;
     --c-accent-contrast: hsl(var(--c-accent-contrast-hsl));
 
     --c-border-light: hsla(var(--c-text-hsl), 0.1);
+
+    --c-brand: var(--c-text);
 }

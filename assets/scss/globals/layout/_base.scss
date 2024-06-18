@@ -7,7 +7,7 @@ body {
     @include scrollbars;
     background: var(--c-background);
     color: var(--c-text);
-    font-family: 'lexend', sans-serif;
+    font-family: var(--font-body);
     font-weight: normal;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;

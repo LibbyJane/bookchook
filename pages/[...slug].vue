@@ -1,9 +1,9 @@
 <template>
-      <article class="container">
-        <h1>H1 brochure layout</h1>
+    <article class="container">
+        <h1>Slug</h1>
         <p>Et rem et <a href="#">libero</a> fugit est qui ut harum. Minima aliquid itaque quibusdam optio laborum eos. Nihil labore culpa maxime sint error itaque. Est consequuntur et ut sit. Aspernatur sint autem esse pariatur consequatur nulla. Tempora eius enim corporis perferendis reprehenderit similique.</p>
 
-        <h2>H2 brochure layout</h2>
+        <h2>H2 brochure layout</h2>Q
         <p>Quis veniam eveniet quasi <a href="#">asperiores quod voluptas</a> placeat culpa. Laboriosam ipsum eum repellat autem odit voluptatem ut praesentium. Nam animi inventore eos.</p>
 
         <ul>
@@ -14,7 +14,7 @@
         </ul>
 
         <ol>
-            <li>Repellat quas sit odit occaecati.</li>
+            <li>Repellat quas sit oditQ occaecati.</li>
             <li>Nostrum quo numquam.</li>
             <li>Id tempora odio velit libero consequatur nobis ipsum. Id tempora odio velit libero consequatur nobis ipsum. Id tempora odio velit libero consequatur nobis ipsum. Id tempora odio velit libero consequatur nobis ipsum.</li>
             <li>Nam animi inventore eos.</li>
