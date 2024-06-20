@@ -1,22 +1,22 @@
 <template>
-    <footer class="main-footer" :callOnce="customerStore.getCustomerData($route.path.replace('/with/', ''))">
+    <footer class="main-footer">
         <div class="main-footer__block">
-            <h6>{{ customerStore.customerData.name }}</h6>
-            <address v-if="customerStore.customerData.address" v-html="customerStore.customerData.address"></address>
-            <p v-if="customerStore.customerData.phone">
-                <a :href="`tel:${customerStore.customerData.phone}`">
-                    {{ customerStore.customerData.phone }}
+            <h6>{{ organisationStore.data.organisation.name }}</h6>
+            <address v-if="organisationStore.data.organisation.address" v-html="organisationStore.data.organisation.address"></address>
+            <p v-if="organisationStore.data.organisation.phone">
+                <a :href="`tel:${organisationStore.data.organisation.phone}`">
+                    {{ organisationStore.data.organisation.phone }}
                 </a>
             </p>
-            <p v-if="customerStore.customerData.email">
-                <a :href="customerStore.customerData.email">
-                    {{ customerStore.customerData.email }}
+            <p v-if="organisationStore.data.organisation.email">
+                <a :href="organisationStore.data.organisation.email">
+                    {{ organisationStore.data.organisation.email }}
                 </a>
             </p>
 
-            <p v-if="customerStore.customerData.URL">
-                <a :href="customerStore.customerData.URL">
-                    {{ customerStore.customerData.URL }}
+            <p v-if="organisationStore.data.organisation.URL">
+                <a :href="organisationStore.data.organisation.URL">
+                    {{ organisationStore.data.organisation.URL }}
                 </a>
             </p>
         </div>
@@ -29,11 +29,50 @@
 
 
 <script setup>
-    import { ref, onMounted } from 'vue';
-    import { useRoute } from 'vue-router'
-    import { useCustomerStore } from '@/stores/customer';
+    import { useOrganisationStore } from '@/stores/organisation';
     import { useSiteStore } from '@/stores/site';
     const siteStore = useSiteStore();
-    const customerStore = useCustomerStore();
+    const organisationStore = useOrganisationStore();
     const thisYear = new Date().getFullYear();
 </script>
+
+
+<style lang="scss">
+    .main-footer {
+        background-color: transparent;
+        display: grid;
+            gap: var(--space-med);
+        margin: var(--space-lg) 0 0;
+        padding: var(--content-padding);
+        position: relative;
+            &::before {
+                background-color: var(--c-text);
+                content: '';
+                opacity: 0.1;
+                pointer-events: none;
+                position: absolute;
+                inset: 0;
+            }
+
+        @include breakpoint(med) {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        p,
+        li {
+            font-size: var(--p-sm);
+        }
+    }
+
+    .main-footer__copyright {
+        grid-column: 1/-1;
+        display: flex;
+            align-items: center;
+        opacity: 0.8;
+        text-align: center;
+
+        p {
+            margin: auto;
+        }
+    }
+</style>

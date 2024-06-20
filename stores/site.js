@@ -1,9 +1,8 @@
-import { defineStore } from 'pinia';
-
 export const useSiteStore = defineStore('siteStore', {
     state: () => ({
         siteName: 'Bookity',
-        description: ''
+        description: '',
+        organisationPagePrefix: '\/with\/'
     }),
     actions: {
         // async fetch() {

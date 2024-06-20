@@ -23,13 +23,14 @@
     // --c-background: hsl(var(--c-background-hue), var(--c-background-sat), var(--c-background-bri));
     // --c-background-2: hsl(193, 13%, 84%);
 
-    --c-neutral-hsl: 43, 5%, 75%;
-    --c-neutral: hsl(var(--c-neutral-hsl));
+    // --c-neutral-hsl: 43, 5%, 75%;
+    // --c-neutral: hsl(var(--c-neutral-hsl));
 
-    // --c-neutral-hue: 43;
-    // --c-neutral-sat: 5%;
-    // --c-neutral-bri: 75%;
-    // --c-neutral: hsl(var(--c-neutral-hue), var(--c-neutral-sat), var(--c-neutral-bri));
+    --c-neutral-hue: 43;
+    --c-neutral-sat: 5%;
+    --c-neutral-bri: 75%;
+    --c-neutral-hsl: hsl(var(--c-neutral-hue), var(--c-neutral-sat), var(--c-neutral-bri));
+    --c-neutral: hsl(var(--c-neutral-hsl));
 
     --c-accent-hsl: 10, 100%, 64%;
     --c-accent: hsl(var(--c-accent-hsl));

@@ -1,68 +1,64 @@
 <template>
-    <header id="header" class="main-header" :class="{ 'menu-open': menuOpen }" ref="headerRef">
-        <!-- <h1 style="position: fixed; top: 5rem; background-color: blue; color: white; padding: 1rem">todo: {{  status }}</h1> -->
-        <button type="button" v-on:click="() => menuOpen = !menuOpen" class="main-header__nav-toggle" aria-controls="main-menu" :aria-expanded="menuOpen">
-            <MenuIcon />
-        </button>
-
-        <RouterLink class="main-header__brand" to="/" >
-            <BrandImage :svgAlt="siteStore.siteName" />
-        </RouterLink>
+    <header id="header" class="main-header" :class="{ 'menu-open': userMenuOpen }" ref="headerRef">
+        <a class="main-header__brand" href="`${siteStore.organisationPagePrefix}${organisationStore.data.slug}`" >
+            <NuxtImg v-if="organisationStore.data.theme.logoURL" :src="organisationStore.data.theme.logoURL" :alt="organisationStore.data.organisation.name" />
+            <span v-if="!organisationStore.data.theme.logoURL">{{ organisationStore.data.organisation.name }}</span>
+        </a>
 
         <nav id="main-menu" class="main-menu">
-            <button type="button" v-on:click="() => menuOpen = false" class="main-header__nav-close" aria-controls="main-menu">
-                <CloseIcon svgClass="icon--xs hide-on-desktop" />
+            <button v-if="bookerStore.authenticated" type="button" v-on:click="() => userMenuOpen = !userMenuOpen" class="main-header__nav-toggle" aria-controls="main-menu">
+                <UserIcon />
             </button>
             <ul class="main-menu__list">
                 <li>
-                    <div class="main-menu__item">
-                        <span>Booking System</span>
-                        <CaretIcon class="icon--xs" alt="View" />
-                    </div>
-
-                    <ul class="main-menu__dropdown">
-                        <li><a href="/bookings/class">Class booking</a></li>
-                        <li><a href="/bookings/course">Course booking</a></li>
-                        <li><a href="/bookings/virtual">Virtual classes</a></li>
-                        <li><a href="/bookings/events">Event booking</a></li>
-                    </ul>
+                    <a class="main-menu__item" href="`${baseURL}/schedule">
+                        <CalendarIcon />
+                        What&rsquo;s on
+                    </a>
                 </li>
-                <li>
-                    <a class="main-menu__item" href="/pricing">Pricing</a>
+                <li v-if="userAuthenticated && organisationStore.data.purchaseTypes.passes">
+                    <a class="main-menu__item" href="`${baseURL}/passes">
+                        <TicketIcon />
+                        Passes
+                    </a>
                 </li>
-                <li>
-                    <a class="main-menu__item" href="/features">Features</a>
+                <li v-if="userAuthenticated && organisationStore.data.purchaseTypes.membership">
+                    <a class="main-menu__item" href="`${baseURL}/membership">
+                        <TicketIcon />
+                        Membership
+                    </a>
                 </li>
-                <li>
-                    <a class="main-menu__item" href="/contact">Contact</a>
+                <li v-if="!userAuthenticated">
+                    <a class="main-menu__item" href="`${baseURL}/login">
+                        <UserIcon />
+                        Log in / Register
+                    </a>
                 </li>
             </ul>
         </nav>
-        <!-- <h1 style="position: fixed; top: 5rem; background-color: blue; color: white; padding: 1rem">todo: {{$route.path }} {{$route.path.indexOf('/signup') }} {{$route.path.indexOf('/signup') < 0}}</h1> -->
-
-        <Button v-if="!authenticated && $route.path.indexOf('signup') < 0 " class="main-header__cta" text="Get Started" href="/signup" />
     </header>
 </template>
 
 <script setup>
-    import { ref, onMounted } from 'vue';
-    import { useRoute } from 'vue-router'
     import { useSiteStore } from '@/stores/site';
-    import BrandImage from '@/components/icons/brand.vue';
-    import MenuIcon from '@/components/icons/menu.vue';
-    import CloseIcon from '@/components/icons/cross.vue';
-    import CaretIcon from '@/components/icons/caret-down.vue';
-    import Button from '@/components/Button.vue'
+    import { useOrganisationStore } from '@/stores/organisation';
+    import { useBookerStore } from '~/stores/booker.js';
+
+    import CalendarIcon from '@/components/icons/calendar.vue';
+    import TicketIcon from '@/components/icons/ticket.vue';
+    import UserIcon from '@/components/icons/user.vue';
 
     const siteStore = useSiteStore();
-    const menuOpen = ref(false);
-    // TODO
-    const authenticated = false;
+    const organisationStore = useOrganisationStore();
+    const bookerStore = useBookerStore();
+
+    const baseURL = `${siteStore.organisationPagePrefix}${organisationStore.data.slug}`;
 </script>
 
 <style lang="scss">
     .main-header {
-        background-color: var(--c-background);
+        background-color: var(--c-brand);
+        color: var(--c-brand-contrast);
         box-shadow: var(--box-shadow-soft);
         display: grid;
             gap: var(--space-med);
@@ -76,10 +72,13 @@
 
         @include breakpoint(lg) {
             grid-template-areas: 'brand nav cta';
+            grid-template-columns: 1fr auto max-content;
+
         }
+
     }
 
-    .main-header__nav-toggle {
+    .user-menu__nav-toggle {
         grid-area: hamburger;
         display: flex;
             align-items: center;
@@ -107,8 +106,22 @@
 
     .main-header__brand {
         grid-area: brand;
-        max-width: 11rem;
         margin-right: var(--space-med);
+
+        &:has(img, svg) {
+            max-height: 3.4rem;
+            max-width: 66vw;
+
+            @include breakpoint(lg) {
+                max-width: 20rem;
+            }
+        }
+
+        span {
+            font-size: var(--h0);
+            font-weight: bold;
+            white-space: nowrap;
+        }
     }
 
     .main-menu {

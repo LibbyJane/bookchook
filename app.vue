@@ -1,16 +1,18 @@
 <template>
     <main id="app">
         <NuxtLayout :name="getLayout($route.path)" dir="pages" current-route>
-
             <NuxtLoadingIndicator />
-            <NuxtPage  />
+            <NuxtPage :page-key="route => route.fullPath" />
         </NuxtLayout>
     </main>
 </template>
 
 <script setup>
+    import { useSiteStore } from '@/stores/site';
+    const siteStore = useSiteStore();
+
     function getLayout(path) {
-        if (path.indexOf('/with/') > -1) return "application";
+        if (path.indexOf(`${siteStore.organisationPagePrefix}`) > -1) return "application";
         return "brochure";
         // if (path.indexOf('/bookings/') > -1) return "brochure";
         // if (path.indexOf('/resources/') > -1) return "brochure";

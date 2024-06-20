@@ -1,7 +1,7 @@
 :root {
     --icon-size-xs: 0.66em;
     --icon-size-sm: 1em;
-    --icon-size: calc(1em + var(--space-xs));
+    --icon-size: calc((1em + var(--space-xs))*1px);
 }
 
 .icon {

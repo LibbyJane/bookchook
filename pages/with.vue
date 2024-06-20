@@ -1,6 +1,6 @@
 <template>
     <article class="container">
-        <h1>Default page content</h1>
+        <h1>With page content</h1>
         <p>Et rem et <a href="#">libero</a> fugit est qui ut harum. Minima aliquid itaque quibusdam optio laborum eos. Nihil labore culpa maxime sint error itaque. Est consequuntur et ut sit. Aspernatur sint autem esse pariatur consequatur nulla. Tempora eius enim corporis perferendis reprehenderit similique.</p>
 
         <h2>H2 brochure layout</h2>Q

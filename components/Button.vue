@@ -1,6 +1,6 @@
 <template>
    <component :is="href ? 'a' : 'button'" class="button" :class="style" :href="href">
-        {{ text }}
+        <span class="button-text">{{ text }}</span>
     </component>
 </template>
 

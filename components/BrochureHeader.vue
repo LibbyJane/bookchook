@@ -107,8 +107,15 @@
 
     .main-header__brand {
         grid-area: brand;
-        max-width: 11rem;
+
         margin-right: var(--space-med);
+        position: relative;
+        position: relative;
+
+        svg {
+            max-width: 11rem;
+            max-height: 4rem;
+        }
     }
 
     .main-menu {
