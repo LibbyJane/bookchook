@@ -57,8 +57,8 @@
 
 <style lang="scss">
     .main-header {
-        background-color: var(--c-brand);
-        color: var(--c-brand-contrast);
+        background: var(--c-header-bg, --c-accent);
+        color: var(--c-header-text, --c-accent-contrast);
         box-shadow: var(--box-shadow-soft);
         display: grid;
             gap: var(--space-med);
@@ -69,13 +69,12 @@
         position: sticky;
             top: 0;
             left: 0;
+        z-index: var(--zi-header);
 
         @include breakpoint(lg) {
             grid-template-areas: 'brand nav cta';
             grid-template-columns: 1fr auto max-content;
-
         }
-
     }
 
     .user-menu__nav-toggle {
@@ -89,7 +88,7 @@
     }
 
     .main-header__nav-close {
-        color: var(--c-accent);
+        color: var(--c-header-accent);
         opacity: 0.7;
         padding: var(--space);
         margin-left: auto;
@@ -180,14 +179,14 @@
             &:focus {
                 .main-menu__item {
                     color: currentColor;
-                    text-decoration-color: var(--c-accent);
+                    text-decoration-color: var(--c-header-accent);
 
                     :where(a) {
                         text-decoration-style: wavy;
                     }
 
                     .icon {
-                        color:  var(--c-accent);
+                        color:  var(--c-header-accent);
                         transform: translateY(2px);
                     }
                 }

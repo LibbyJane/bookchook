@@ -1,21 +1,27 @@
+// Breakpoints for use with media queries, add to as needed
+$breakpoints: (
+    // small: 450px,
+    // ms: 600px,
+    med: 760px,
+    lg: 990px,
+    xlg: 1400px
+);
+
 :root {
+    --space-xxxs: 0.125rem;
+    --space-xxs: 0.25rem;
     --space-xs: 0.33rem;
     --space-sm: 0.5rem;
     --space: 1rem;
     --space-med: 1.5rem;
     --space-lg: 2rem;
 
-    --content-padding: var(--space-med);
+    --content-padding: var(--space);
     --content-padding-all: var(--content-padding) var(--content-padding) var(--space-sm);
     --max-content-width: 75ch;
-}
 
-// Breakpoints for use with media queries, add to as needed
-$breakpoints: (
-    // small: 450px,
-    // ms: 600px,
-    med: 750px,
-    lg: 990px,
-    xlg: 1400px
-);
+    @include breakpoint(lg) {
+        --content-padding: var(--space-med);
+    }
+}
 

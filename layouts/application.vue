@@ -1,9 +1,13 @@
 <template>
-    <div class="main-outer" :style="`--c-brand: ${ organisationStore.data.theme.colors.brand }; --c-brand-contrast: ${ organisationStore.data.theme.colors.brandContrast }; --c-text: ${ organisationStore.data.theme.colors.text };--c-accent: ${organisationStore.data.theme.colors.accent }; --c-neutral: ${ organisationStore.data.theme.colors.background };`">
+    <div class="main-outer" :style="`
+    --c-header-bg: ${ organisationStore.data.theme.colors.headerBackground ? organisationStore.data.theme.colors.headerBackground : '--c-accent' };
+    --c-header-text: ${ organisationStore.data.theme.colors.headerText ? organisationStore.data.theme.colors.headerText : '--c-accent-contrast'};
+    --c-header-accent: ${ organisationStore.data.theme.colors.headerAccent ? organisationStore.data.theme.colors.headerAccent : '--c-accent-contrast'};
+    --c-text: ${ organisationStore.data.theme.colors.text ? organisationStore.data.theme.colors.text : '--c-text' };
+    --c-accent: ${organisationStore.data.theme.colors.accent ? organisationStore.data.theme.colors.accent : '--c-accent' }; --c-accent-contrast: ${organisationStore.data.theme.colors.accentContrast ? organisationStore.data.theme.colors.accentContrast : '--c-accent-contrast' };
+    --c-background: ${ organisationStore.data.theme.colors.background ? organisationStore.data.theme.colors.background : '--c-background' };`">
         <AppHeader />
-
-        <AppCalendar />
-
+        <AppSchedule />
         <AppFooter />
     </div>
 </template>
@@ -11,6 +15,7 @@
 
 <script setup>
     import { useRoute } from 'vue-router'
+    import { ref, onMounted } from 'vue';
 
     const siteStore = useSiteStore();
     const organisationStore = useOrganisationStore();
@@ -24,10 +29,5 @@
     :root {
         --sb-track-color: hsl(var(--c-neutral-hue), var(--c-neutral-sat), calc(var(--c-neutral-bri) + 10%));
         --sb-thumb-color: hsl(var(--c-neutral-hue), calc(var(--c-neutral-sat) - 20%), calc(var(--c-neutral-bri) - 0%));
-    }
-
-    .main-outer {
-        background-color: var(--c-neutral);
-        color: var(--c-text);
     }
 </style>

@@ -45,8 +45,7 @@
 </template>
 
 <script setup>
-    import { ref, onMounted } from 'vue';
-    import { useRoute } from 'vue-router'
+    import { ref } from 'vue';
     import { useSiteStore } from '@/stores/site';
     import BrandImage from '@/components/icons/brand.vue';
     import MenuIcon from '@/components/icons/menu.vue';
