@@ -11,7 +11,7 @@
 
         <nav id="main-menu" class="main-menu">
             <button type="button" v-on:click="() => menuOpen = false" class="main-header__nav-close" aria-controls="main-menu">
-                <CloseIcon svgClass="icon--xs hide-on-desktop" />
+                <CloseIcon cssClass="icon--xs hide-on-desktop" />
             </button>
             <ul class="main-menu__list">
                 <li>
@@ -122,7 +122,7 @@
 
         @include hide;
         @include scrollbars;
-        background: hsl(var(--c-background-hue), var(--c-background-sat), calc(var(--c-background-bri) - 5%));
+        background: hsl(var(--c-background-hue), var(--c-background-sat), calc(var(--c-background-lum) - 5%));
         display: flex;
             flex-direction: column;
         position: fixed;

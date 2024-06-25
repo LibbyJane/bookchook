@@ -6,7 +6,8 @@ export const useBookerStore = defineStore({
     id: 'user',
     state: () => ({
         authenticated: null,
-        info: null
+        info: null,
+        bookings: [1, 2, 10]
     }),
     getters: {
         getAuthenticationToken(state) {

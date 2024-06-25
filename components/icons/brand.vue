@@ -35,7 +35,7 @@
 
 <script setup>
     const props = defineProps({
-        svgClass: {
+        cssClass: {
             type: String,
         },
         svgColor: {

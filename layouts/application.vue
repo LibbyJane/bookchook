@@ -27,7 +27,7 @@
 
 <style lang="scss">
     :root {
-        --sb-track-color: hsl(var(--c-neutral-hue), var(--c-neutral-sat), calc(var(--c-neutral-bri) + 10%));
-        --sb-thumb-color: hsl(var(--c-neutral-hue), calc(var(--c-neutral-sat) - 20%), calc(var(--c-neutral-bri) - 0%));
+        --sb-track-color: hsl(var(--c-neutral-hue), var(--c-neutral-sat), calc(var(--c-neutral-lum) + 10%));
+        --sb-thumb-color: hsl(var(--c-neutral-hue), calc(var(--c-neutral-sat) - 20%), calc(var(--c-neutral-lum) - 0%));
     }
 </style>

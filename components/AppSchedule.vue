@@ -6,7 +6,7 @@
         <section class="container">
             <h1>Schedule</h1>
             <table v-if="organisationStore.schedule" class="schedule" cellspacing="0">
-                <template v-for="event in organisationStore.schedule" >
+                <template v-for="event in organisationStore.schedule">
                     <tr v-if="rowIsHeader(event.date.month, event.date.year)" class="schedule__header" >
                         <th :colspan="colspan">
                             {{ getScheduleHeaderText(event.date.month, event.date.year) }}
@@ -22,37 +22,47 @@
                             {{ event.date.month }}
                         </th>
                     </tr> -->
+                    <tr v-if="newDay(event.date.day)" class="schedule__subheader" >
+                        <td>
+                            <span class="schedule__day">{{ event.date.day }}</span>
+                        </td>
+                        <td class="schedule__weekday">
+                            <!-- <span class="schedule__weekday--short">
+                                {{ event.date.weekdayShort }}
+                            </span>
+                            <span class="schedule__weekday--long">
+                                {{ event.date.weekday }}
+                            </span> -->
+                            {{ event.date.weekday }}
+                        </td>
+                    </tr>
 
-                    <tr v-else  :class="`schedule__item availability-${event.availabilty} ${getSelectedClass(event.id)}`"  v-on:click="showDetail(event.id)">
-                        <template v-if="newDay(event.date.day)">
-                            <td>
-                                <span class="schedule__day">{{ event.date.day }}</span>
-                            </td>
-                            <td>
-                                <span class="schedule__weekday--short">
-                                    {{ event.date.weekdayShort }}
-                                </span>
-                                <span class="schedule__weekday--long">
-                                    {{ event.date.weekday }}
-                                </span>
-                            </td>
-                        </template>
-                        <template v-else>
-                            <td></td>
-                            <td></td>
-                        </template>
-
-                        <td class="schedule__time">
+                    <tr :class="`schedule__item availability-${event.availabilty} ${getSelectedClass(event.id)}`"  v-on:click="showDetail(event.id)" :data-booking-status="getBookingStatus(event.id, event.availabilty)">
+                        <td class="schedule__item--time">
                             {{ new Intl.DateTimeFormat('default', { timeStyle: 'short',  }).format(new Date(event.dateTime)) }}
                         </td>
-                        <td class="schedule__title">
+                        <td class="schedule__item--title">
                             {{ event.title }}
                         </td>
-                        <td>
-                            <span class="schedule__availability-indicator" :title="`Availablity: ${event.availabilty}`">
+                        <td class="schedule__item--status">
+                            <Pill v-if="getBookingStatus(event.id) === 'booked'" cssClass="success">
+                                <CheckIcon cssClass="icon--sm" />
+                                Booked
+                            </Pill>
 
-                            </span>
+                            <Pill v-else-if="getBookingStatus(event.id, event.availabilty) === 'wait list'" cssClass="info">
+                                On Waiting List
+                            </Pill>
+
+                            <Pill v-else-if="event.availabilty === 'none'">
+                                Sold Out
+                            </Pill>
                         </td>
+                            <td class="schedule__item--availability">
+                                <span class="schedule__item--availability-indicator" :title="`Availablity: ${event.availabilty}`">
+
+                                </span>
+                            </td>
                     </tr>
                 </template>
             </table>
@@ -69,7 +79,8 @@
     import { ref } from 'vue';
     import { useOrganisationStore } from '@/stores/organisation';
     import { useBookerStore } from '@/stores/booker';
-    import { formatDate } from '@/composables/formatDate';
+    import Pill from '@/components/interface/pill.vue';
+    import CheckIcon from '@/components/icons/check.vue';
 
     import CalendarIcon from '@/components/icons/calendar.vue';
     import TicketIcon from '@/components/icons/ticket.vue';
@@ -92,9 +103,23 @@
 
     const selectedEventID = ref(-1);
 
+    function getBookingStatus(eventID, availability) {
+        eventID = parseInt(eventID);
+        // TODO
+        if (eventID % 4 === 0 || eventID % 9 === 0 )
+            return 'booked';
+
+        if (eventID === 1)
+            return 'wait list';
+
+        if (availability == 'none') {
+            return availability;
+        }
+    }
+
 
     function showDetail(eventID) {
-        console.log('show detail for', eventID);
+
         selectedEventID.value = eventID;
     }
 
@@ -108,9 +133,6 @@
 
 
     function rowIsHeader(month, year) {
-        console.log('rowIsHeader item month, year', month, year);
-        console.log('rowIsHeader curent month, year', currentMonth, currentMonth);
-        console.log('new month or new year?', month != currentMonth || year != currentYear);
         return month != currentMonth || year != currentYear;
     }
 
@@ -157,107 +179,56 @@
     }
 
     .schedule {
-        font-size: var(--p-sm);
-
-        @include breakpoint(med) {
-            font-size: var(--p);
-        }
+        display: block;
+        text-align: start;
 
         th,
         td {
-            padding: var(--space-xxxs);
-            vertical-align: baseline;
-
-            @include breakpoint(med) {
-                padding: var(--space-xs);
-            }
-
-            // &:first-child {
-            //     padding-inline-start: 0;
-            // }
-
-            // &:last-child {
-            //     padding-inline-end: 0;
-            // }
+            text-align: inherit;
         }
     }
 
     .schedule__header {
-        position: relative;
+        display: flex;
+            flex-direction: column;
+        margin: 0;
+        padding: var(--space) 0 var(--space-sm);
 
-        &::after {
-            //border-bottom: thin solid var(--c-accent);
-            background: var(--c-text);
-            border-radius: var(--space) var(--space) 0 0;
-            content: '';
-            opacity: 0.05;
-            position: absolute;
-                top: 0;
-                bottom: 0;
-                left: 0;
-                right: 0;
-            z-index: -1;
+        &:first-child {
+            padding-top: 0;
         }
 
         th {
-            font-size: var(--h5);
+            font-size: var(--h4);
+            opacity: 0.9;
             text-align: start;
         }
     }
 
-    .schedule__item {
-        cursor: pointer;
-        position: relative;
-        z-index: 1;
+    .schedule__subheader {
+        display: flex;
+            gap: var(--space-sm);
+        margin: 0;
+        padding: var(--space-sm) 0 ;
+        text-align: start;
+        transition: color var(--transition-speed) var(--transition-type-motionless);
+        transition-delay: 200ms;
 
-        &:hover,
-        &:focus,
-        &.selected {
-            background-color: transparent;
-            &::before {
-                opacity: 0.1;
-            }
-        }
+        &:has(~.schedule__item:hover, ~.schedule__item:focus) {
+            &:not(&:has(~.schedule__item~.schedule__subheader~.schedule__item:hover, ~.schedule__item~.schedule__subheader~.schedule__item:focus)) {
+                color: var(--c-accent);
 
-        &.selected {
-            color: var(--c-accent-contrast);
+                .schedule__day {
+                    &::before {
+                        background: var(--c-accent);
+                    }
+                }
+                // .schedule__weekday {
+                //     color: var(--c-accent);
+                // }
 
-            &::before {
-                opacity: 0.8;
-            }
-        }
-
-        &:has(+.schedule__header) {
-            &::after {
-                content: none;
             }
 
-            td {
-                padding-bottom: var(--space);
-            }
-        }
-
-        &::before {
-            background: var(--c-accent);
-            content: '';
-            opacity: 0;
-            position: absolute;
-                inset: 0;
-            z-index: -1;
-        }
-
-        &::after {
-            border-bottom: thin solid var(--c-text);
-            content: '';
-            opacity: 0.2;
-            position: absolute;
-                bottom: 0;
-                left: 0;
-                right: 0;
-        }
-        &.availability-none {
-            filter: grayscale(1);
-            opacity: 0.7;
         }
     }
 
@@ -270,6 +241,7 @@
         line-height: 1;
         padding: var(--space-xxs);
         position: relative;
+        min-width: 1.5rem;
         z-index: 1;
 
         &::before {
@@ -284,50 +256,126 @@
         }
     }
 
-    .schedule__weekday--short {
+    .schedule__item {
+        background: white;
+        border-radius: var(--space-sm);
+        box-shadow: var(--box-shadow-card);
+        cursor: pointer;
+        // display: flex;
+        //     gap: var(--space-sm);
+        //     justify-content: space-between;
+        font-size: var(--p-sm);
+        display: grid;
+            grid-template-areas: "availability time status" "title title title " ;
+            grid-template-columns: max-content 1fr auto;
+            gap: 0 var(--space-sm);
+            justify-content: start;
+            align-items: center;
+        margin: 0 0 var(--space-sm);
+        padding: var(--space-sm);
+        outline: 1px solid transparent;
+        outline-offset: -2px;
+        text-align: start;
+        transition: all var(--transition-speed-fast) var(--transition-type-motionless);
+
         @include breakpoint(lg) {
-            display: none;
-            visibility: hidden;
+            display: flex;
+                gap: var(--space-sm);
+                justify-content: space-between;
         }
-    }
 
-    .schedule__weekday--long {
-        display: none;
-        visibility: hidden;
-
-        @include breakpoint(lg) {
-            display: inline;
-            visibility: visible;
+        &:hover,
+        &:focus  {
+            // outline-color: var(--c-accent);
+            // outline-offset: 2px;
+            transform: scale(1.01);
+            box-shadow: var(--box-shadow-card-hover);
         }
+
+        &.availability-none {
+            color: var(--c-neutral-50);
+
+            // &:hover,
+            // &:focus {
+            //     outline-color: var(--c-neutral-80);
+            // }
+        }
+
+        // &[data-booking-status="unavailable"] {
+        //     &:hover,
+        //     &:focus {
+        //         outline-color: var(--c-neutral-50);
+        //     }
+        // }
+
+        // &[data-booking-status="booked"] {
+        //     &:hover,
+        //     &:focus {
+        //         outline-color: var(--c-success);
+        //     }
+        // }
+
+
+        // &.selected {
+        //     background-color: var(--c-accent);
+        //     color: var(--c-accent-contrast);
+        //     // outline-color: var(--c-accent);
+        //     outline-offset: -1px;
+        // }
     }
 
-    .schedule__time.schedule__time {
-        padding-right: var(--space-xs);
-        white-space: nowrap;
+    .schedule__item--time {
+        grid-area: time;
     }
 
-    .schedule__availability-indicator {
-        aspect-ratio: 1 / 1;
+    .schedule__item--title {
+        grid-area: title;
+        flex: 1;
+        font-weight: bolder;
+    }
+
+    .schedule__item--status-display {
+        display: flex;
+            gap: var(--space-sm);
+        font-size: var(--sm);
         border-radius: 99em;
-        display: block;
-        width: 10px;
-        border: 2px solid var(--c-accent-contrast);
-        // height: var(--space-sm);
+        line-height: 1;
+        padding: var(--space-xxs) var(--space-sm);
+
+        .is-booked & {
+            background-color: hsla(var(--c-success-hsl), 0.1);
+            color: var(--c-success-dark);
+        }
+    }
+
+    .schedule__item--availability {
+        grid-area: availability;
+
+        display: flex;
+            align-items: center;
+            justify-content: center;
+    }
+
+    .schedule__item--availability-indicator {
+        aspect-ratio: 1 / 1;
+        background-color: var(--c-neutral-70);
+        border-radius: 99em;
+        display: flex;
+        width: 8px;
+
+        // margin: calc(var(--space-sm)*-1);
+        // margin-left: 0;
 
         .availability-high & {
-            background-color:  rgb(103, 206, 103);
+            background-color: var(--c-success);
         }
 
         .availability-medium & {
-            background-color: orange;
+            background-color: var(--c-warning);
         }
 
         .availability-low & {
-            background-color: orangered;
+            background-color: var(--c-danger);
         }
-    }
-
-    .schedule__title {
-        font-weight: bolder;
     }
 </style>

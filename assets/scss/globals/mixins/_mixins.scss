@@ -73,8 +73,8 @@
 
 
 :root {
-    --sb-track-color: hsl(var(--c-background-hue), var(--c-background-sat), calc(var(--c-background-bri) - 5%));
-    --sb-thumb-color: hsl(var(--c-background-hue), calc(var(--c-background-sat) - 20%), calc(var(--c-background-bri) - 20%));
+    --sb-track-color: hsl(var(--c-background-hue), var(--c-background-sat), calc(var(--c-background-lum) - 5%));
+    --sb-thumb-color: hsl(var(--c-background-hue), calc(var(--c-background-sat) - 20%), calc(var(--c-background-lum) - 20%));
     --sb-size: 16px;
     --sb-radius: 99em;
 }

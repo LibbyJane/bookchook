@@ -128,7 +128,7 @@
 
         @include hide;
         @include scrollbars;
-        background: hsl(var(--c-background-hue), var(--c-background-sat), calc(var(--c-background-bri) - 5%));
+        background: hsl(var(--c-background-hue), var(--c-background-sat), calc(var(--c-background-lum) - 5%));
         display: flex;
             flex-direction: column;
         position: fixed;

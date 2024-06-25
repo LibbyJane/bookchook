@@ -38,7 +38,7 @@
 
 <style lang="scss">
     .main-footer {
-        background: hsl(var(--c-background-hue), calc(var(--c-background-sat) - 50%), calc(var(--c-background-bri) - 4%));
+        background: hsl(var(--c-background-hue), calc(var(--c-background-sat) - 50%), calc(var(--c-background-lum) - 4%));
         // border-top: thin solid hsla(var(--c-text-hsl), 0.1);
         display: grid;
             gap: var(--space-med);

@@ -85,7 +85,7 @@ export const useOrganisationStore = defineStore('organisationStore', {
                                 id: `${counter++}`,
                                 dateTime: `${(new Date(date.setDate(date.getDate() + 1))).toISOString()}`,
                                 title: 'Open Session',
-                                availabilty: 20,
+                                availability: 'high',
                                 location: 'l1',
                                 tags: ['open']
                             },
@@ -103,6 +103,7 @@ export const useOrganisationStore = defineStore('organisationStore', {
                                 dateTime: `${(new Date(date.setDate(date.getDate() + 1))).toISOString()}`,
                                 category: 'League',
                                 title: 'Sunday Sessions - League Players',
+                                location: 'l1',
                                 tags: ['open'],
                                 availabilty: 'low'
                             },
@@ -111,6 +112,8 @@ export const useOrganisationStore = defineStore('organisationStore', {
                                 dateTime: `${(new Date(date.setDate(date.getDate() + 2))).toISOString()}`,
                                 category: 'Open',
                                 title: 'Open Session',
+                                location: 'l1',
+                                tags: ['open'],
                                 availabilty: 'low'
                             },
                             {
@@ -118,19 +121,25 @@ export const useOrganisationStore = defineStore('organisationStore', {
                                 dateTime: `${(new Date(date.setDate(date.getDate() + 2))).toISOString()}`,
                                 category: 'Open',
                                 title: 'Open Session',
-                                availabilty: 'high'
+                                location: 'l1',
+                                tags: ['open'],
+                                availabilty: 'low'
                             },
                             {
                                 id: `${counter++}`,
                                 dateTime: `${(new Date(date.getTime() + (0.75*60*60*1000))).toISOString()}`,
                                 category: 'Open',
                                 title: 'Late Night Session',
+                                location: 'l1',
+                                tags: ['open', 'late'],
                                 availabilty: 'high'
                             }, {
                                 id: `${counter++}`,
                                 dateTime: `${(new Date(date.setDate(date.getDate() + 1))).toISOString()}`,
                                 category: 'Open',
                                 title: 'Open Session',
+                                location: 'l1',
+                                tags: ['open'],
                                 availabilty: 'none'
                             },
                             {
@@ -138,13 +147,17 @@ export const useOrganisationStore = defineStore('organisationStore', {
                                 dateTime: `${(new Date(date.getTime() + (60*60*1000))).toISOString()}`,
                                 category: 'Open',
                                 title: 'Open Session',
-                                availabilty: 'high',
+                                location: 'l1',
+                                tags: ['open'],
+                                availabilty: 'high'
                             },
                             {
                                 id: `${counter++}`,
                                 dateTime: `${(new Date(date.setDate(date.getDate() + 1))).toISOString()}`,
                                 category: 'League',
                                 title: 'Sunday Sessions - League Players',
+                                location: 'l1',
+                                tags: ['league'],
                                 availabilty: 'high'
                             },
                             {
@@ -171,7 +184,7 @@ export const useOrganisationStore = defineStore('organisationStore', {
                                 id: `${counter++}`,
                                 dateTime: `${(new Date(date.setDate(date.getDate() + 1))).toISOString()}`,
                                 title: 'Open Session',
-                                availabilty: 20,
+                                availability: 'high',
                                 location: 'l1',
                                 tags: ['open']
                             },
@@ -256,7 +269,7 @@ export const useOrganisationStore = defineStore('organisationStore', {
                                 id: `${counter++}`,
                                 dateTime: `${(new Date(date.setDate(date.getDate() + 365))).toISOString()}`,
                                 title: 'Open Session',
-                                availabilty: 20,
+                                availability: 'high',
                                 location: 'l1',
                                 tags: ['open']
                             },
