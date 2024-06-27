@@ -1,14 +1,11 @@
 <template>
     <header id="header" class="main-header" :class="{ 'menu-open': userMenuOpen }" ref="headerRef">
-        <a class="main-header__brand" href="`${siteStore.organisationPagePrefix}${organisationStore.data.slug}`" >
-            <NuxtImg v-if="organisationStore.data.theme.logoURL" :src="organisationStore.data.theme.logoURL" :alt="organisationStore.data.organisation.name" />
-            <span v-if="!organisationStore.data.theme.logoURL">{{ organisationStore.data.organisation.name }}</span>
+        <a class="main-header__brand" href="`${siteStore.organisationPagePrefix}${organisationStore.account.url_slug}`" >
+            <NuxtImg v-if="organisationStore.account.logo_url" :src="organisationStore.account.logo_url" :alt="organisationStore.account.account_name" />
+            <span v-if="!organisationStore.account.logo_url">{{ organisationStore.account.account_name }}</span>
         </a>
 
         <nav id="main-menu" class="main-menu">
-            <button v-if="bookerStore.authenticated" type="button" v-on:click="() => userMenuOpen = !userMenuOpen" class="main-header__nav-toggle" aria-controls="main-menu">
-                <UserIcon />
-            </button>
             <ul class="main-menu__list">
                 <li>
                     <a class="main-menu__item" href="`${baseURL}/schedule">
@@ -16,19 +13,25 @@
                         What&rsquo;s on
                     </a>
                 </li>
-                <li v-if="userAuthenticated && organisationStore.data.purchaseTypes.passes">
+                <li v-if="bookerStore.authenticated && organisationStore.purchaseTypes.passes">
                     <a class="main-menu__item" href="`${baseURL}/passes">
                         <TicketIcon />
                         Passes
                     </a>
                 </li>
-                <li v-if="userAuthenticated && organisationStore.data.purchaseTypes.membership">
+                <li v-if="bookerStore.authenticated && organisationStore.purchaseTypes.membership">
                     <a class="main-menu__item" href="`${baseURL}/membership">
-                        <TicketIcon />
+                        <MembershipIcon />
                         Membership
                     </a>
                 </li>
-                <li v-if="!userAuthenticated">
+                <li>
+                    <button v-if="bookerStore.authenticated" type="button" v-on:click="() => userMenuOpen = !userMenuOpen" aria-controls="usere-menu" class="main-menu__item menu-toggle">
+                        <UserIcon />
+                        Account
+                    </button>
+                </li>
+                <li v-if="!bookerStore.authenticated">
                     <a class="main-menu__item" href="`${baseURL}/login">
                         <UserIcon />
                         Log in / Register
@@ -40,19 +43,18 @@
 </template>
 
 <script setup>
-    import { useSiteStore } from '@/stores/site';
     import { useOrganisationStore } from '@/stores/organisation';
     import { useBookerStore } from '~/stores/booker.js';
 
     import CalendarIcon from '@/components/icons/calendar.vue';
     import TicketIcon from '@/components/icons/ticket.vue';
+    import MembershipIcon from '@/components/icons/id-badge.vue';
     import UserIcon from '@/components/icons/user.vue';
 
-    const siteStore = useSiteStore();
     const organisationStore = useOrganisationStore();
     const bookerStore = useBookerStore();
+    const userMenuOpen = ref(false);
 
-    const baseURL = `${siteStore.organisationPagePrefix}${organisationStore.data.slug}`;
 </script>
 
 <style lang="scss">

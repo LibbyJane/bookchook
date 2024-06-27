@@ -6,12 +6,41 @@
         align-items: center;
         justify-content: center;
     font-size: var(--font-size-p);
+    line-height: 1;
     padding: var(--space-sm) var(--space);
     text-decoration: none;
+    transition: all var(--transition-speed) var(--transition-type-motionless);
 
     &:hover,
     &:focus {
         box-shadow: var(--box-shadow-soft);
+        color: var(--c-accent-contrast);
+    }
+}
+
+.btn--sm {
+
+}
+
+// .btn--secondary {
+//     background: transparent;
+//     color: var(--c-accent);
+//     position: relative;
+
+//     &::before {
+
+//     }
+// }
+
+.btn--outlined {
+    background: transparent;
+    color: var(--c-accent);
+    outline: 2px solid;
+
+    &:hover,
+    &:focus {
+        box-shadow: none;
+        background: var(--c-accent);
         color: var(--c-accent-contrast);
     }
 }

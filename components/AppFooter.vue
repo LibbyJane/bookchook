@@ -1,22 +1,41 @@
 <template>
     <footer class="main-footer">
         <div class="main-footer__block">
-            <h6>{{ organisationStore.data.organisation.name }}</h6>
-            <address v-if="organisationStore.data.organisation.address" v-html="organisationStore.data.organisation.address"></address>
-            <p v-if="organisationStore.data.organisation.phone">
-                <a :href="`tel:${organisationStore.data.organisation.phone}`">
-                    {{ organisationStore.data.organisation.phone }}
+            <h6>{{ organisationStore.account.account_name }}</h6>
+            <address>
+                <template v-if="organisationStore.account.address1">
+                    {{ organisationStore.account.address1 }}<br>
+                </template>
+                <template v-if="organisationStore.account.address2">
+                    {{ organisationStore.account.address2 }}<br>
+                </template>
+                <template v-if="organisationStore.account.country">
+                    {{ organisationStore.account.country }}<br>
+                </template>
+                <template v-if="organisationStore.account.suburb">
+                    {{ organisationStore.account.suburb }},
+                </template>
+                <template v-if="organisationStore.account.state">
+                    {{ organisationStore.account.state }}<br>
+                </template>
+                <template v-if="organisationStore.account.postcode">
+                    {{ organisationStore.account.postcode }}
+                </template>
+            </address>
+            <p v-if="organisationStore.account.phone">
+                <a :href="`tel:${organisationStore.account.phone}`">
+                    {{ organisationStore.account.phone }}
                 </a>
             </p>
-            <p v-if="organisationStore.data.organisation.email">
-                <a :href="organisationStore.data.organisation.email">
-                    {{ organisationStore.data.organisation.email }}
+            <p v-if="organisationStore.account.email">
+                <a :href="organisationStore.account.email">
+                    {{ organisationStore.account.email }}
                 </a>
             </p>
 
-            <p v-if="organisationStore.data.organisation.URL">
-                <a :href="organisationStore.data.organisation.URL">
-                    {{ organisationStore.data.organisation.URL }}
+            <p v-if="organisationStore.account.website">
+                <a :href="organisationStore.account.website">
+                    {{ organisationStore.account.website }}
                 </a>
             </p>
         </div>

@@ -1,10 +1,9 @@
 <template>
     <article class="app-schedule">
         <aside class="app-schedule__filters container">
-            <h1>Filters</h1>
+            <h1>Filters {{ selectedEventID }}</h1>
         </aside>
         <section class="container">
-            <h1>Schedule</h1>
             <table v-if="organisationStore.schedule" class="schedule" cellspacing="0">
                 <template v-for="event in organisationStore.schedule">
                     <tr v-if="rowIsHeader(event.date.month, event.date.year)" class="schedule__header" >
@@ -12,34 +11,18 @@
                             {{ getScheduleHeaderText(event.date.month, event.date.year) }}
                         </th>
                     </tr>
-                    <!-- <tr class="schedule__header" v-if="newYear(event.date.year)">
-                        <th :colspan="colspan">
-                            {{ event.date.month }} {{ event.date.year }}
-                        </th>
-                    </tr>
-                    <tr class="schedule__header" v-else-if="newMonth(event.date.month)">
-                        <th :colspan="colspan">
-                            {{ event.date.month }}
-                        </th>
-                    </tr> -->
                     <tr v-if="newDay(event.date.day)" class="schedule__subheader" >
                         <td>
                             <span class="schedule__day">{{ event.date.day }}</span>
                         </td>
                         <td class="schedule__weekday">
-                            <!-- <span class="schedule__weekday--short">
-                                {{ event.date.weekdayShort }}
-                            </span>
-                            <span class="schedule__weekday--long">
-                                {{ event.date.weekday }}
-                            </span> -->
                             {{ event.date.weekday }}
                         </td>
                     </tr>
 
                     <tr :class="`schedule__item availability-${event.availabilty} ${getSelectedClass(event.id)}`"  v-on:click="showDetail(event.id)" :data-booking-status="getBookingStatus(event.id, event.availabilty)">
                         <td class="schedule__item--time">
-                            {{ new Intl.DateTimeFormat('default', { timeStyle: 'short',  }).format(new Date(event.dateTime)) }}
+                            {{ event.date.time }}
                         </td>
                         <td class="schedule__item--title">
                             {{ event.title }}
@@ -68,7 +51,7 @@
             </table>
 
             <p v-if="!organisationStore.schedule" >
-                {{ organisationStore.data.organisation.name }} has no scheduled events to display.
+                {{ organisationStore.account.account_name }} has no scheduled events to display.
             </p>
         </section>
         <AppEventDetail v-if="selectedEventID" :eventID="selectedEventID" />
@@ -82,11 +65,8 @@
     import Pill from '@/components/interface/pill.vue';
     import CheckIcon from '@/components/icons/check.vue';
 
-    import CalendarIcon from '@/components/icons/calendar.vue';
-    import TicketIcon from '@/components/icons/ticket.vue';
-    import UserIcon from '@/components/icons/user.vue';
-
-    const siteStore = useSiteStore();
+    const router = useRouter()
+    const route = useRoute()
     const organisationStore = useOrganisationStore();
     const bookerStore = useBookerStore();
 
@@ -99,32 +79,44 @@
 
     const colspan = 5;
 
-    await useAsyncData('schedule', () => organisationStore.getOrganisationSchedule(scheduleDataPageSize, scheduleDataPageNumber.value));
 
-    const selectedEventID = ref(-1);
+    await useAsyncData(() => organisationStore.getOrganisationSchedule(scheduleDataPageSize, scheduleDataPageNumber.value));
+
+
+
+    organisationStore.schedule.forEach((item) => {
+        console.log('item', item.tags);
+    }) ;
+    const filterData = ref([]);
+    // const selectedEventID = ref(window.location.hash.replace('#', ''));
+    const selectedEventID = ref(route.hash.replace('#', ''));
 
     function getBookingStatus(eventID, availability) {
-        eventID = parseInt(eventID);
-        // TODO
-        if (eventID % 4 === 0 || eventID % 9 === 0 )
-            return 'booked';
+        if (bookerStore.authenticated) {
+            eventID = parseInt(eventID);
+            // TODO
+            if (eventID % 4 === 0 || eventID % 9 === 0 )
+                return 'booked';
 
-        if (eventID === 1)
-            return 'wait list';
+            if (eventID === 1)
+                return 'wait list';
 
-        if (availability == 'none') {
-            return availability;
+            if (availability == 'none') {
+                return availability;
+            }
         }
     }
 
-
-    function showDetail(eventID) {
+    async function showDetail(eventID) {
+        await router.push({
+            hash: `#${eventID}`,
+        });
 
         selectedEventID.value = eventID;
     }
 
     function getSelectedClass(eventID) {
-        if (eventID == selectedEventID.value) {
+        if (eventID == selectedEventID) {
             return "selected";
         }
 
@@ -163,10 +155,15 @@
 <style lang="scss">
     .app-schedule {
         display: grid;
+            grid-template-areas: "filters" "schedule" "event-detail";
         margin-bottom: auto;
 
+        @include breakpoint(xl) {
+        }
+
         @include breakpoint(lg) {
-            grid-template-columns: minmax(max-content, 20rem) 1fr 40vw;
+            grid-template-areas: "filters schedule event-detail";
+            grid-template-columns: 20rem 1fr minmax(30rem, 40vw);
         }
     }
 
@@ -184,6 +181,7 @@
 
         th,
         td {
+            line-height: var(--line-height-sm);
             text-align: inherit;
         }
     }
@@ -194,9 +192,9 @@
         margin: 0;
         padding: var(--space) 0 var(--space-sm);
 
-        &:first-child {
-            padding-top: 0;
-        }
+        // &:first-child {
+        //     padding-top: 0;
+        // }
 
         th {
             font-size: var(--h4);
@@ -208,6 +206,7 @@
     .schedule__subheader {
         display: flex;
             gap: var(--space-sm);
+            align-items: center;
         margin: 0;
         padding: var(--space-sm) 0 ;
         text-align: start;
@@ -223,12 +222,7 @@
                         background: var(--c-accent);
                     }
                 }
-                // .schedule__weekday {
-                //     color: var(--c-accent);
-                // }
-
             }
-
         }
     }
 
@@ -257,7 +251,7 @@
     }
 
     .schedule__item {
-        background: white;
+        background: var(--c-white);
         border-radius: var(--space-sm);
         box-shadow: var(--box-shadow-card);
         cursor: pointer;
@@ -326,6 +320,7 @@
 
     .schedule__item--time {
         grid-area: time;
+        align-self: start;
     }
 
     .schedule__item--title {

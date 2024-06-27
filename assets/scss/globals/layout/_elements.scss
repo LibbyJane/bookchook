@@ -1,46 +1,91 @@
-// split out into subfiles if needed
 
 summary {
-    display: grid;
-        grid-template-areas: "text icon";
+    display: flex;
+    align-items: center;
+    font-size: var(--h5);
+    font-weight: 500;
     list-style: none;
-    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    position: relative;
 
-    .icon {
-        grid-area: icon;
-        pointer-events: none;
+    details[open] & {
+
     }
 
-    span {
-        grid-area: text;
-    }
+    &::before {
+        content: '▸';
+        display: block;
+        margin-left: calc(var(--space-xs) * -1);
+        padding: var(--space-xs);
+        transform-origin: center;
+        transition: transform var(--transition-speed-fast) var(--transition-type-motionless);
 
-    [data-close] {
-        opacity: 0;
+        details[open] & {
+            transform: rotate(90deg);
+        }
     }
 }
 
 details {
-    #{$hover} {
-        .icon {
-            transform: translateY(2px) scale(1.2);
-        }
-    }
-    &[open] {
-        [data-close] {
-            opacity: 1;
-        }
-
-        [data-open] {
-            opacity: 0;
-        }
-
-        .details-content {
-            visibility: visible;
-        }
+    > div {
+        padding-inline: var(--space);
+        // padding-inline: var(--space);
     }
 }
 
-.details-content {
-    visibility: hidden;
+details[open] {
+
 }
+
+details[open] summary {
+
+}
+
+
+// // split out into subfiles if needed
+
+// summary {
+//     display: grid;
+//         grid-template-areas: "text icon";
+//     list-style: none;
+//     overflow: hidden;
+
+//     .icon {
+//         grid-area: icon;
+//         pointer-events: none;
+//     }
+
+//     span {
+//         grid-area: text;
+//     }
+
+//     [data-close] {
+//         opacity: 0;
+//     }
+// }
+
+// details {
+//     #{$hover} {
+//         .icon {
+//             transform: translateY(2px) scale(1.2);
+//         }
+//     }
+//     &[open] {
+//         [data-close] {
+//             opacity: 1;
+//         }
+
+//         [data-open] {
+//             opacity: 0;
+//         }
+
+//         .details-content {
+//             visibility: visible;
+//         }
+//     }
+// }
+
+// .details-content {
+//     visibility: hidden;
+// }

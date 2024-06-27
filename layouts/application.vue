@@ -1,11 +1,12 @@
 <template>
     <div class="main-outer" :style="`
-    --c-header-bg: ${ organisationStore.data.theme.colors.headerBackground ? organisationStore.data.theme.colors.headerBackground : '--c-accent' };
-    --c-header-text: ${ organisationStore.data.theme.colors.headerText ? organisationStore.data.theme.colors.headerText : '--c-accent-contrast'};
-    --c-header-accent: ${ organisationStore.data.theme.colors.headerAccent ? organisationStore.data.theme.colors.headerAccent : '--c-accent-contrast'};
-    --c-text: ${ organisationStore.data.theme.colors.text ? organisationStore.data.theme.colors.text : '--c-text' };
-    --c-accent: ${organisationStore.data.theme.colors.accent ? organisationStore.data.theme.colors.accent : '--c-accent' }; --c-accent-contrast: ${organisationStore.data.theme.colors.accentContrast ? organisationStore.data.theme.colors.accentContrast : '--c-accent-contrast' };
-    --c-background: ${ organisationStore.data.theme.colors.background ? organisationStore.data.theme.colors.background : '--c-background' };`">
+    --c-header-bg: ${ organisationStore.account.theme_config.colors.headerBackground ? organisationStore.account.theme_config.colors.headerBackground : '--c-accent' };
+    --c-header-text: ${ organisationStore.account.theme_config.colors.headerText ? organisationStore.account.theme_config.colors.headerText : '--c-accent-contrast'};
+    --c-header-accent: ${ organisationStore.account.theme_config.colors.headerAccent ? organisationStore.account.theme_config.colors.headerAccent : '--c-accent-contrast'};
+    --c-text: ${ organisationStore.account.theme_config.colors.text ? organisationStore.account.theme_config.colors.text : '--c-text' };
+    --c-accent: ${organisationStore.account.theme_config.colors.accent ? organisationStore.account.theme_config.colors.accent : '--c-accent' };
+    --c-accent-contrast: ${organisationStore.account.theme_config.colors.accentContrast ? organisationStore.account.theme_config.colors.accentContrast : '--c-accent-contrast' };
+    --c-background: ${ organisationStore.account.theme_config.colors.background ? organisationStore.account.theme_config.colors.background : '--c-background' };`">
         <AppHeader />
         <AppSchedule />
         <AppFooter />
@@ -15,13 +16,12 @@
 
 <script setup>
     import { useRoute } from 'vue-router'
-    import { ref, onMounted } from 'vue';
 
-    const siteStore = useSiteStore();
     const organisationStore = useOrganisationStore();
     const route = useRoute();
+    const splitPath = route.path.split('/');
 
-    await useAsyncData('organisation', () => organisationStore.getOrganisationData(route.path.replace(`${siteStore.organisationPagePrefix}`, '')));
+    await useAsyncData('organisation', () => organisationStore.getOrganisationData(splitPath[2], ''));
 </script>
 
 

@@ -2,6 +2,8 @@
     --icon-size-xs: 0.66em;
     --icon-size-sm: 1em;
     --icon-size: calc((1em + var(--space-xs))*1px);
+    // --icon-size-med: 1.4rem;
+    --icon-size-lg: 2rem;
 }
 
 .icon {
@@ -12,13 +14,22 @@
     transition: var(--transition);
 }
 
+.icon--xs {
+    height: var(--icon-size-xs);
+    width: var(--icon-size-xs);
+}
+
 .icon--sm {
     height: var(--icon-size-sm);
     width: var(--icon-size-sm);
 }
 
+// .icon--med {
+//     height: var(--icon-size-md);
+//     width: var(--icon-size-md);
+// }
 
-.icon--xs {
-    height: var(--icon-size-xs);
-    width: var(--icon-size-xs);
+.icon--lg {
+    height: var(--icon-size-lg);
+    width: var(--icon-size-lg);
 }

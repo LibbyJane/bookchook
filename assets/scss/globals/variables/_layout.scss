@@ -4,7 +4,7 @@ $breakpoints: (
     // ms: 600px,
     med: 760px,
     lg: 990px,
-    xlg: 1400px
+    xl: 1400px
 );
 
 :root {
@@ -15,6 +15,7 @@ $breakpoints: (
     --space: 1rem;
     --space-med: 1.5rem;
     --space-lg: 2rem;
+    --space-xl: 3rem;
 
     --content-padding: var(--space);
     --content-padding-all: var(--content-padding) var(--content-padding) var(--space-sm);
