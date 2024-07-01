@@ -11,7 +11,7 @@ h6 {
     font-weight: 700;
     margin: var(--space-med) 0 var(--space-sm);
     padding: 0;
-    max-width: var(--max-content-width);
+    max-width: var(--max-text-width);
 
     &:first-child {
         margin-top: 0;
@@ -26,21 +26,21 @@ textarea {
     font-style: normal;
     margin: 0 0 var(--space);
     padding: 0;
-    max-width: var(--max-content-width);
+    max-width: var(--max-text-width);
 }
 
 :where(article ul) {
     list-style-type: disc;
     margin: 0 0 var(--space) var(--space-lg);
     padding: 0;
-    max-width: calc(var(--max-content-width) - var(--space-lg));
+    max-width: calc(var(--max-text-width) - var(--space-lg));
 }
 
 :where(article ol) {
     list-style-type: decimal;
     margin: 0 0 var(--space) var(--space-lg);
     padding: 0;
-    max-width: calc(var(--max-content-width) - var(--space-lg));
+    max-width: calc(var(--max-text-width) - var(--space-lg));
 }
 
 :where(article li) {
@@ -106,7 +106,8 @@ small {
 a {
     color: currentColor;
     cursor: pointer;
-    text-decoration: none;
+    // text-decoration: none;
+    text-decoration: 2px solid underline var(--c-accent);
     transition: color var(--transition-speed-fast) var(--transition-type-motionless);
 
     &:hover,
@@ -117,6 +118,7 @@ a {
     .main-content &,
     .main-footer & {
         border-bottom: thin dotted;
+        text-decoration: none;
 
         &:hover,
         &:focus {

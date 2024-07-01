@@ -1,0 +1,86 @@
+<template>
+    <form v-on:submit="handleSubmit" class="form form--login">
+        <Label for="email" text="Email" required="true" />
+        <input
+            id="email"
+            type="email"
+            v-model="fields.email.value"
+            v-on:keyup="clearError"
+            autocomplete="email"
+            required
+        />
+
+        <Label for="password" text="Password" required="true" />
+        <input
+            id="password"
+            type="password"
+            v-model="fields.password.value"
+            v-on:keyup="clearError"
+            autocomplete="current-password"
+            required
+        />
+        <Error v-if="formError" :message="formError" />
+
+        <button class="btn" type="submit">log in</button>
+            <!--
+        <aside class="sidebar">
+            <div class="card is-alt align-top width-small" to="/login">
+                <img src="@/assets/images/tape.svg" class="card-tape" alt="Push Pin" />
+                <h4>Don't have an account yet?</h4>
+                <p><RouterLink to="/signup">Sign up here</RouterLink></p>
+            </div>
+        </aside> -->
+
+        </form>
+
+</template>
+
+<script setup>
+    import { ref, reactive } from 'vue';
+    import { useBookerStore } from '@/stores/booker';
+    import Label from '@/components/forms/shared/Label.vue';
+    import Error from '@/components/forms/shared/Error.vue';
+
+    const bookerStore = useBookerStore();
+
+    const fields = reactive({
+        email: {
+            value: null,
+            error: null,
+        },
+        password: {
+            value: null,
+            error: null,
+        },
+    });
+
+    let formError = ref('');
+
+    const clearError = () => {
+        // fields[fieldKey].error = null;
+        formError.value = '';
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        // const outcome = await userStore.performLogin({
+        //     email: fields.email.value,
+        //     password: fields.password.value,
+        // });
+        const outcome = {
+            error: "Test error"
+        };
+
+        console.log('outcome', outcome);
+
+        if (outcome && outcome.error) {
+            formError.value = outcome.error;
+        } else if (outcome && outcome.errors) {
+            for (let error of outcome.errors) {
+                console.log('error', error);
+                formError.value += `${error}`;
+            }
+        }
+    };
+</script>

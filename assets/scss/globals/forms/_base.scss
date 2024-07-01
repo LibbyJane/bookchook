@@ -1,0 +1,25 @@
+form {
+    display: flex;
+        flex-direction: column;
+    max-width: var(--max-text-width);
+}
+
+// form {
+//     &.has-max-width {
+//         max-width: var(--max-form-width);
+//     }
+// }
+
+// .width-small {
+//     max-width: var(--max-form-width-sm);
+// }
+
+
+// .form-actions {
+//     border: none;
+//     display: flex;
+//     justify-content: space-between;
+//     margin: 0;
+//     padding: 0;
+// }
+

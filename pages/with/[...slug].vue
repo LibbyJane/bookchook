@@ -1,5 +1,5 @@
 <template>
     <article class="container">
-        <h1>Signup</h1>
+        <h1>Index</h1>
     </article>
 </template>

@@ -16,10 +16,11 @@ $breakpoints: (
     --space-med: 1.5rem;
     --space-lg: 2rem;
     --space-xl: 3rem;
+    --header-height: 4rem;
 
     --content-padding: var(--space);
     --content-padding-all: var(--content-padding) var(--content-padding) var(--space-sm);
-    --max-content-width: 75ch;
+    --max-text-width: 75ch;
 
     @include breakpoint(lg) {
         --content-padding: var(--space-med);

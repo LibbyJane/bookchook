@@ -90,8 +90,6 @@ const endpoints = {
 }
 
 export async function useAPI(endpoint, data, endpointID) {
-    console.log('endpoint uri, method, data, endpointID', endpoint, data, endpointID)
-    console.log('apiBaseURL', apiBaseURL);
     const bookerStore = useBookerStore();
     const token = bookerStore && bookerStore.getAuthenticationToken ? bookerStore.getAuthenticationToken : null;
     // console.log('token', token)

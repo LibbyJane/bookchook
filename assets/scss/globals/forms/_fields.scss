@@ -1,0 +1,49 @@
+input,
+textarea,
+select  {
+    appearance: none;
+    -webkit-appearance: none;
+    background: transparent;
+    border: thin solid hsla(var(--c-text-hsl), 0.2);
+    border-radius: 0;
+    box-sizing: border-box;
+    margin: 0 0 var(--space);
+    padding: var(--space-sm) ;
+    width: 100%;
+
+    &:hover,
+    &:focus {
+        outline: 2px solid hsla(var(--c-accent-hsl), 0.5);
+    }
+
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus,
+    &:-internal-autofill-selected,
+    &:-internal-light-dark {
+        background-color: transparent !important;
+        -webkit-box-shadow: 0 0 0px 1000px rgba(0,0,0,0) inset;
+        transition: background-color 5000s ease-in-out 0s;
+    }
+}
+
+
+textarea {
+    min-height: 160px;
+}
+
+
+.multiselect-themed.multiselect-themed {
+    padding-inline: 0;
+
+    .multiselect-tags {
+        padding: 0;
+    }
+
+    .multiselect-tag {
+        background: var(--off-white);
+        color: var(--biro);
+        font-size: var(--xs);
+        font-weight: normal;
+    }
+}

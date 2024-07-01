@@ -44,6 +44,8 @@
     --c-neutral-80: hsl(var(--c-neutral-hue), var(--c-neutral-sat), 80%);
     --c-neutral-90: hsl(var(--c-neutral-hue), var(--c-neutral-sat), 90%);
     --c-neutral-95: hsl(var(--c-neutral-hue), var(--c-neutral-sat), 95%);
+    --c-neutral-97: hsl(var(--c-neutral-hue), var(--c-neutral-sat), 97%);
+    --c-neutral-100: hsl(var(--c-neutral-hue), var(--c-neutral-sat), 100%);
 
     --c-success-hue: 109;
     --c-success-sat: 65%;
@@ -78,8 +80,10 @@
     --c-info-dark: hsl(var(--c-info-hue), var(--c-info-sat), 40%);
     --c-info-light: hsl(var(--c-info-hue), var(--c-info-sat), 90%);
 
-
-    --c-accent-hsl: 10, 100%, 64%;
+    --c-accent-hue: 10;
+    --c-accent-sat: 100%;
+    --c-accent-lum: 64%;
+    --c-accent-hsl: var(--c-accent-hue), var(--c-accent-sat), var(--c-accent-lum);
     --c-accent: hsl(var(--c-accent-hsl));
     --c-accent-contrast-hsl: 32, 90%, 100%;
     --c-accent-contrast: hsl(var(--c-accent-contrast-hsl));

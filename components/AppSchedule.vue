@@ -62,7 +62,7 @@
     import { ref } from 'vue';
     import { useOrganisationStore } from '@/stores/organisation';
     import { useBookerStore } from '@/stores/booker';
-    import Pill from '@/components/interface/pill.vue';
+    import Pill from '@/components/interface/Pill.vue';
     import CheckIcon from '@/components/icons/check.vue';
 
     const router = useRouter()
@@ -76,20 +76,12 @@
 
     const scheduleDataPageSize = 20;
     const scheduleDataPageNumber = ref(0);
-
     const colspan = 5;
-
 
     await useAsyncData(() => organisationStore.getOrganisationSchedule(scheduleDataPageSize, scheduleDataPageNumber.value));
 
-
-
-    organisationStore.schedule.forEach((item) => {
-        console.log('item', item.tags);
-    }) ;
     const filterData = ref([]);
-    // const selectedEventID = ref(window.location.hash.replace('#', ''));
-    const selectedEventID = ref(route.hash.replace('#', ''));
+    const selectedEventID = ref(route.query.id);
 
     function getBookingStatus(eventID, availability) {
         if (bookerStore.authenticated) {
@@ -109,7 +101,9 @@
 
     async function showDetail(eventID) {
         await router.push({
-            hash: `#${eventID}`,
+            query: {
+                id: eventID
+            },
         });
 
         selectedEventID.value = eventID;
@@ -156,6 +150,7 @@
     .app-schedule {
         display: grid;
             grid-template-areas: "filters" "schedule" "event-detail";
+            align-items: start; // stretch doesn't play nicely with postion sticky
         margin-bottom: auto;
 
         @include breakpoint(xl) {
@@ -170,7 +165,7 @@
     .app-schedule__filters {
         background-color: var(--c-background);
         position: sticky;
-            top: 5rem;
+            top: var(--header-height);
             left: 0;
         z-index: var(--zi-base);
     }

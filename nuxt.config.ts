@@ -22,7 +22,24 @@ export default defineNuxtConfig({
             key: fs.readFileSync(path.resolve(__dirname, 'server.key')),
             cert: fs.readFileSync(path.resolve(__dirname, 'server.crt'))
         }
-    }
+    },
+    router: {
+        options: {
+            linkActiveClass: 'active',
+            linkExactActiveClass: 'active-page',
+        }
+    },
+    // hooks: {
+    //     'pages:routerOptions' ({ files }) {
+    //         const resolver = createResolver(import.meta.url)
+    //         // add a route
+    //         files.push({
+    //         path: resolver.resolve('./runtime/app/router-options'),
+    //         optional: true
+    //         })
+    //     }
+    // },
+
     // , runtimeConfig: {
     //     // The private keys which are only available server-side
     //     apiSecret: '123',

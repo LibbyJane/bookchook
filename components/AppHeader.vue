@@ -1,6 +1,6 @@
 <template>
     <header id="header" class="main-header" :class="{ 'menu-open': userMenuOpen }" ref="headerRef">
-        <a class="main-header__brand" href="`${siteStore.organisationPagePrefix}${organisationStore.account.url_slug}`" >
+        <a class="main-header__brand" :href="`${siteStore.organisationPagePrefix}${organisationStore.account.url_slug}`" >
             <NuxtImg v-if="organisationStore.account.logo_url" :src="organisationStore.account.logo_url" :alt="organisationStore.account.account_name" />
             <span v-if="!organisationStore.account.logo_url">{{ organisationStore.account.account_name }}</span>
         </a>
@@ -8,19 +8,19 @@
         <nav id="main-menu" class="main-menu">
             <ul class="main-menu__list">
                 <li>
-                    <a class="main-menu__item" href="`${baseURL}/schedule">
+                    <a class="main-menu__item" :href="`${organisationStore.account.url_slug}/schedule`">
                         <CalendarIcon />
                         What&rsquo;s on
                     </a>
                 </li>
                 <li v-if="bookerStore.authenticated && organisationStore.purchaseTypes.passes">
-                    <a class="main-menu__item" href="`${baseURL}/passes">
+                    <a class="main-menu__item" href="`${organisationStore.account.url_slug}/passes">
                         <TicketIcon />
                         Passes
                     </a>
                 </li>
                 <li v-if="bookerStore.authenticated && organisationStore.purchaseTypes.membership">
-                    <a class="main-menu__item" href="`${baseURL}/membership">
+                    <a class="main-menu__item" href="`${organisationStore.account.url_slug}/membership">
                         <MembershipIcon />
                         Membership
                     </a>
@@ -32,7 +32,7 @@
                     </button>
                 </li>
                 <li v-if="!bookerStore.authenticated">
-                    <a class="main-menu__item" href="`${baseURL}/login">
+                    <a class="main-menu__item" :href="`${organisationStore.account.url_slug}/login`">
                         <UserIcon />
                         Log in / Register
                     </a>
@@ -43,6 +43,7 @@
 </template>
 
 <script setup>
+    import { useSiteStore } from '@/stores/site';
     import { useOrganisationStore } from '@/stores/organisation';
     import { useBookerStore } from '~/stores/booker.js';
 
@@ -51,6 +52,7 @@
     import MembershipIcon from '@/components/icons/id-badge.vue';
     import UserIcon from '@/components/icons/user.vue';
 
+    const siteStore = useSiteStore();
     const organisationStore = useOrganisationStore();
     const bookerStore = useBookerStore();
     const userMenuOpen = ref(false);

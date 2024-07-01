@@ -30,11 +30,8 @@ export async function useOrganisationAPI({endpoint, data, id}) {
             config.url = config.url + `/${id}`
         }
 
-        console.log('final config', config);
-
         try {
             const response = await axios(config)
-            console.log('response', response)
             return response;
         } catch (error) {
             console.log('error', error)

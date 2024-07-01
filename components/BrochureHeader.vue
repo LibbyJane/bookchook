@@ -51,7 +51,7 @@
     import MenuIcon from '@/components/icons/menu.vue';
     import CloseIcon from '@/components/icons/cross.vue';
     import CaretIcon from '@/components/icons/caret-down.vue';
-    import Button from '@/components/Button.vue'
+    import Button from '@/components/interface/Button.vue'
 
     const siteStore = useSiteStore();
     const menuOpen = ref(false);

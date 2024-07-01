@@ -5,7 +5,7 @@ import { useAPI } from '@/api/useBookerAPI';
 export const useBookerStore = defineStore({
     id: 'user',
     state: () => ({
-        authenticated: true,
+        authenticated: false,
         info: null,
         bookings: [1, 2, 10]
     }),
@@ -18,7 +18,7 @@ export const useBookerStore = defineStore({
     },
     actions: {
         init() {
-            const now = Date.now();
+            // const now = Date.now();
 
             if (bookerSessionValid) {
                 console.log('valid');
@@ -29,7 +29,6 @@ export const useBookerStore = defineStore({
 
         async performLogin(data) {
             const response = await useAPI(`login`, data);
-            console.log('response', response);
 
             if (response && response.tokenInfo) {
                 this.initUserData(response);
@@ -73,7 +72,6 @@ export const useBookerStore = defineStore({
         },
 
         async updatePhoto(data) {
-            console.log('update user photo', data);
             const response = await useAPI(`profilePhoto`, { profilePhoto: data });
 
             if (response.success) {

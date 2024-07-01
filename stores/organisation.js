@@ -31,21 +31,23 @@ export const useOrganisationStore = defineStore('organisationStore', {
     }),
     actions: {
         async getOrganisationData(organisationID) {
-            console.log('getOrganisationData', organisationID);
             const response = await useOrganisationAPI({endpoint: `getAccountBySlug`,  id: organisationID});
             this.account = response.data.account;
             if (response.data.status) {
                 this.account = response.data.account;
+                console.log('ac', this.account);
                 // TODO: remove logo and theme hard wiring when properly set up
                 this.account.logo_url = '/demo/logo.svg';
+
+                // TODO: make sure the HSL values are taken from whichever color picker plugin
                 this.account.theme_config.colors = {
-                    headerBackground: 'hsl(207, 96%, 25%)',
-                    headerText:  'hsl(0, 0%, 100%)',
-                    headerAccent: 'hsl(55, 100%, 50%)',
-                    text: 'hsl(208, 100%, 18%)',
-                    background: 'hsl(207, 25%, 97%)',
-                    accent: 'hsl(207, 96%, 50%)',
-                    accentContrast: 'hsl(0, 0%, 100%)',
+                    headerBackground: '207, 96%, 25%',
+                    headerText:  '0, 0%, 100%',
+                    headerAccent: '55, 100%, 50%',
+                    text: '208, 100%, 18%',
+                    background: '207, 25%, 97%',
+                    accent: '207, 96%, 50%',
+                    accentContrast: '0, 0%, 100%',
                 };
             }
         },
@@ -72,7 +74,7 @@ export const useOrganisationStore = defineStore('organisationStore', {
                     },
                 ]
             };
-            const date = new Date('2024-06-28T09:00:00.000Z');
+            const date = new Date('2024-07-05T09:00:00.000Z');
 
             let counter = pageSize * pageNumber + 20;
             try {
