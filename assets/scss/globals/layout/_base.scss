@@ -41,9 +41,12 @@ body {
     }
 }
 
-
 .container {
     padding: var(--content-padding-all);
+}
+
+.narrow {
+    max-width: var(--max-text-width);
 }
 
 .sticky {

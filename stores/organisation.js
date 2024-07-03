@@ -28,6 +28,7 @@ export const useOrganisationStore = defineStore('organisationStore', {
             passes: true,
             membership: true
         },
+
     }),
     actions: {
         async getOrganisationData(organisationID) {
@@ -35,7 +36,6 @@ export const useOrganisationStore = defineStore('organisationStore', {
             this.account = response.data.account;
             if (response.data.status) {
                 this.account = response.data.account;
-                console.log('ac', this.account);
                 // TODO: remove logo and theme hard wiring when properly set up
                 this.account.logo_url = '/demo/logo.svg';
 

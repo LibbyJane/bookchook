@@ -3,12 +3,16 @@ textarea,
 select  {
     appearance: none;
     -webkit-appearance: none;
-    background: transparent;
-    border: thin solid hsla(var(--c-text-hsl), 0.2);
-    border-radius: 0;
+    background: hsla(var(--c-text-hsl), 0.05);
+    border: 0 none;
+    // border: thin solid var(--c-border);
+    border-radius: var(--border-radius);
     box-sizing: border-box;
+    font-weight: normal;
+    font-size: var(--p);
+    line-height: var(--line-height-sm);
     margin: 0 0 var(--space);
-    padding: var(--space-sm) ;
+    padding: var(--space-sm);
     width: 100%;
 
     &:hover,

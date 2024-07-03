@@ -1,12 +1,13 @@
 <template>
-    <p class="error">
-        <AlertIcon />
+    <p class="help">
+        <HelpIcon cssClass="icon--sm" />
         {{ message }}
+        <slot />
     </p>
 </template>
 
 <script setup>
-    import AlertIcon from '@/components/icons/alert.vue';
+    import HelpIcon from '@/components/icons/question-mark-circle.vue'
 
     const props = defineProps({
         message: {
@@ -16,11 +17,15 @@
 </script>
 
 <style lang="scss">
-    .error {
+    .help {
         // background: var(--c-danger-light);
-        color: var(--c-danger-dark);
         display: flex;
             gap: var(--space-sm);
+            align-items: start;
         font-size: var(--p-sm);
+        line-height: var(--line-height-sm);
+        margin: 0;
+        opacity: 0.85;
+        padding: var(--space-xs) 0;
     }
 </style>

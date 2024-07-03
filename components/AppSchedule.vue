@@ -61,7 +61,7 @@
 <script setup>
     import { ref } from 'vue';
     import { useOrganisationStore } from '@/stores/organisation';
-    import { useBookerStore } from '@/stores/booker';
+    import { useBookerStore } from '@/stores/booker.js';
     import Pill from '@/components/interface/Pill.vue';
     import CheckIcon from '@/components/icons/check.vue';
 

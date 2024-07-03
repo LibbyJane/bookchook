@@ -51,7 +51,8 @@
                     <p>This event is no longer available for bookings.</p>
                 </template>
                 <template v-else-if="!bookerStore.authenticated">
-                    <p>Please <a href="/login">login or register</a> to book on to this event.</p>
+                    <p>Please <a href="login">login or register</a> to book on to this event.</p>
+
                 </template>
                 <template v-else>
 tickets
@@ -67,7 +68,7 @@ tickets
 <script setup>
     import { computed } from 'vue'
     import { useOrganisationStore } from '@/stores/organisation';
-    import { useBookerStore } from '@/stores/booker';
+    import { useBookerStore } from '@/stores/booker.js';
     import Disclosure from '@/components/interface/Disclosure.vue';
 
     import ArrowIcon from '@/components/icons/arrow.vue';

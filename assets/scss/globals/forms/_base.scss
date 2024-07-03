@@ -2,6 +2,23 @@ form {
     display: flex;
         flex-direction: column;
     max-width: var(--max-text-width);
+    margin: 0 auto var(--space);
+}
+
+fieldset {
+    border: 1px solid var(--c-border);
+    border-radius: var(--border-radius);
+    margin-bottom: var(--space);
+    padding: var(--content-padding-all);
+}
+
+legend {
+    background-color: var(--c-background);
+    font-size: var(--p);
+    font-weight: 500;
+    margin: 0 auto;
+    padding: var(--space-sm);
+
 }
 
 // form {

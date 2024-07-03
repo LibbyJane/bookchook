@@ -12,7 +12,7 @@
             type: String
         },
         required: {
-            type: Boolean,
+            type: [String, Boolean],
             default: false
         }
     });
@@ -20,9 +20,10 @@
 
 <style lang="scss">
     label {
-        font-size: var(--h6);
-        font-weight: 400;
-        display: block;
+        font-size: var(--p-sm);
+        font-weight: 500;
+        display: flex;
+        gap: var(--space-xxs);
         //margin: 0 0 var(--space-sm) 0;
         margin: 0;
 

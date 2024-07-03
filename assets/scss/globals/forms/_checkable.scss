@@ -11,9 +11,8 @@ input[type="radio"] {
 .checkable,
 .checkable-list label {
     cursor: pointer;
-    color: var(--text);
-    font-family: var(--font-mono);
-    font-size: var(--p-small);
+    color: var(--c-text);
+    font-size: var(--p-sm);
     font-weight: 400;
     line-height: 1.2;
     position: relative;
@@ -36,15 +35,6 @@ input[type="radio"] {
         bottom: 0;
         left: 0;
         z-index: 10;
-
-        &:checked {
-            ~ .swatch {
-                border-radius: 0;
-
-                min-width: 100%;
-                min-height: 100%;
-            }
-        }
     }
 }
 

@@ -88,5 +88,6 @@
     --c-accent-contrast-hsl: 32, 90%, 100%;
     --c-accent-contrast: hsl(var(--c-accent-contrast-hsl));
 
+    --c-border: hsla(var(--c-text-hsl), 0.4);
     --c-border-light: hsla(var(--c-text-hsl), 0.1);
 }

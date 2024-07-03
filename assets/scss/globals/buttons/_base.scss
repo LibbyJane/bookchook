@@ -7,7 +7,7 @@
         justify-content: center;
         gap: var(--space-sm);
     font-size: var(--font-size-p);
-    line-height: 1;
+    line-height: var(--line-height-sm);
     padding: var(--space-sm) var(--space);
     text-decoration: none;
     transition: background var(--transition-speed-fast) var(--transition-type-motionless), box-shadow var(--transition-speed-fast) var(--transition-type-motionless);

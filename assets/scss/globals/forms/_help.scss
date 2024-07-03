@@ -1,0 +1,13 @@
+.form__help {
+    display: flex;
+        align-items: center;
+        gap: var(--space-xs);
+    line-height: var(--line-height-sm);
+    margin-bottom: var(--space-sm);
+    opacity: 0.9;
+
+    .icon {
+        height: var(--icon-size-sm);
+        width: var(--icon-size-sm);
+    }
+}

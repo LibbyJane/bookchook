@@ -17,79 +17,9 @@ const endpoints = {
         uri: `logout`,
         method: 'GET'
     },
-
-    users: {
-        uri: `users`,
-        method: 'GET'
-    },
-
-    notes: {
-        uri: `notes`,
-        method: 'GET'
-    },
-
-    note: {
-        uri: `note`,
-        method: 'POST'
-    },
-
-    notePhoto: {
-        uri: `upload/note_photo/`,
-        method: 'PATCH'
-    },
-
-    noteStatus: {
-        uri: `note/update_status/`,
-        method: 'PATCH'
-    },
-
-    noteReaction: {
-        uri: `note/update_reaction/`,
-        method: 'PATCH'
-    },
-
-    reactions: {
-        uri: `note/reactions/`,
-        method: 'GET'
-    },
-
-    profilePhoto: {
-        uri: `upload/profile_photo`,
-        method: 'POST'
-    },
-
-    invite: {
-        uri: `invite`,
-        method: 'POST'
-    },
-
-    invitationsReceived: {
-        uri: `user/invitationsReceived`,
-        method: 'GET'
-    },
-
-    acceptInvitation: {
-        uri: `invite/accept/`,
-        method: 'POST'
-    },
-
-    invitationIssuer: {
-        uri: `user/invite/`,
-        method: 'GET'
-    },
-
-    user: {
-        uri: `user`,
-        method: 'GET'
-    },
-
-    friends: {
-        uri: `friends`,
-        method: 'GET'
-    }
 }
 
-export async function useAPI(endpoint, data, endpointID) {
+export async function useBookerAPI(endpoint, data, id) {
     const bookerStore = useBookerStore();
     const token = bookerStore && bookerStore.getAuthenticationToken ? bookerStore.getAuthenticationToken : null;
     // console.log('token', token)
@@ -98,7 +28,7 @@ export async function useAPI(endpoint, data, endpointID) {
         let config = {
             headers: {},
             baseURL: apiBaseURL,
-            url: endpoints[endpoint].uri,
+            url: `/api/user/${endpoints[endpoint].uri}`,
             method: endpoints[endpoint].method
         }
 
@@ -110,8 +40,8 @@ export async function useAPI(endpoint, data, endpointID) {
             config.data = data
         }
 
-        if (endpointID) {
-            config.url = config.url + `${endpointID}`
+        if (id) {
+            config.url = config.url + `/${id}`
         }
 
         if (token) {
@@ -145,4 +75,4 @@ export async function useAPI(endpoint, data, endpointID) {
 
 }
 
-export default useAPI
+export default useBookerAPI

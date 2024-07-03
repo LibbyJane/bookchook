@@ -1,6 +1,6 @@
 // import localStorage from '@/middleware/localStorage';
 
-// const token = localStorage.getItem('bookerToken');
+// const token = localStorage.getItem('userToken');
 let token = null;
 
 export const apiBaseURL = import.meta.env.VITE_APP_API_BASE_URL;

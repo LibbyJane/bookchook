@@ -1,27 +1,18 @@
 <template>
     <form v-on:submit="handleSubmit" class="form form--login">
-        <Label for="email_address" text="Email" :required="true" />
+        <Label for="email" text="Email" :required="true" />
         <input
-            id="email_address"
+            id="email"
             type="email"
-            v-model="fields.email_address.value"
+            v-model="fields.email.value"
             v-on:keyup="clearError"
             autocomplete="email"
             required
         />
 
-        <Label for="password" text="Password" :required="true" />
-        <input
-            id="password"
-            type="password"
-            v-model="fields.password.value"
-            v-on:keyup="clearError"
-            autocomplete="current-password"
-            required
-        />
         <Error v-if="formError" :message="formError" />
 
-        <button class="btn" type="submit">log in</button>
+        <button class="btn" type="submit">submit</button>
             <!--
         <aside class="sidebar">
             <div class="card is-alt align-top width-small" to="/login">
@@ -44,7 +35,7 @@
     const bookerStore = useBookerStore();
 
     const fields = reactive({
-        email_address: {
+        email: {
             value: null,
             error: null,
         },
@@ -64,10 +55,13 @@
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const outcome = await bookerStore.performLogin({
-            email_address: fields.email_address.value,
-            password: fields.password.value,
-        });
+        // const outcome = await bookerStore.performLogin({
+        //     email: fields.email.value,
+        //     password: fields.password.value,
+        // });
+        const outcome = {
+            error: "Test error"
+        };
 
         console.log('outcome', outcome);
 

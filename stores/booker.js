@@ -1,6 +1,6 @@
 
 import { nextTick } from 'vue';
-import { useAPI } from '@/api/useBookerAPI';
+import { useBookerAPI } from '@/api/useBookerAPI';
 
 export const useBookerStore = defineStore({
     id: 'user',
@@ -28,8 +28,9 @@ export const useBookerStore = defineStore({
         },
 
         async performLogin(data) {
-            const response = await useAPI(`login`, data);
-
+            console.log('do login', data);
+            const response = await useBookerAPI(`login`, data);
+console.log('resp', response);
             if (response && response.tokenInfo) {
                 this.initUserData(response);
                 // router.replace('/');
@@ -39,7 +40,7 @@ export const useBookerStore = defineStore({
         },
 
         async performSignUp(data) {
-            const response = await useAPI(`register`, data);
+            const response = await useBookerAPI(`register`, data);
 
             if (response.tokenInfo) {
                 this.initUserData(response);
@@ -51,7 +52,7 @@ export const useBookerStore = defineStore({
 
         initUserData(data) {
             this.info = data.user;
-            this.updateAuth(data.tokenInfo);
+            // this.updateAuth(data.tokenInfo);
         },
 
         updateAuth(data) {
@@ -62,7 +63,7 @@ export const useBookerStore = defineStore({
 
         async performLogout() {
             if (this.auth.token) {
-                const response = await useAPI(`logout`);
+                const response = await useBookerAPI(`logout`);
                 this.reset();
                 // router.replace('/login');
                 // if (response.success) {
@@ -72,7 +73,7 @@ export const useBookerStore = defineStore({
         },
 
         async updatePhoto(data) {
-            const response = await useAPI(`profilePhoto`, { profilePhoto: data });
+            const response = await useBookerAPI(`profilePhoto`, { profilePhoto: data });
 
             if (response.success) {
                 this.info.imageURL = null;

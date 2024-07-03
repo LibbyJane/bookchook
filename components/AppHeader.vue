@@ -8,19 +8,19 @@
         <nav id="main-menu" class="main-menu">
             <ul class="main-menu__list">
                 <li>
-                    <a class="main-menu__item" :href="`${organisationStore.account.url_slug}/schedule`">
+                    <a class="main-menu__item" :href="`${siteStore.organisationPagePrefix}${organisationStore.account.url_slug}/schedule`">
                         <CalendarIcon />
                         What&rsquo;s on
                     </a>
                 </li>
                 <li v-if="bookerStore.authenticated && organisationStore.purchaseTypes.passes">
-                    <a class="main-menu__item" href="`${organisationStore.account.url_slug}/passes">
+                    <a class="main-menu__item" :href="`${siteStore.organisationPagePrefix}${organisationStore.account.url_slug}/passes`">
                         <TicketIcon />
                         Passes
                     </a>
                 </li>
                 <li v-if="bookerStore.authenticated && organisationStore.purchaseTypes.membership">
-                    <a class="main-menu__item" href="`${organisationStore.account.url_slug}/membership">
+                    <a class="main-menu__item" :href="`${siteStore.organisationPagePrefix}${organisationStore.account.url_slug}/membership`">
                         <MembershipIcon />
                         Membership
                     </a>
@@ -32,7 +32,7 @@
                     </button>
                 </li>
                 <li v-if="!bookerStore.authenticated">
-                    <a class="main-menu__item" :href="`${organisationStore.account.url_slug}/login`">
+                    <a class="main-menu__item" :href="`${siteStore.organisationPagePrefix}${organisationStore.account.url_slug}/login`">
                         <UserIcon />
                         Log in / Register
                     </a>
@@ -45,7 +45,7 @@
 <script setup>
     import { useSiteStore } from '@/stores/site';
     import { useOrganisationStore } from '@/stores/organisation';
-    import { useBookerStore } from '~/stores/booker.js';
+    import { useBookerStore } from '@/stores/booker.js';
 
     import CalendarIcon from '@/components/icons/calendar.vue';
     import TicketIcon from '@/components/icons/ticket.vue';
