@@ -1,8 +1,8 @@
 input,
 textarea,
 select  {
-    appearance: none;
-    -webkit-appearance: none;
+    // appearance: none;
+    // -webkit-appearance: none;
     background: hsla(var(--c-text-hsl), 0.05);
     border: 0 none;
     // border: thin solid var(--c-border);
@@ -18,6 +18,10 @@ select  {
     &:hover,
     &:focus {
         outline: 2px solid hsla(var(--c-accent-hsl), 0.5);
+    }
+
+    &[disabled] {
+        pointer-events: none;
     }
 
     &:-webkit-autofill,
@@ -49,5 +53,55 @@ textarea {
         color: var(--biro);
         font-size: var(--xs);
         font-weight: normal;
+    }
+}
+
+// input[type="tel"],
+input[autocomplete="postal-code"] {
+    max-width: 20ch;
+}
+
+// eg password field
+.field-with-button {
+    margin: 0 0 var(--space);
+    position: relative;
+
+    input {
+        margin-bottom: 0;
+
+        &[type="password"] {
+            ~button {
+                .show-if-text {
+                    opacity: 0;
+                    z-index: -1;
+                }
+            }
+        }
+
+        &[type="text"] {
+            ~button {
+                .show-if-password {
+                    opacity: 0;
+                    z-index: -1;
+                }
+            }
+        }
+    }
+
+    button {
+        display: grid;
+            grid-template-areas: "icon";
+            align-items: center;
+            justify-content: center;
+        padding: 0 var(--space-sm);
+        position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: auto;
+    }
+
+    .icon {
+        grid-area: icon;
     }
 }

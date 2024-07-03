@@ -72,6 +72,7 @@
         position: sticky;
             top: 0;
             left: 0;
+        z-index: var(--zi-header);
 
         @include breakpoint(lg) {
             grid-template-areas: 'brand nav cta';

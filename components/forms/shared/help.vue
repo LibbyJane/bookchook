@@ -20,12 +20,16 @@
     .help {
         // background: var(--c-danger-light);
         display: flex;
-            gap: var(--space-sm);
+            gap: var(--space-xs);
             align-items: start;
         font-size: var(--p-sm);
         line-height: var(--line-height-sm);
         margin: 0;
         opacity: 0.85;
         padding: var(--space-xs) 0;
+
+        .icon {
+            opacity: 0.8;
+        }
     }
 </style>
