@@ -3,7 +3,11 @@ textarea,
 select  {
     // appearance: none;
     // -webkit-appearance: none;
-    background: hsla(var(--c-text-hsl), 0.05);
+    background-color: hsla(var(--c-text-hsl), 0.05);
+    // for validation icons
+    background-size: var(--icon-size-xs);
+    background-position: var(--space-sm) center;
+    background-repeat: no-repeat;
     border: 0 none;
     // border: thin solid var(--c-border);
     border-radius: var(--border-radius);
@@ -13,16 +17,29 @@ select  {
     line-height: var(--line-height-sm);
     margin: 0 0 var(--space);
     padding: var(--space-sm);
+    // padding-left: 1.5rem;
     width: 100%;
+
+    &[disabled] {
+        filter: grayscale(1);
+        pointer-events: none;
+    }
+
+    // &:required:valid {
+    //     background-image: url(/images/icons/check-green.svg);
+    // }
+
+    // &:invalid {
+    //     background-image: url(/images/icons/cross-red.svg);
+    // }
+
 
     &:hover,
     &:focus {
         outline: 2px solid hsla(var(--c-accent-hsl), 0.5);
+        outline-offset: 0;
     }
 
-    &[disabled] {
-        pointer-events: none;
-    }
 
     &:-webkit-autofill,
     &:-webkit-autofill:hover,
@@ -34,7 +51,6 @@ select  {
         transition: background-color 5000s ease-in-out 0s;
     }
 }
-
 
 textarea {
     min-height: 160px;
