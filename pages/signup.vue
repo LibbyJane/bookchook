@@ -1,6 +1,7 @@
 <template>
     <section class="container">
-        <form v-on:submit="handleSubmit" class="form form--signup">
+        <form v-on:submit="handleSubmit" class="form form--signup" :class="{ 'loading': form.state == 'loading' }"
+        >
             <!-- <pre>
                 ipAddressGeo {{ ipAddressGeo }}
                 fields.country_code {{  fields.country_code.value }}
@@ -268,9 +269,9 @@
                     </div>
                 </Field>
             </fieldset>
-            <Error v-if="formError" :message="formError" />
+            <Error v-if="form.error" :message="form.error" />
 
-            <button class="btn" type="submit">sign up</button>
+            <button class="btn" type="submit" v-on:click="handleSubmit">sign up</button>
         </form>
     </section>
 
@@ -295,6 +296,11 @@
 
     let countriesData = ref(null);
     let timezonesData = ref(null);
+
+    let form = reactive({
+        state: 'init',
+        error: null
+    })
 
     const fields = reactive({
         account_name: {
@@ -448,7 +454,7 @@
 
     });
 
-    async function initGeoData() {
+    async function initForm() {
         const ipAddressData = await useSiteAPI({endpoint: 'getGeoInfoFromIpAddress'});
 
         if (ipAddressData) {
@@ -461,8 +467,10 @@
         if (cData) {
             countriesData.value = cData.data.countries;
         }
+
+        form.state = "";
     }
-    initGeoData();
+    initForm();
 
     watchEffect(async () => {
         let timezonesConfig = {
@@ -482,24 +490,10 @@
         }
     });
 
-
-    let formError = ref('');
-
     const clearError = () => {
         // fields[fieldKey].error = null;
-        formError.value = '';
+        form.error = '';
     };
-
-    let slugAvailable = ref(true);
-
-    // watchEffect(async () => {
-    //     const response = await fetch(
-    //         `https://jsonplaceholder.typicode.com/todos/${todoId.value}`
-    //     )
-    //     data.value = await response.json()
-    // })
-
-
 
 
     const updateURLSlug = async () => {
@@ -549,54 +543,26 @@
         }
     };
 
-    // const computedSlug = computed({
-    // // getter
-    // get() {
-    //     return firstName.value + ' ' + lastName.value
-    // },
-    // // setter
-    // set(newValue) {
-    //     // Note: we are using destructuring assignment syntax here.
-    //     [firstName.value, lastName.value] = newValue.split(' ')
-    // }
-    // })
-
-
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        form.state = 'loading';
         let data = {};
 
         for (let [key, value] of Object.entries(fields)) {
             data[key] = value.value;
         }
 
-
-//       const data =  {
-// 	"account_name": "Community TTC",
-//     "url_slug": "communityttc",
-//     "user_first_name": "Andrew",
-//     "user_last_name": "Chapman",
-// 	"email_address": "info@communityttc.com",
-// 	"password": "Mango77z",
-//     "phone": "+44 7943 651 675",
-//     "address_line_1": "48 Methley Place",
-//     "address_line_2": "",
-//     "suburb": "Leeds",
-//     "postcode": "LS7 3NN",
-//     "state": "Yorkshire West",
-//     "country_code": "GB",
-//     "timezone": "Europe/London"
-// };
         const outcome = await useSiteAPI({ endpoint: 'register', data });
 
         if (outcome && outcome.error) {
-            formError.value = outcome.error;
+            form.error = outcome.error;
         } else if (outcome && outcome.errors) {
             for (let error of outcome.errors) {
                 console.log('error', error);
-                formError.value += `${error}`;
+                form.error += `${error}`;
             }
         }
+
+        form.state = '';
     };
 </script>
