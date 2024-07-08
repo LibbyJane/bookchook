@@ -1,40 +1,18 @@
 <template>
     <header id="header" class="main-header" :class="{ 'menu-open': userMenuOpen }" ref="headerRef">
-        <a class="main-header__brand" :href="`${siteStore.organisationPagePrefix}${organisationStore.account.url_slug}`" >
-            <NuxtImg v-if="organisationStore.account.logo_url" :src="organisationStore.account.logo_url" :alt="organisationStore.account.account_name" />
-            <span v-if="!organisationStore.account.logo_url">{{ organisationStore.account.account_name }}</span>
-        </a>
 
-        <nav id="main-menu" class="main-menu">
-            <ul class="main-menu__list">
+        <nav id="admin-menu" class="admin-menu">
+            <ul class="admin-menu__list">
                 <li>
-                    <a class="main-menu__item" :href="`${siteStore.organisationPagePrefix}${organisationStore.account.url_slug}/schedule`">
-                        <CalendarIcon />
-                        What&rsquo;s on
-                    </a>
-                </li>
-                <li v-if="bookerStore.authenticated && organisationStore.purchaseTypes.passes">
-                    <a class="main-menu__item" :href="`${siteStore.organisationPagePrefix}${organisationStore.account.url_slug}/passes`">
-                        <TicketIcon />
-                        Passes
-                    </a>
-                </li>
-                <li v-if="bookerStore.authenticated && organisationStore.purchaseTypes.membership">
-                    <a class="main-menu__item" :href="`${siteStore.organisationPagePrefix}${organisationStore.account.url_slug}/membership`">
-                        <MembershipIcon />
-                        Membership
-                    </a>
-                </li>
-                <li>
-                    <button v-if="bookerStore.authenticated" type="button" v-on:click="() => userMenuOpen = !userMenuOpen" aria-controls="user-menu" class="main-menu__item menu-toggle">
+                    <button type="button" v-on:click="() => userMenuOpen = !userMenuOpen" aria-controls="user-menu" class="admin-menu__item menu-toggle">
                         <UserIcon />
                         Account
                     </button>
                 </li>
-                <li v-if="!bookerStore.authenticated">
-                    <a class="main-menu__item" :href="`${siteStore.organisationPagePrefix}${organisationStore.account.url_slug}/login`">
+                <li>
+                    <a class="admin-menu__item" :href="`${siteStore.organisationPagePrefix}${organisationStore.account.url_slug}/logout`">
                         <UserIcon />
-                        Log in / Register
+                        Log out
                     </a>
                 </li>
             </ul>
@@ -127,7 +105,7 @@
         }
     }
 
-    .main-menu {
+    .admin-menu {
         grid-area: nav;
 
         @include hide;
@@ -163,7 +141,7 @@
         }
     }
 
-    .main-menu__list {
+    .admin-menu__list {
         display: flex;
             flex-direction: column;
         gap: var(--space-sm);
@@ -181,7 +159,7 @@
 
             &:hover,
             &:focus {
-                .main-menu__item {
+                .admin-menu__item {
                     color: currentColor;
                     text-decoration-color: var(--c-header-accent);
 
@@ -195,7 +173,7 @@
                     }
                 }
 
-                .main-menu__dropdown {
+                .admin-menu__dropdown {
                     @include show;
                     max-height: none;
                     top: 100%;
@@ -204,7 +182,7 @@
         }
     }
 
-    .main-menu__item {
+    .admin-menu__item {
         cursor: pointer;
         display: flex;
             gap: var(--space-sm);
@@ -222,7 +200,7 @@
         }
     }
 
-    .main-menu__dropdown {
+    .admin-menu__dropdown {
         @include breakpoint(lg) {
         @include hide;
 

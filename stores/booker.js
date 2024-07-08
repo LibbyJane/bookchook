@@ -5,7 +5,7 @@ import { useBookerAPI } from '@/api/useBookerAPI';
 export const useBookerStore = defineStore({
     id: 'user',
     state: () => ({
-        authenticated: false,
+        authenticated: true,
         info: null,
         bookings: [1, 2, 10]
     }),

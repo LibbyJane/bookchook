@@ -8,46 +8,50 @@ form {
     &.init {
         opacity: 0.5;
     }
-
-    &.loading {
-        opacity: 0.5;
-    }
 }
 
+/* HTML: <div class="loader"></div> */
 .loading {
+    $size: 4rem;
+
     &::before {
+        background-color: var(--c-background);
         content: '';
-        position: absolute;
-        inset: 0;
-    }
-    &::after {
-        content: '';
-        margin: auto;
+        opacity: 0.5;
         position: absolute;
             inset: 0;
+        z-index: calc(var(--zi-base) - 1);
 
-        width: 60px;
-        aspect-ratio: 1;
-        --c:no-repeat linear-gradient(var(--c-accent) 0 0);
-        background:
-        var(--c) left   20px top    0,
-        var(--c) top    20px right  0,
-        var(--c) right  20px bottom 0,
-        var(--c) bottom 20px left   0;
-        background-size:calc(100%/3) calc(100%/3);
-        animation:
-        l29-1 .75s infinite alternate linear,
-        l29-2 1.5s infinite;
     }
-    @keyframes l29-1 {
-        90%,100% {background-size:calc(2*100%/3) calc(100%/3),calc(100%/3) calc(2*100%/3)}
+
+    &::after {
+        animation: animloader 2s ease-in-out infinite;
+        animation-direction: alternate;
+        border-radius: 50%;
+        content: '';
+        height: $size;
+        width: $size;
+        position: absolute;
+            inset: 0;
+        margin: auto;
+        border: calc(#{$size}/8) dotted var(--c-accent);
+        outline: calc(#{$size}/10) dotted hsla(var(--c-accent-hsl), 0.5);
+        z-index: var(--zi-base);
     }
-    @keyframes l29-2 {
-        0%,49.99% {transform:scaleX(1)}
-        50%,100%  {transform:scaleX(-1)}
+
+    @keyframes animloader {
+        0% {
+            transform: scale(0.5) rotate(0deg);
+            outline-offset: calc(#{$size}*0.5);
+            opacity: 1;
+        }
+        100% {
+            transform: scale(1) rotate(360deg);
+            outline-offset: calc(#{$size}*-0.5);
+            opacity: 0;
+        }
     }
 }
-
 fieldset {
     border: 1px solid var(--c-border);
     border-radius: var(--border-radius);

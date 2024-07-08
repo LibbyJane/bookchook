@@ -30,7 +30,7 @@ body {
     margin-bottom: auto;
 
     @include breakpoint(lg) {
-        grid-template-columns: 1fr max-content;
+        grid-template-columns: max-content 1fr;
         gap: var(--space-lg);
     }
 }

@@ -21,8 +21,13 @@
         color: var(--c-danger);
         display: flex;
             gap: var(--space-xs);
-            align-items: center;
+            align-items: baseline;
         font-size: var(--p-sm);
+        line-height: var(--line-height-sm);
+
+        .icon {
+            transform: translateY(1px);
+        }
     }
 
     input {

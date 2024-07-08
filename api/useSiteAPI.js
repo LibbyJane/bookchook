@@ -29,6 +29,7 @@ const endpoints = {
 }
 
 export async function useSiteAPI({endpoint, data, id, qs}) {
+    // console.log('use site api: endpoint, data, id, qs',  endpoint, data, id, qs);
     if (endpoint && endpoints[endpoint]) {
         let config = {
             headers: {},
@@ -57,10 +58,9 @@ export async function useSiteAPI({endpoint, data, id, qs}) {
             const response = await axios(config)
             return response;
         } catch (error) {
-            console.log('error', error)
-            // console.log("There was a problem.", error)
+            console.warn('error', error)
             if (error.response.status === 403) {
-                console.log('bad token, logout')
+                console.warn('bad token, logout')
             }
             else if (error.response && error.response.data) {
                 return error.response.data

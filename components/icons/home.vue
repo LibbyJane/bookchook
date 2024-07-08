@@ -1,0 +1,20 @@
+<template>
+    <svg class="icon" :class="cssClass" width="20px" height="18px" viewBox="2 3 20 18" :fill="svgColor ? svgColor : 'currentColor'" :alt="svgAlt ? svgAlt : 'Home'">
+        <path d="M2.1,9.8C1.9,9.5,2,9,2.4,8.8l0,0l9.2-5.6c0.2-0.2,0.6-0.2,0.8,0l0,0l9.2,5.6C22,9,22.1,9.5,21.9,9.8l0,0 c-0.2,0.4-0.7,0.5-1.1,0.3l0,0L12,4.7l-8.8,5.4v0c-0.1,0.1-0.3,0.1-0.4,0.1l0,0C2.5,10.2,2.3,10.1,2.1,9.8L2.1,9.8z"/>
+        <path d="M5.4,21c-0.8,0-1.4-0.6-1.4-1.4l0,0V13c0-0.4,0.3-0.8,0.8-0.8l0,0c0.4,0,0.8,0.3,0.8,0.8l0,0v6.4l12.8,0V13 c0-0.4,0.3-0.8,0.8-0.8l0,0c0.4,0,0.8,0.3,0.8,0.8l0,0v6.6c0,0.8-0.6,1.4-1.4,1.4l0,0L5.4,21L5.4,21z"/>
+    </svg>
+</template>
+
+<script setup>
+    const props = defineProps({
+        cssClass: {
+            type: String,
+        },
+        svgColor: {
+            type: String,
+        },
+        svgAlt: {
+            type: String,
+        }
+    });
+</script>

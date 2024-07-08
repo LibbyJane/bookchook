@@ -11,6 +11,7 @@ select  {
     border: 0 none;
     // border: thin solid var(--c-border);
     border-radius: var(--border-radius);
+    color: var(--c-text-darks);
     box-sizing: border-box;
     font-weight: normal;
     font-size: var(--p);
@@ -29,14 +30,14 @@ select  {
     //     background-image: url(/images/icons/check-green.svg);
     // }
 
-    // &:invalid {
-    //     background-image: url(/images/icons/cross-red.svg);
-    // }
+    &:invalid:not(:placeholder-shown) {
+        outline: 2px solid hsla(var(--c-danger-hsl), 0.5);
+    }
 
 
     &:hover,
     &:focus {
-        outline: 2px solid hsla(var(--c-accent-hsl), 0.5);
+        outline: 2px solid hsla(var(--c-accent-hsl), 0.25);
         outline-offset: 0;
     }
 
@@ -47,8 +48,15 @@ select  {
     &:-internal-autofill-selected,
     &:-internal-light-dark {
         background-color: transparent !important;
-        -webkit-box-shadow: 0 0 0px 1000px rgba(0,0,0,0) inset;
-        transition: background-color 5000s ease-in-out 0s;
+        // -webkit-box-shadow: 0 0 0px 1000px rgba(0,0,0,0) inset;
+        // transition: background-color 5000s ease-in-out 0s;
+    }
+
+    &::placeholder {
+        color: currentColor;
+        font-size: var(--p-sm);
+        opacity: 0.6;
+        text-transform: none;
     }
 }
 

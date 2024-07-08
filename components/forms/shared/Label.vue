@@ -31,6 +31,7 @@
 
 <style lang="scss">
     label {
+        color: var(--c-text);
         font-size: var(--p-sm);
         font-weight: 500;
         display: flex;

@@ -8,8 +8,14 @@
 :root {
     --text-opacity: 1;
 
-    --c-text-hsl: 208, 100%, 17%;
+    --c-text-hue: 208;
+    --c-text-sat: 100%;
+    --c-text-lum: 17%;
+    --c-text-hsl: var(--c-text-hue), var(--c-text-sat), var(--c-text-lum);
     --c-text: hsl(var(--c-text-hsl));
+    --c-text-dark: hsl(var(--c-text-hue), var(--c-text-sat), calc(var(--c-text-lum) - 5%));
+    --c-text-light: hsl(var(--c-text-hue), var(--c-text-sat), calc(var(--c-text-lum) + 20%));
+
 
     --c-background-hsl: 32, 80%, 98%;
     --c-background: hsl(var(--c-background-hsl));
@@ -55,7 +61,7 @@
     --c-success-lum: 69%;
     --c-success-hsl: var(--c-success-hue), var(--c-success-sat), var(--c-success-lum);
     --c-success: hsl(var(--c-success-hsl));
-    --c-success-dark: hsl(var(--c-success-hue), var(--c-success-sat), 40%);
+    --c-success-dark: hsl(var(--c-success-hue), var(--c-success-sat), 30%);
     --c-success-light: hsl(var(--c-success-hue), var(--c-success-sat), 90%);
 
     --c-warning-hue: 40;

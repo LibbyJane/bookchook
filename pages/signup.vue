@@ -1,18 +1,11 @@
 <template>
     <section class="container">
-        <form v-on:submit="handleSubmit" class="form form--signup" :class="{ 'loading': form.state == 'loading' }"
-        >
-            <!-- <pre>
-                ipAddressGeo {{ ipAddressGeo }}
-                fields.country_code {{  fields.country_code.value }}
-                timezonesData {{  timezonesData }}
-            </pre> -->
-
+        <form v-on:submit="handleSubmit" class="form form--signup" :class="{ 'loading': form.state == 'loading' }" ref="signupFormElement">
             <fieldset>
                 <legend>About your organisation</legend>
 
                 <Field
-                    :id="account_name"
+                    id="account_name"
                     labelText="Organisation Name"
                     :required="fields.account_name.required"
                     :error="fields.account_name.error"
@@ -21,7 +14,7 @@
                         id="account_name"
                         type="text"
                         v-model="fields.account_name.value"
-                        v-on:keyup="clearError"
+                        v-on:keyup="clearError('account_name')"
                         v-on:blur="updateURLSlug"
                         autocomplete="organization"
                         :required="fields.account_name.required"
@@ -30,30 +23,30 @@
                 </Field>
 
                 <Field
-                    :id="url_slug"
+                    id="url_slug"
                     labelText="Account Handle"
                     :required="fields.url_slug.required"
-                    :help="`The way your organision name will show in URLs, e.g. ${url.host}${siteStore.organisationPagePrefix}${fields.url_slug.value ? fields.url_slug.value : 'your-name-here'}`"
+                    :help="`e.g. ${url.host}${siteStore.organisationPagePrefix}${fields.url_slug.value ? fields.url_slug.value : 'your-name-here'}`"
                     :error="fields.url_slug.error"
-                    placeholder=""
                 >
                     <input
                         id="url_slug"
                         type="text"
                         v-model="fields.url_slug.value"
-                        v-on:keyup="clearError"
+                        v-on:keyup="clearError('url_slug')"
                         v-on:blur="handleSlugChange"
                         :required="fields.url_slug.required"
                         minlength="3"
+                        maxlength="45"
                         style="text-transform: lowercase;"
                         placeholder=""
-                        pattern="[a-zA-Z0-9\-_.]{3,}"
-
+                        pattern="[a-z0-9]{1}[a-z0-9\-_.]{2,}"
+                        ref="urlSlugField"
                     />
                 </Field>
 
                 <Field
-                    :id="address_line_1"
+                    id="address_line_1"
                     labelText="Address line 1"
                     :required="fields.address_line_1.required"
                     :error="fields.address_line_1.error"
@@ -62,7 +55,7 @@
                         id="address_line_1"
                         type="text"
                         v-model="fields.address_line_1.value"
-                        v-on:keyup="clearError"
+                        v-on:keyup="clearError('address_line_1')"
                         autocomplete="address-line1"
                         :required="fields.address_line_1.required"
                         placeholder=""
@@ -70,7 +63,7 @@
                 </Field>
 
                 <Field
-                    :id="address_line_2"
+                    id="address_line_2"
                     labelText="Address line 2"
                     :required="fields.address_line_2.required"
                     :error="fields.address_line_2.error"
@@ -79,7 +72,7 @@
                         id="address_line_2"
                         type="text"
                         v-model="fields.address_line_2.value"
-                        v-on:keyup="clearError"
+                        v-on:keyup="clearError('address_line_2')"
                         autocomplete="address-line2"
                         :required="fields.address_line_2.required"
                         placeholder=""
@@ -87,7 +80,7 @@
                 </Field>
 
                 <Field
-                    :id="suburb"
+                    id="suburb"
                     labelText="Town or City"
                     :required="fields.suburb.required"
                     :error="fields.suburb.error"
@@ -96,7 +89,7 @@
                         id="suburb"
                         type="text"
                         v-model="fields.suburb.value"
-                        v-on:keyup="clearError"
+                        v-on:keyup="clearError('suburb')"
                         autocomplete="address-level2"
                         :required="fields.suburb.required"
                         placeholder=""
@@ -104,7 +97,7 @@
                 </Field>
 
                 <Field
-                    :id="state"
+                    id="state"
                     labelText="County"
                     :required="fields.state.required"
                     :error="fields.state.error"
@@ -113,7 +106,7 @@
                         id="state"
                         type="text"
                         v-model="fields.state.value"
-                        v-on:keyup="clearError"
+                        v-on:keyup="clearError('state')"
                         autocomplete="address-level1"
                         :required="fields.state.required"
                         placeholder=""
@@ -121,7 +114,7 @@
                 </Field>
 
                 <Field
-                    :id="postcode"
+                    id="postcode"
                     labelText="Postcode"
                     :required="fields.postcode.required"
                     :error="fields.postcode.error"
@@ -130,7 +123,7 @@
                         id="postcode"
                         type="text"
                         v-model="fields.postcode.value"
-                        v-on:keyup="clearError"
+                        v-on:keyup="clearError('postcode')"
                         autocomplete="postal-code"
                         :required="fields.postcode.required"
                         maxlength="10"
@@ -139,24 +132,19 @@
                 </Field>
 
                 <Field
-                    :id="country_code"
+                    id="country_code"
                     labelText="Country"
                     :required="fields.country_code.required"
                     :error="fields.country_code.error"
                 >
-                    <select
-                        id="country_code"
-                        v-model="fields.country_code.value"
-                        v-on:change="clearError"
-                        :required="fields.country_code.required"
-                    >
+                    <select id="country_code" v-model="fields.country_code.value" v-on:change="clearError('country_code')" :required="fields.country_code.required">
                         <option disabled value="-1">Select</option>
                         <option v-for="country in countriesData" :value="country.country_code">{{ country.country_name }}</option>
                     </select>
                 </Field>
 
                 <Field
-                    :id="timezone"
+                    id="timezone"
                     labelText="Timezone"
                     :required="fields.timezone.required"
                     :error="fields.timezone.error"
@@ -164,30 +152,14 @@
                     <select
                         id="timezone"
                         v-model="fields.timezone.value"
-                        v-on:change="clearError"
+                        v-on:change="clearError('timezone')"
                         :disabled="!fields.country_code.value"
                         :required="fields.timezone.required"
+
                     >
-                        <option disabled value="-1">Select</option>
+                        <option disabled>Select</option>
                         <option v-for="timezone in timezonesData" :value="timezone.timezone ">{{ timezone.timezone }}</option>
                     </select>
-                </Field>
-
-                <Field
-                    :id="phone"
-                    labelText="Phone Number"
-                    :required="fields.phone.required"
-                    :error="fields.phone.error"
-                >
-                    <input
-                        id="phone"
-                        type="tel"
-                        v-model="fields.phone.value"
-                        v-on:keyup="clearError"
-                        autocomplete="tel"
-                        :required="fields.phone.required"
-                        placeholder=""
-                    />
                 </Field>
             </fieldset>
 
@@ -195,7 +167,7 @@
                 <legend>Your Details</legend>
 
                 <Field
-                    :id="user_first_name"
+                    id="user_first_name"
                     labelText="First name"
                     :required="fields.user_first_name.required"
                     :error="fields.user_first_name.error"
@@ -204,7 +176,7 @@
                         id="user_first_name"
                         type="text"
                         v-model="fields.user_first_name.value"
-                        v-on:keyup="clearError"
+                        v-on:keyup="clearError('user_first_name')"
                         autocomplete="given-name"
                         :required="fields.user_first_name.required"
                         placeholder=""
@@ -212,7 +184,7 @@
                 </Field>
 
                 <Field
-                    :id="user_last_name"
+                    id="user_last_name"
                     labelText="Last name"
                     :required="fields.user_last_name.required"
                     :error="fields.user_last_name.error"
@@ -221,7 +193,7 @@
                         id="user_last_name"
                         type="text"
                         v-model="fields.user_last_name.value"
-                        v-on:keyup="clearError"
+                        v-on:keyup="clearError('user_last_name')"
                         autocomplete="family-name"
                         :required="fields.user_last_name.required"
                         placeholder=""
@@ -229,7 +201,7 @@
                 </Field>
 
                 <Field
-                    :id="email_address"
+                    id="email_address"
                     labelText="Email address"
                     :required="fields.email_address.required"
                     :error="fields.email_address.error"
@@ -238,7 +210,7 @@
                         id="email_address"
                         type="email"
                         v-model="fields.email_address.value"
-                        v-on:keyup="clearError"
+                        v-on:keyup="clearError('email_address')"
                         autocomplete="email"
                         :required="fields.email_address.required"
                         placeholder=""
@@ -246,7 +218,23 @@
                 </Field>
 
                 <Field
-                    :id="password"
+                    id="phone"
+                    labelText="Phone Number"
+                    :required="fields.phone.required"
+                    :error="fields.phone.error"
+                >
+                    <input
+                        id="phone"
+                        type="tel"
+                        v-model="fields.phone.value"
+                        v-on:keyup="clearError('phone')"
+                        autocomplete="tel"
+                        :required="fields.phone.required"
+                        placeholder=""
+                    />
+                </Field>
+                <Field
+                    id="password"
                     labelText="Password"
                     :required="fields.password.required"
                     :error="fields.password.error"
@@ -256,7 +244,7 @@
                             id="password"
                             :type="fields.password.type"
                             v-model="fields.password.value"
-                            v-on:keyup="clearError"
+                            v-on:keyup="clearError('password')"
                             autocomplete="password"
                             minlength="8"
                             :required="fields.password.required"
@@ -270,11 +258,12 @@
                 </Field>
             </fieldset>
             <Error v-if="form.error" :message="form.error" />
-
-            <button class="btn" type="submit" v-on:click="handleSubmit">sign up</button>
+            <button class="btn" type="submit" v-on:click="handleSubmit">
+                Sign Up
+                <ArrowIcon />
+            </button>
         </form>
     </section>
-
 </template>
 
 <script setup>
@@ -287,15 +276,18 @@
     import Error from '@/components/forms/shared/Error.vue';
     import Help from '~/components/forms/shared/Help.vue';
 
+    import ArrowIcon from '@/components/icons/arrow.vue';
     import EyeIcon from '@/components/icons/eye.vue';
     import EyeClosedIcon from '@/components/icons/eye-closed.vue';
 
     const siteStore = useSiteStore();
-
     const url = useRequestURL();
 
     let countriesData = ref(null);
     let timezonesData = ref(null);
+
+    const signupFormElement = ref(null);
+    const urlSlugField = ref(null);
 
     let form = reactive({
         state: 'init',
@@ -377,83 +369,6 @@
 
     });
 
-
-    const fields2 = reactive({
-        account_name: {
-            label: 'Organisation Name',
-            value: 'Community TTC',
-            required: true,
-            error: null,
-        },
-        url_slug: {
-            value: 'community-ttc',
-            required: true,
-            error: null,
-        },
-        phone: {
-            value: '07 123 1234',
-            required: true,
-            error: null,
-        },
-        address_line_1: {
-            value: '40 Methley Place',
-            required: true,
-            error: null,
-        },
-        address_line_2: {
-            value: '',
-            required: false,
-            error: null,
-        },
-        suburb: {
-            value: 'Leeds',
-            required: false,
-            error: null,
-        },
-        postcode: {
-            value: 'LS7 3NN',
-            required: true,
-            error: null,
-        },
-        state: {
-            value: 'West Yorkshire',
-            required: false,
-            error: null,
-        },
-        country_code: {
-            value: '',
-            required: true,
-            error: null,
-        },
-        timezone: {
-            value: -1,
-            required: true,
-            error: null,
-        },
-        user_first_name: {
-            value: 'a',
-            required: true,
-            error: null,
-        },
-        user_last_name: {
-            value: 'b',
-            required: true,
-            error: null,
-        },
-        email_address: {
-            value: 'yourmum@test.com',
-            required: false,
-            error: null,
-        },
-        password: {
-            value: '4385gji3$£%',
-            error: null,
-            required: true,
-            type: 'password'
-        },
-
-    });
-
     async function initForm() {
         const ipAddressData = await useSiteAPI({endpoint: 'getGeoInfoFromIpAddress'});
 
@@ -490,62 +405,75 @@
         }
     });
 
-    const clearError = () => {
-        // fields[fieldKey].error = null;
+    const clearError = (id) => {
+        if (!id || !fields[id])  return;
+        fields[id].error = null;
         form.error = '';
     };
 
 
     const updateURLSlug = async () => {
-        if (!fields.url_slug.value && fields.account_name.value.length > 2) {
-            const replaceOptions = ['-', '_', ''];
+        if (!fields.url_slug.value && fields.account_name.value?.length > 2) {
+            let testSlug = fields.account_name.value.toLowerCase().replaceAll(' ', '');
+            const response = await useSiteAPI({endpoint: 'slugAvailable', id: testSlug});
 
-            replaceOptions.some(async function(element, index) {
-                let testSlug = fields.account_name.value.replaceAll(' ', element);
-                let response = await useSiteAPI({endpoint: 'slugAvailable', id: testSlug});
-                // let response.data.available = index == 2 ? true : false;
-                console.log('testSlug', testSlug);
-                console.log('response', response);
-                console.log('response.data.available', response.data?.available);
-
-                if (response.data?.available) {
-                    fields.url_slug.value = testSlug;
-                    return false;
-                }
-
-                else return true
-            })
+            if (response.data?.available) {
+                fields.url_slug.value = testSlug;
+            }
         }
     };
 
+    const slugValidationPatternMessage = "Please enter at least 3 characters, starting with a letter or number, and no special characters other than _ . or -.";
+
     const handleSlugChange = async () => {
-        if (!fields.url_slug.value?.length) {
-            fields.url_slug.error = "";
+        // reset any slug errors
+        fields.url_slug.error = "";
+        urlSlugField.value.setCustomValidity("");
+        urlSlugField.value.checkValidity();
+
+        // if the regex doesn't match, give a more helpful error message
+        if (urlSlugField.value.validity.patternMismatch) {
+            urlSlugField.value.setCustomValidity(slugValidationPatternMessage);
+        }
+
+        fields.url_slug.error = urlSlugField.value.validationMessage;
+
+        if (!urlSlugField.value.validity.valid)
+        {
             return;
         }
 
-        if (fields.url_slug.value?.length < 3) {
-            fields.url_slug.error = "Please enter at least three characters";
-            return;
-        };
-        fields.url_slug.error = "";
-
+        let errorMessage = "";
         fields.url_slug.value = fields.url_slug.value.toLowerCase();
         const response = await useSiteAPI({endpoint: 'slugAvailable', id: `${fields.url_slug.value}`});
 
         if (response.error) {
-            fields.url_slug.error = response.error.replaceAll('AccountSlug', 'Account handle');
-            return;
+            errorMessage = response.error.replaceAll('AccountSlug', 'Account handle');
         }
 
-        if (response.data.available == false) {
-            fields.url_slug.error = "This handle is unavailable.";
+        else if (response.data?.available == false) {
+            errorMessage = "This handle is unavailable.";
         }
+
+        fields.url_slug.error = errorMessage;
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         form.state = 'loading';
+        signupFormElement.value.reportValidity();
+
+        if (!signupFormElement.value.checkValidity()) {
+            const list = signupFormElement.value.querySelectorAll('fieldset :invalid');
+            list.forEach(elem => {
+                fields[elem.id].error = elem.validationMessage;
+            })
+
+            list[0].focus();
+            form.state = '';
+            return;
+        }
+
         let data = {};
 
         for (let [key, value] of Object.entries(fields)) {
@@ -553,16 +481,22 @@
         }
 
         const outcome = await useSiteAPI({ endpoint: 'register', data });
+        let errorMessage;
 
         if (outcome && outcome.error) {
-            form.error = outcome.error;
+            errorMessage = outcome.error;
         } else if (outcome && outcome.errors) {
             for (let error of outcome.errors) {
-                console.log('error', error);
-                form.error += `${error}`;
+                errorMessage += `${error}`;
             }
         }
 
-        form.state = '';
+        if (errorMessage) {
+            form.error = errorMessage;
+            form.state = '';
+            return;
+        }
+
+        navigateTo(`/with/${fields.url_slug.value}/admin`);
     };
 </script>

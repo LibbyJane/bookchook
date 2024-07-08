@@ -1,7 +1,7 @@
 .btn {
-    background: var(--c-accent);
+    background: hsla(var(--c-accent-hsl), 0.85);
     border-radius: var(--border-radius);
-    color: hsla(var(--c-accent-contrast-hsl), 0.85);
+    color: hsla(var(--c-accent-contrast-hsl), 1);
     display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -15,8 +15,16 @@
 
     &:hover,
     &:focus {
-        box-shadow: var(--box-shadow-soft);
+        background: hsla(var(--c-accent-hsl), 1);
+
+        box-shadow: var(--box-shadow-card-hover);
         color: var(--c-accent-contrast);
+
+        .icon {
+            &:last-child {
+                transform: translateX(2px);
+            }
+        }
     }
 
     .icon {

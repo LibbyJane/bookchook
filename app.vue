@@ -12,16 +12,10 @@
     const siteStore = useSiteStore();
 
     function getLayout(path) {
-        if (path.indexOf(`${siteStore.organisationPagePrefix}`) > -1) return "application";
+        const splitPath = path.split('/');
+        if (splitPath.find((element) => element === 'admin')) return "admin";
+        if (splitPath.find((element) => element === siteStore.organisationPagePrefix)) return "application";
         return "brochure";
-        // if (path.indexOf('/bookings/') > -1) return "brochure";
-        // if (path.indexOf('/resources/') > -1) return "brochure";
-        // if (path == '/pricing') return "brochure";
-        // if (path == '/features') return "brochure";
-        // if (path == '/contact') return "brochure";
-        // if (path == '/signup') return "brochure";
-        // if (path.length > 1) return "application";
-        // return "brochure";
     }
 
     useHead({
