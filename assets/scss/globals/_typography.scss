@@ -112,6 +112,9 @@ a,
 .anchor {
     color: currentColor;
     cursor: pointer;
+    display: inline-flex;
+        align-items: center;
+        gap: var(--space-xs);
     text-decoration: 2px solid underline var(--c-accent);
     transition: color var(--transition-speed-fast) var(--transition-type-motionless);
 
@@ -123,14 +126,19 @@ a,
         text-decoration: none;
     }
 
+    .icon {
+        transition: transform var(--transition-speed-fast) var(--transition-type-motionless);
+    }
+
     .main-content &,
     .main-footer & {
-        border-bottom: thin dotted;
+        border-bottom: thin dotted var(--c-text-lighter);
         text-decoration: none;
 
         &:hover,
         &:focus {
             border-bottom-style: solid;
+            border-color: currentColor;
         }
     }
 }

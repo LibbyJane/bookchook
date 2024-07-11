@@ -52,8 +52,9 @@ form {
         }
     }
 }
+
 fieldset {
-    border: 1px solid var(--c-border);
+    border: var(--border-width) solid var(--c-border);
     border-radius: var(--border-radius);
     margin-bottom: var(--space);
     padding: var(--content-padding-all);

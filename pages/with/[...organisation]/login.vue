@@ -39,17 +39,15 @@
 
     import { useBookerStore } from '@/stores/booker.js';
     import { useOrganisationStore } from '@/stores/organisation';
-    import { useSiteStore } from '@/stores/site';
 
     const bookerStore = useBookerStore();
     const organisationStore = useOrganisationStore();
-    const siteStore = useSiteStore();
 
     const activeForm = ref('login');
 
     onMounted(()=>{
         if (bookerStore.authenticated) {
-            navigateTo(`${siteStore.organisationPagePrefix}${organisationStore.account.url_slug}`);
+            navigateTo(`${organisationStore.organisationPagePrefix}${organisationStore.account.url_slug}`);
         }
     })
 </script>

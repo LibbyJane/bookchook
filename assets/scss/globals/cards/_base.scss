@@ -1,0 +1,10 @@
+.card {
+    background: var(--c-white);
+    border-radius: var(--space-sm);
+    box-shadow: var(--box-shadow-card);
+    container-type: inline-size;
+    display: flex;
+        flex-direction: column;
+    overflow: hidden;
+    // padding: var(--content-padding-all);
+}

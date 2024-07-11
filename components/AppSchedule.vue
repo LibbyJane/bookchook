@@ -4,6 +4,7 @@
             <h1>Filters {{ selectedEventID }}</h1>
         </aside>
         <section class="container">
+            <h1>Schedule</h1>
             <table v-if="organisationStore.schedule" class="schedule" cellspacing="0">
                 <template v-for="event in organisationStore.schedule">
                     <tr v-if="rowIsHeader(event.date.month, event.date.year)" class="schedule__header" >
@@ -250,9 +251,6 @@
         border-radius: var(--space-sm);
         box-shadow: var(--box-shadow-card);
         cursor: pointer;
-        // display: flex;
-        //     gap: var(--space-sm);
-        //     justify-content: space-between;
         font-size: var(--p-sm);
         display: grid;
             grid-template-areas: "availability time status" "title title title " ;
@@ -262,7 +260,7 @@
             align-items: center;
         margin: 0 0 var(--space-sm);
         padding: var(--space-sm);
-        outline: 1px solid transparent;
+        outline: var(--border-width) solid transparent;
         outline-offset: -2px;
         text-align: start;
         transition: all var(--transition-speed-fast) var(--transition-type-motionless);

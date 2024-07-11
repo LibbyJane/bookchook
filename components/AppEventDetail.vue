@@ -1,10 +1,10 @@
 <template>
-    <section class="schedule-card__wrapper container" v-if="eventData">
+    <section class="schedule-card__wrapper container sticky" v-if="eventData">
         <div class="schedule-card">
             <header class="schedule-card__header">
                 <h2>{{ eventData.title }}</h2>
                 <a v-if="eventActive" href="#tickets" class="btn btn--secondary">
-                    Book
+                    <span class="btn__text">Book</span>
                     <ArrowIcon />
                 </a>
             </header>
@@ -52,16 +52,12 @@
                 </template>
                 <template v-else-if="!bookerStore.authenticated">
                     <p>Please <a href="login">login or register</a> to book on to this event.</p>
-
                 </template>
                 <template v-else>
-tickets
+                    tickets
                 </template>
             </div>
         </div>
-
-
-
     </section>
 </template>
 

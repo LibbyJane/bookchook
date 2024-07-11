@@ -28,17 +28,22 @@ body {
     display: grid;
         grid-template-columns: 1fr;
     margin-bottom: auto;
+    width: 100%;
 
     @include breakpoint(lg) {
-        grid-template-columns: max-content 1fr;
+        grid-template-areas: 'sidebar main-col';
+        grid-template-columns: minmax(250px, max-content) 1fr;
         gap: var(--space-lg);
     }
 }
 
 .main-content__sidebar {
-    @include breakpoint(lg) {
-        max-width: 30vw;
-    }
+    grid-area: sidebar;
+}
+
+.main-col {
+    grid-area: main-col;
+
 }
 
 .container {

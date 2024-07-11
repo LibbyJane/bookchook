@@ -4,6 +4,7 @@
 
         <article class="main-content">
             <AdminNav />
+
             <slot />
         </article>
         <AdminFooter />
@@ -12,6 +13,10 @@
 
 <script setup>
     import { useRoute } from 'vue-router'
+    import { useOrganisationStore } from '@/stores/organisation';
+    import AdminHeader from '@/components/AdminHeader.vue';
+    import AdminFooter from '@/components/AdminFooter.vue';
+    import AdminNav from '@/components/admin/Nav.vue';
 
     const organisationStore = useOrganisationStore();
     const route = useRoute();

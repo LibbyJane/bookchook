@@ -13,10 +13,13 @@
     transition: background var(--transition-speed-fast) var(--transition-type-motionless), box-shadow var(--transition-speed-fast) var(--transition-type-motionless);
     white-space: nowrap;
 
+    &.btn {
+        border: 0 none;
+    }
+
     &:hover,
     &:focus {
         background: hsla(var(--c-accent-hsl), 1);
-
         box-shadow: var(--box-shadow-card-hover);
         color: var(--c-accent-contrast);
 
@@ -24,30 +27,38 @@
             &:last-child {
                 transform: translateX(2px);
             }
+
+            &:first-child {
+                transform: scale(1.05);
+            }
+        }
+
+        .icon--xs {
+            &:first-child {
+                &.icon--xs {
+                    transform: scale(1.2);
+                }
+            }
         }
     }
 
     .icon {
         flex-shrink: 0;
-        transition: all var(--transition-speed-fast) var(--transition-type-motionless);
+        transition: transform var(--transition-speed-fast) var(--transition-type-motionless);
     }
 }
 
 
-// .btn--secondary {
-//     background: transparent;
-//     color: var(--c-accent);
-//     position: relative;
-
-//     &::before {
-
-//     }
-// }
+.btn--sm {
+    font-size: var(--p-sm);
+    padding: var(--space-xs) var(--space-sm);
+}
 
 .btn--secondary {
     background: transparent;
     color: var(--c-accent);
     outline: 2px solid;
+    outline-offset: -2px;
 
     &:hover,
     &:focus {
@@ -55,21 +66,95 @@
         background: var(--c-accent);
         color: var(--c-accent-contrast);
         outline-color: var(--c-accent);
-        outline-offset: -1px;
+        // outline-offset: -1px;
     }
 }
 
+// .btn--outline {
+//     background: transparent;
+//     color: var(--c-text);
+//     opacity: 0.8;
+//     outline: 1px solid;
+//     outline-offset: -1px;
+
+//     &:hover,
+//     &:focus {
+//         background: transparent;
+//         box-shadow: none;
+//         color: var(--c-accent);
+//         opacity: 1;
+//     }
+// }
+
 .btn--tertiary {
-    background: transparent;
+    background-color: var(--c-text-ultralight);
     color: var(--c-text);
-    opacity: 0.8;
-    outline: 1px solid;
 
     &:hover,
     &:focus {
-        background: transparent;
-        box-shadow: none;
-        color: var(--c-accent);
-        opacity: 1;
+        background-color: hsl(var(--c-text-hue), var(--c-text-sat), 92%);
+        color: var(--c-text);
     }
 }
+
+.btn--modify-duo {
+    // eg on client profile, when the group button is hovered to show the 'remove' icon
+    background-color: transparent;
+    outline: 2px solid var(--c-text-ultralight);
+    border-radius: var(--border-radius) 0 0 var(--border-radius);
+    color: var(--c-text);
+    display: inline-flex;
+        align-items: stretch;
+    flex: 1 1 auto;
+    line-height: inherit;
+
+    &:hover,
+    &:focus {
+        background-color: var(--c-text-ultralight-hover);
+        outline-color: var(--c-text-ultralight-hover);
+        box-shadow: none;
+        color: var(--c-text);
+        text-indent: 0;
+
+        .btn-action {
+            opacity: 1;
+        }
+    }
+
+    +.btn--modify-duo {
+        border-radius: 0 var(--border-radius) var(--border-radius) 0;
+        background-color: var(--c-text-ultralight);
+
+        &:hover,
+        &:focus {
+            background-color: var(--c-danger-light);
+            outline-color: var(--c-danger-light);
+            color: var(--c-danger);
+
+            .btn-action {
+                opacity: 1;
+
+                .icon {
+                    transform: scale(1);
+                }
+            }
+        }
+
+        .btn-action {
+            opacity: 0.6;
+        }
+    }
+
+}
+
+// .btn--light {
+//     background: hsla(var(--c-accent-hsl), 0.05);
+//     color: var(--c-accent);
+
+//     &:hover,
+//     &:focus {
+//         background: hsla(var(--c-accent-hsl), 0.1);
+//         box-shadow: none;
+//         color: var(--c-accent);
+//     }
+// }

@@ -1,8 +1,7 @@
 export const useSiteStore = defineStore('siteStore', {
     state: () => ({
         siteName: 'Bookity',
-        description: '',
-        organisationPagePrefix: '\/with\/'
+        description: ''
     }),
     actions: {
         // async fetch() {

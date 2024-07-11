@@ -26,7 +26,7 @@
                     id="url_slug"
                     labelText="Account Handle"
                     :required="fields.url_slug.required"
-                    :help="`e.g. ${url.host}${siteStore.organisationPagePrefix}${fields.url_slug.value ? fields.url_slug.value : 'your-name-here'}`"
+                    :help="`e.g. ${url.host}${organisationStore.organisationPagePrefix}${fields.url_slug.value ? fields.url_slug.value : 'your-name-here'}`"
                     :error="fields.url_slug.error"
                 >
                     <input
@@ -268,19 +268,17 @@
 
 <script setup>
     import { ref, reactive } from 'vue';
-    import { useSiteStore } from '@/stores/site.js';
+    import { useOrganisationStore } from '@/stores/organisation.js';
     import { useSiteAPI } from '@/api/useSiteAPI';
 
     import Field from '@/components/forms/shared/Field.vue';
-    import Label from '@/components/forms/shared/Label.vue';
     import Error from '@/components/forms/shared/Error.vue';
-    import Help from '~/components/forms/shared/Help.vue';
 
     import ArrowIcon from '@/components/icons/arrow.vue';
     import EyeIcon from '@/components/icons/eye.vue';
     import EyeClosedIcon from '@/components/icons/eye-closed.vue';
 
-    const siteStore = useSiteStore();
+    const organisationStore = useOrganisationStore();
     const url = useRequestURL();
 
     let countriesData = ref(null);

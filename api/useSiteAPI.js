@@ -25,6 +25,10 @@ const endpoints = {
     register: {
         uri: `account`,
         method: 'POST'
+    },
+     listUserOrganisations: {
+        uri: `private/account/list`,
+        method: 'GET'
     }
 }
 

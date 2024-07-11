@@ -88,7 +88,7 @@
 
 :where(hr) {
 	border: none;
-	border-block-start: 1px solid;
+	border-block-start: var(--border-width) solid;
 	color: inherit;
 	block-size: 0;
 	overflow: visible;

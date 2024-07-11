@@ -1,48 +1,36 @@
 <template>
     <aside class="container main-content__sidebar">
-        <nav class="admin-nav sidebar">
+        <nav class="admin-nav sidebar sticky">
             <ul class="admin-nav__list">
                 <li>
-                    <a class="admin-nav__item" href="/dashboard">
+                    <nuxt-link :to="`${organisationStore.adminURL}/`" class="admin-nav__item" >
                         <HomeIcon />
                         Dashboard
-                    </a>
+                    </nuxt-link>
                 </li>
                 <li>
-                    <a class="admin-nav__item" href="/schedule">
+                    <nuxt-link :to="`${organisationStore.adminURL}/schedule`" class="admin-nav__item" >
                         <CalendarIcon />
                         Schedule
-                    </a>
+                    </nuxt-link>
                 </li>
                 <li>
-                    <a class="admin-nav__item" href="/bookings">
+                    <nuxt-link :to="`${organisationStore.adminURL}/bookings`" class="admin-nav__item" >
                         <TicketsIcon />
                         Bookings
-                    </a>
+                    </nuxt-link>
                 </li>
                 <li>
-                    <a class="admin-nav__item" href="/bookers">
+                    <nuxt-link :to="`${organisationStore.adminURL}/clients`" class="admin-nav__item" >
                         <UsersIcon />
                         Clients
-                    </a>
+                    </nuxt-link>
                 </li>
-                <!-- <li>
-                    <div class="admin-nav__item">
-                        <span>Payment Options</span>
-                        <CaretIcon class="icon--xs" alt="View" />
-                    </div>
-
-                    <ul class="admin-nav__dropdown">
-                        <li><a href="/bookings/class">Passes</a></li>
-                        <li><a href="/bookings/course">Memberships</a></li>
-                        <li><a href="/bookings/virtual">Client Groups</a></li>
-                    </ul>
-                </li> -->
                 <li>
-                    <a class="admin-nav__item" href="/pricing">
+                    <nuxt-link :to="`${organisationStore.adminURL}/preferences`" class="admin-nav__item" >
                         <CogIcon />
                         Preferences
-                    </a>
+                    </nuxt-link>
                 </li>
             </ul>
         </nav>
@@ -50,13 +38,17 @@
 </template>
 
 <script setup>
+    import { useOrganisationStore } from '@/stores/organisation';
     import CogIcon from '@/components/icons/cog.vue';
     import CalendarIcon from '@/components/icons/calendar.vue';
-    // import CaretIcon from '@/components/icons/caret-down.vue';
     import HomeIcon from '@/components/icons/home.vue';
     import TicketsIcon from '@/components/icons/tickets.vue';
     import UsersIcon from '@/components/icons/users.vue';
 
+
+    const organisationStore = useOrganisationStore();
+
+    await useAsyncData(() => organisationStore.getOrganisationData());
 </script>
 
 <style lang="scss">
@@ -67,8 +59,18 @@
             padding: 0;
         }
 
+        li {
+            margin: 0;
+            padding: 0 0 var(--space);
+        }
+
         a {
             border: none;
+            display: grid;
+                grid-template-columns: 2rem 1fr;
+                gap: var(--space-sm);
+                justify-content: start;
+                align-items: center;
             text-decoration: none;
             transition: color var(--transition-fast) var(--transition-type-motionless);
 
@@ -79,8 +81,13 @@
             }
 
             .icon {
+                margin: auto;
                 transition: inherit;
             }
+        }
+
+        .active {
+            color: var(--c-accent);
         }
     }
 </style>

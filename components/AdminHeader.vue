@@ -10,7 +10,7 @@
                     </button>
                 </li>
                 <li>
-                    <a class="admin-menu__item" :href="`${siteStore.organisationPagePrefix}${organisationStore.account.url_slug}/logout`">
+                    <a class="admin-menu__item" :href="`${organisationStore.organisationPagePrefix}${organisationStore.account.url_slug}/logout`">
                         <UserIcon />
                         Log out
                     </a>
@@ -21,27 +21,16 @@
 </template>
 
 <script setup>
-    import { useSiteStore } from '@/stores/site';
     import { useOrganisationStore } from '@/stores/organisation';
-    import { useBookerStore } from '@/stores/booker.js';
-
-    import CalendarIcon from '@/components/icons/calendar.vue';
-    import TicketIcon from '@/components/icons/ticket.vue';
-    import MembershipIcon from '@/components/icons/id-badge.vue';
     import UserIcon from '@/components/icons/user.vue';
 
-    const siteStore = useSiteStore();
     const organisationStore = useOrganisationStore();
-    const bookerStore = useBookerStore();
     const userMenuOpen = ref(false);
 
 </script>
 
 <style lang="scss">
     .main-header {
-        background: var(--c-header-bg, --c-accent);
-        color: var(--c-header-text, --c-accent-contrast);
-        box-shadow: var(--box-shadow-soft);
         display: grid;
             gap: var(--space-med);
             grid-template-areas: 'hamburger brand cta' 'nav nav blank';

@@ -1,7 +1,7 @@
 <template>
     <!-- Update the CSS color variables with values set in the admin section (falling back to brochure site colours if no color set) -->
     <div class="main-outer" :style="`
-    --c-header-bg-hsl: ${ organisationStore.account.theme_config.colors.headerBackground ? organisationStore.account.theme_config.colors.headerBackground : '--c-accent-hsl' };
+    --c-header-bg-hsl: ${ organisationStore.account.theme_config.colors.headerBackground ? organisationStore.account.theme_config.colors.headerBackground : '--c-background-hsl' };
     --c-header-bg: hsl(var(--c-header-bg-hsl));
 
     --c-header-text-hsl: ${ organisationStore.account.theme_config.colors.headerText ? organisationStore.account.theme_config.colors.headerText : '--c-accent-contrast-hsl'};

@@ -5,8 +5,12 @@ export const useOrganisationStore = defineStore('organisationStore', {
         account: {
             theme_config: {
                 colors: {}
-            }
+            },
         },
+        organisationPagePrefix: '\/with\/',
+        adminURL: '',
+        baseURL: '',
+        clients: [],
         schedule: [],
         locations: {
             l1: {
@@ -28,14 +32,17 @@ export const useOrganisationStore = defineStore('organisationStore', {
             passes: true,
             membership: true
         },
-
+        clients: []
     }),
     actions: {
         async getOrganisationData(organisationID) {
             const response = await useOrganisationAPI({endpoint: `getAccountBySlug`,  id: organisationID});
+            console.log('account', this.account);
             this.account = response.data.account;
             if (response.data.status) {
                 this.account = response.data.account;
+                this.baseURL = `${this.organisationPagePrefix}${organisationID}`;
+                this.adminURL = `${this.organisationPagePrefix}${organisationID}/admin`;
                 // TODO: remove logo and theme hard wiring when properly set up
                 this.account.logo_url = '/demo/logo.svg';
 
@@ -51,7 +58,7 @@ export const useOrganisationStore = defineStore('organisationStore', {
                 };
             }
         },
-        async getOrganisationSchedule(pageSize = 20, pageNumber = 0) {
+        async getOrganisationSchedule({pageSize = 20, pageNumber = 0}) {
             // TODO: wire this up when the API is ready
             // console.log('getOrganisationSchedule pageSize, pageNumber', pageSize, pageNumber);
 
@@ -270,6 +277,100 @@ export const useOrganisationStore = defineStore('organisationStore', {
                 });
             } catch (error) {
                 return error
+            }
+        },
+        async getOrganisationBookers() {
+            console.log('get organisation bookers');
+            // TODO: remove test data when client details page complete
+            const response = await useOrganisationAPI({endpoint: `getOrganisationBookers`});
+            console.log('response', response.data.users);
+
+            if (response.data?.users) {
+            //if (response.usethistogettestdata?.users) {
+                this.clients = response.data.users;
+            } else {
+                this.clients = [
+                    {
+                        "id": "52155d7d-ff16-430d-b51b-c73985697772",
+                        "account_id": "11d1c59b-38f4-4cce-ba8b-6e8af2d2a115",
+                        "first_name": "Andrew",
+                        "last_name": "Chapman",
+                        "country_code": "GB",
+                        "timezone": "Europe/London",
+                        "email_address": "info@communityttc.com",
+                        "phone": "07123 1234133",
+                        "created_dtm": 1720047009,
+                        "updated_dtm": 1720047009,
+                        "role_type": "ADMINISTRATOR",
+                        "groups": [
+                            {
+                                name: "Three Plus",
+                                id: 1
+                            },
+                            {
+                                name: "Annual Members",
+                                id: 2
+                            },
+                            {
+                                name: "League Player",
+                                id: 3
+                            }
+                        ],
+                        "bookings": [
+                            {
+                                title: "Open Session",
+                                id: 1
+                            },
+                            {
+                                title: "Annual Members",
+                                id: 2
+                            },
+                            {
+                                title: "League Player",
+                                id: 3
+                            }
+                        ]
+                    },
+                    {
+                        "id": "52155d7d-ff16-430d-b51b-c73985697773",
+                        "account_id": "11d1c59b-38f4-4cce-ba8b-6e8af2d2a116",
+                        "first_name": "Alessandro",
+                        "last_name": "Montgomery",
+                        "country_code": "GB",
+                        "timezone": "Europe/London",
+                        "email_address": "alessandro@communityttc.com",
+                        "phone": "07122 1234133",
+                        "created_dtm": 1710057010,
+                        "updated_dtm": 1720047009,
+                        "role_type": "MEMBER"
+                    },
+                    {
+                        "id": "52155d7d-ff16-430d-b51b-c73985697774",
+                        "account_id": "11d1c59b-38f4-4cce-ba8b-6e8af2d2a117",
+                        "first_name": "Emanuella",
+                        "last_name": "Persephone",
+                        "country_code": "GB",
+                        "timezone": "Europe/London",
+                        "email_address": "persephone@communityttc.com",
+                        "phone": "07111 1234133",
+                        "created_dtm": 1620047009,
+                        "updated_dtm": 1720047009,
+                        "role_type": "MEMBER"
+                    },
+                    {
+                        "id": "52155d7d-ff16-430d-b51b-c73985697775",
+                        "account_id": "11d1c59b-38f4-4cce-ba8b-6e8af2d2a118",
+                        "first_name": "Isabella",
+                        "last_name": "Philomena-Jones",
+                        "country_code": "GB",
+                        "timezone": "Europe/London",
+                        "email_address": "issie@communityttc.com",
+                        "phone": "07123 1234133",
+                        "created_dtm": 1720047009,
+                        "updated_dtm": 1720047009,
+                        "role_type": "MEMBER"
+                    },
+                ];
             }
         },
     }

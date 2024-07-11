@@ -5,9 +5,9 @@
             <MenuIcon />
         </button>
 
-        <RouterLink class="main-header__brand" to="/" >
+        <nuxt-link to="/" class="main-header__brand">
             <BrandImage :svgAlt="siteStore.siteName" />
-        </RouterLink>
+        </nuxt-link>
 
         <nav id="main-menu" class="main-menu">
             <button type="button" v-on:click="() => menuOpen = false" class="main-header__nav-close" aria-controls="main-menu">
@@ -15,32 +15,59 @@
             </button>
             <ul class="main-menu__list">
                 <li>
-                    <div class="main-menu__item">
+                    <nuxt-link to="/bookings/" class="main-menu__item" >
                         <span>Booking System</span>
                         <CaretIcon class="icon--xs" alt="View" />
-                    </div>
+                    </nuxt-link>
+                    <!-- <div class="main-menu__item">
+                        <span>Booking System</span>
+                        <CaretIcon class="icon--xs" alt="View" />
+                    </div> -->
 
                     <ul class="main-menu__dropdown">
-                        <li><a href="/bookings/class">Class booking</a></li>
-                        <li><a href="/bookings/course">Course booking</a></li>
-                        <li><a href="/bookings/virtual">Virtual classes</a></li>
-                        <li><a href="/bookings/events">Event booking</a></li>
+                        <li>
+                            <nuxt-link to="/bookings/class" class="main-menu__item" >
+                                Class booking
+                            </nuxt-link>
+                        </li>
+                        <li>
+                            <nuxt-link to="/bookings/course" class="main-menu__item" >
+                                Course booking
+                            </nuxt-link>
+                        </li>
+                        <li>
+                            <nuxt-link to="/bookings/virtual" class="main-menu__item" >
+                                Virtual booking
+                            </nuxt-link>
+                        </li>
+                        <li>
+                            <nuxt-link to="/bookings/events" class="main-menu__item" >
+                                Event booking
+                            </nuxt-link>
+                        </li>
                     </ul>
                 </li>
                 <li>
-                    <a class="main-menu__item" href="/pricing">Pricing</a>
+                    <nuxt-link to="/pricing" class="main-menu__item" >
+                        Pricing
+                    </nuxt-link>
                 </li>
                 <li>
-                    <a class="main-menu__item" href="/features">Features</a>
+                    <nuxt-link to="/features" class="main-menu__item" >
+                        Features
+                    </nuxt-link>
                 </li>
                 <li>
-                    <a class="main-menu__item" href="/contact">Contact</a>
+                    <nuxt-link to="/contact" class="main-menu__item" >
+                        Contact
+                    </nuxt-link>
                 </li>
             </ul>
         </nav>
-        <!-- <h1 style="position: fixed; top: 5rem; background-color: blue; color: white; padding: 1rem">todo: {{$route.path }} {{$route.path.indexOf('/signup') }} {{$route.path.indexOf('/signup') < 0}}</h1> -->
 
-        <Button v-if="!authenticated && $route.path.indexOf('signup') < 0 " class="main-header__cta" text="Get Started" href="/signup" />
+        <nuxt-link v-if="!authenticated && $route.path.indexOf('signup') < 0" to="/signup" class="main-header__cta" >
+            Get Started
+        </nuxt-link>
     </header>
 </template>
 

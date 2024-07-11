@@ -8,13 +8,13 @@
 </template>
 
 <script setup>
-    import { useSiteStore } from '@/stores/site';
-    const siteStore = useSiteStore();
+    import { useOrganisationStore } from '@/stores/organisation';
+    const organisationStore = useOrganisationStore();
 
     function getLayout(path) {
         const splitPath = path.split('/');
         if (splitPath.find((element) => element === 'admin')) return "admin";
-        if (splitPath.find((element) => element === siteStore.organisationPagePrefix)) return "application";
+        if (splitPath.find((element) => element === organisationStore.organisationPagePrefix)) return "application";
         return "brochure";
     }
 

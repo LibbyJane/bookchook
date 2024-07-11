@@ -1,34 +1,54 @@
 import axios from "axios"
-import { apiBaseURL } from '@/api/config';
+import { apiBaseURL, config } from '@/api/config';
 // import { useOrganisationStore } from '@/stores/organisation';
 
 const endpoints = {
     getAccountBySlug: {
-        uri: `by_slug`,
+        uri: `account/by_slug`,
         method: 'GET'
     },
+    getOrganisationBookers: {
+        uri: `private/user/list`,
+        method: 'GET',
+        query: `?search=`
+    }
 }
 
-export async function useOrganisationAPI({endpoint, data, id}) {
+export async function useOrganisationAPI({endpoint, data, id, qs}) {
+    console.log('useOrganisationAPI config::::', config);
+    console.log('useOrganisationAPI endpoint, endpoints[endpoint]', endpoint, endpoints[endpoint]);
+    console.log('useOrganisationAPI endpoint, data, id, qs', data, id, qs);
+
     if (endpoint && endpoints[endpoint]) {
-        let config = {
-            headers: {},
-            baseURL: apiBaseURL,
-            url: `/api/account/${endpoints[endpoint].uri}`,
-            method: endpoints[endpoint].method
-        }
+        console.log('continue');
+
+        // let config = {
+        //     baseURL: apiBaseURL,
+        //     url: `/api/${endpoints[endpoint].uri}`,
+        //     method: endpoints[endpoint].method
+        // };
+        config.baseURL = apiBaseURL;
+        config.url =  `/api/${endpoints[endpoint].uri}`;
+        config.method = endpoints[endpoint].method;
+        console.log('updated config', config);
 
         if (config.url.indexOf('upload') > -1) {
             config.headers['content-type'] = 'multipart/form-data';
         }
 
         if (data) {
-            config.data = data
+            config.data = data;
         }
 
         if (id) {
-            config.url = config.url + `/${id}`
+            config.url = config.url + `/${id}`;
         }
+
+        if (qs) {
+            config.url = config.url + `${endpoints[endpoint].query}${qs}`;
+        }
+
+        console.log('final config', config);
 
         try {
             const response = await axios(config)
