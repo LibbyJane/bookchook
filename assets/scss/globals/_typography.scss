@@ -92,10 +92,34 @@ small {
     font-size: var(--p-sm);
 }
 
+
 em {
-    font-weight: 500;
+    color: var(--c-accent);
     font-style: normal;
+    font-weight: 500;
 }
+
+blockquote {
+    // background: #f9f9f9;
+    border-left: 10px solid hsla(var(--c-text-hsl), 0.15);
+    margin: 0 0 var(--space-med);
+    padding: var(--space-sm) var(--space);
+    quotes: "\201C""\201D""\2018""\2019";
+  }
+  blockquote:before {
+    color: hsla(var(--c-text-hsl), 0.15);
+    content: open-quote;
+    font-size: 4rem;
+    line-height: 0.1em;
+    margin-right: 0.25em;
+    vertical-align: -0.4em;
+    background-color: pink;
+  }
+  blockquote p {
+    display: inline;
+  }
+
+
 
 // a {
 //     .site-main & {
@@ -171,10 +195,5 @@ a,
         transform: scaleX(0);
         transform-origin: center left;
     }
-}
-
-em {
-    color: var(--c-accent);
-    font-style: normal;
 }
 

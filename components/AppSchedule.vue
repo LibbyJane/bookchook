@@ -79,6 +79,7 @@
     const scheduleDataPageNumber = ref(0);
     const colspan = 5;
 
+    await useAsyncData(() => organisationStore.getOrganisationLocations());
     await useAsyncData(() => organisationStore.getOrganisationSchedule(scheduleDataPageSize, scheduleDataPageNumber.value));
 
     const filterData = ref([]);

@@ -58,9 +58,9 @@
 
 
     // please also check the colors of the icons in the public icons folder if these change
-    --c-success-hue: 109;
-    --c-success-sat: 65%;
-    --c-success-lum: 69%;
+    --c-success-hue: 99;
+    --c-success-sat: 57%;
+    --c-success-lum: 50%;
     --c-success-hsl: var(--c-success-hue), var(--c-success-sat), var(--c-success-lum);
     --c-success: hsl(var(--c-success-hsl));
     --c-success-dark: hsl(var(--c-success-hue), var(--c-success-sat), 30%);
@@ -89,6 +89,8 @@
     --c-info: hsl(var(--c-info-hsl));
     --c-info-dark: hsl(var(--c-info-hue), var(--c-info-sat), 40%);
     --c-info-light: hsl(var(--c-info-hue), var(--c-info-sat), 90%);
+
+    --c-status-contrast: var(--c-white);
 
     --c-accent-hue: 10;
     --c-accent-sat: 100%;

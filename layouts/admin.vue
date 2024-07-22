@@ -1,8 +1,29 @@
 <template>
-    <div class="main-outer">
+    <div class="main-outer" :style="`
+    --c-header-bg-hsl: ${ organisationStore.account.theme_config.colors.headerBackground ? organisationStore.account.theme_config.colors.headerBackground : '--c-background-hsl' };
+    --c-header-bg: hsl(var(--c-header-bg-hsl));
+
+    --c-header-text-hsl: ${ organisationStore.account.theme_config.colors.headerText ? organisationStore.account.theme_config.colors.headerText : '--c-accent-contrast-hsl'};
+    --c-header-text: hsl(var(--c-header-text-hsl));
+
+    --c-header-accent-hsl: ${ organisationStore.account.theme_config.colors.headerAccent ? organisationStore.account.theme_config.colors.headerAccent : '--c-accent-contrast-hsl'};
+    --c-header-accent: hsl(var(--c-header-accent-hsl));
+
+    --c-text-hsl: ${ organisationStore.account.theme_config.colors.text ? organisationStore.account.theme_config.colors.text : '--c-text-hsl' };
+    --c-text: hsl(var(--c-text-hsl));
+
+    --c-accent-hsl: ${organisationStore.account.theme_config.colors.accent ? organisationStore.account.theme_config.colors.accent : '--c-accent-hsl' };
+    --c-accent: hsl(var(--c-accent-hsl));
+
+    --c-accent-contrast-hsl: ${organisationStore.account.theme_config.colors.accentContrast ? organisationStore.account.theme_config.colors.accentContrast : '--c-accent-contrast-hsl' };
+    --c-accent-contrast: hsl(var(--c-accent-contrast-hsl));
+
+    --c-background-hsl: ${ organisationStore.account.theme_config.colors.background ? organisationStore.account.theme_config.colors.background : '--c-background-hsl' };
+    --c-background: hsl(var(--c-background-hsl));
+    `">
         <AdminHeader />
 
-        <article class="main-content">
+        <article class="main-content layout-admin">
             <AdminNav />
 
             <slot />

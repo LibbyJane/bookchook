@@ -10,7 +10,7 @@
     line-height: var(--line-height-sm);
     padding: var(--space-sm) var(--space);
     text-decoration: none;
-    transition: background var(--transition-speed-fast) var(--transition-type-motionless), box-shadow var(--transition-speed-fast) var(--transition-type-motionless);
+    transition: background var(--transition-speed-fast) var(--transition-type-motionless), box-shadow var(--transition-speed-fast) var(--transition-type-motionless), opacity var(--transition-speed-fast) var(--transition-type-motionless);
     white-space: nowrap;
 
     &.btn {
@@ -42,6 +42,34 @@
         }
     }
 
+    &:disabled {
+        filter: grayscale(1) brightness(1.2);
+    }
+
+    &.btn--danger {
+        background: hsla(var(--c-danger-hsl), 0.85);
+        color: var(--c-status-contrast);
+
+        &:hover,
+        &:focus {
+            background: var(--c-danger);
+            color: var(--c-status-contrast);
+            outline-color: var(--c-danger);
+        }
+    }
+
+    &.btn--success {
+        background: hsla(var(--c-success-hsl), 0.85);
+        color: var(--c-status-contrast);
+
+        &:hover,
+        &:focus {
+            background: var(--c-success);
+            color: var(--c-status-contrast);
+            outline-color: var(--c-success);
+        }
+    }
+
     .icon {
         flex-shrink: 0;
         transition: transform var(--transition-speed-fast) var(--transition-type-motionless);
@@ -67,6 +95,28 @@
         color: var(--c-accent-contrast);
         outline-color: var(--c-accent);
         // outline-offset: -1px;
+    }
+
+    &.btn--danger {
+        color: var(--c-danger);
+
+        &:hover,
+        &:focus {
+            background: var(--c-danger);
+            color: var(--c-status-contrast);
+            outline-color: var(--c-danger);
+        }
+    }
+
+    &.btn--success {
+        color: var(--c-success);
+
+        &:hover,
+        &:focus {
+            background: var(--c-success);
+            color: var(--c-status-contrast);
+            outline-color: var(--c-success);
+        }
     }
 }
 
@@ -94,6 +144,17 @@
     &:focus {
         background-color: hsl(var(--c-text-hue), var(--c-text-sat), 92%);
         color: var(--c-text);
+    }
+
+    &.btn--danger {
+        background-color: var(--c-danger-light);
+        color: var(--c-danger);
+
+        &:hover,
+        &:focus {
+            background-color: var(--c-danger-light);
+            color: var(--c-danger-dark);
+        }
     }
 }
 

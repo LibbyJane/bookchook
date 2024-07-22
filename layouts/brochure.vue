@@ -2,12 +2,12 @@
     <div class="main-outer">
         <BrochureHeader />
 
-        <div class="main-content">
+        <div class="main-content layout-brochure">
             <slot />
 
-            <aside class="container main-content__sidebar">
+            <!-- <aside class="container main-content__sidebar">
 
-            </aside>
+            </aside> -->
         </div>
         <BrochureFooter />
     </div>

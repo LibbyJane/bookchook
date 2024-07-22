@@ -14,7 +14,7 @@
     function getLayout(path) {
         const splitPath = path.split('/');
         if (splitPath.find((element) => element === 'admin')) return "admin";
-        if (splitPath.find((element) => element === organisationStore.organisationPagePrefix)) return "application";
+        if (splitPath.find((element) => element === organisationStore.organisationPagePrefix.replaceAll('/', ''))) return "application";
         return "brochure";
     }
 

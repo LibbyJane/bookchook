@@ -27,6 +27,18 @@
                     </nuxt-link>
                 </li>
                 <li>
+                    <nuxt-link :to="`${organisationStore.adminURL}/locations`" class="admin-nav__item" >
+                        <MapPinIcon />
+                        Locations
+                    </nuxt-link>
+                </li>
+                <li>
+                    <nuxt-link :to="`${organisationStore.adminURL}/team`" class="admin-nav__item" >
+                        <IdBadge />
+                        Team
+                    </nuxt-link>
+                </li>
+                <li>
                     <nuxt-link :to="`${organisationStore.adminURL}/preferences`" class="admin-nav__item" >
                         <CogIcon />
                         Preferences
@@ -44,7 +56,8 @@
     import HomeIcon from '@/components/icons/home.vue';
     import TicketsIcon from '@/components/icons/tickets.vue';
     import UsersIcon from '@/components/icons/users.vue';
-
+    import MapPinIcon from '@/components/icons/map-pin.vue';
+    import IdBadge from '@/components/icons/id-badge-vertical.vue';
 
     const organisationStore = useOrganisationStore();
 
@@ -81,6 +94,7 @@
             }
 
             .icon {
+                max-height: 1.4rem;
                 margin: auto;
                 transition: inherit;
             }

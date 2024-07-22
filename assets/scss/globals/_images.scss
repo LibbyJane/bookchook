@@ -8,9 +8,10 @@
 
 .icon {
     display: inline-block;
-    fill: currentColor;
+        fill: currentColor;
     height: var(--icon-size);
     width: var(--icon-size);
+    flex-shrink: 0;
     transition: var(--transition);
 }
 

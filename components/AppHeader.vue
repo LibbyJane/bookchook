@@ -61,22 +61,6 @@
     .main-header {
         background: var(--c-header-bg, --c-accent);
         color: var(--c-header-text, --c-accent-contrast);
-        box-shadow: var(--box-shadow-soft);
-        display: grid;
-            gap: var(--space-med);
-            grid-template-areas: 'hamburger brand cta' 'nav nav blank';
-            grid-template-columns: max-content 1fr max-content;
-            align-items: center;
-        padding: var(--space-sm) var(--content-padding) var(--space-sm);
-        position: sticky;
-            top: 0;
-            left: 0;
-        z-index: var(--zi-header);
-
-        @include breakpoint(lg) {
-            grid-template-areas: 'brand nav cta';
-            grid-template-columns: 1fr auto max-content;
-        }
     }
 
     .user-menu__nav-toggle {
@@ -89,26 +73,7 @@
         }
     }
 
-    .main-header__nav-close {
-        color: var(--c-header-accent);
-        opacity: 0.7;
-        padding: var(--space);
-        margin-left: auto;
-
-        @include breakpoint(lg) {
-            display: none;
-        }
-
-        &:hover,
-        &:focus {
-            opacity: 1;
-        }
-    }
-
     .main-header__brand {
-        grid-area: brand;
-        margin-right: var(--space-med);
-
         &:has(img, svg) {
             max-height: 3.4rem;
             max-width: 66vw;

@@ -39,8 +39,8 @@
                 </Disclosure>
                 <Disclosure title="Location">
                     <h6>{{ organisationStore.locations[eventData.location].name }}</h6>
-                    <address v-html="organisationStore.locations[eventData.location].formattedAddress"></address>
-                    <a v-if="organisationStore.locations[eventData.location].URL" :href="organisationStore.locations[eventData.location].URL" target="_blank" class="btn btn--tertiary">
+                    <address v-html="organisationStore.locations[eventData.location].formatted_address"></address>
+                    <a v-if="organisationStore.locations[eventData.location].url" :href="organisationStore.locations[eventData.location].url" target="_blank" class="btn btn--tertiary">
                         <MapIcon /> Location Map
                     </a>
                 </Disclosure>
@@ -103,9 +103,9 @@
     }
 
     .schedule-card {
-        // --sb-track-color: var(--c-neutral-100);
-        // --sb-thumb-color: var(--c-neutral-90);
-        // @include scrollbars();
+        --sb-track-color: var(--c-neutral-100);
+        --sb-thumb-color: var(--c-neutral-90);
+        @include scrollbars();
         background: var(--c-white);
         border-radius: var(--space-sm);
         box-shadow: var(--box-shadow-elevate);
@@ -113,7 +113,7 @@
         display: flex;
             flex-direction: column;
 
-        // max-height: calc(100vh - var(--header-height) - var(--space-xl));
+        max-height: calc(100vh - var(--header-height) - var(--space-xl) - var(--space-xl));
         // position: sticky;
         //     top: 0;
     }

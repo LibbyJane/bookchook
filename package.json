@@ -10,10 +10,14 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@iconoir/vue": "^7.8.0",
     "@nuxt/image": "^1.7.0",
+    "@nuxtjs/leaflet": "^1.0.14",
     "@pinia/nuxt": "^0.5.1",
+    "@tiptap/extension-text-align": "^2.5.5",
     "axios": "^1.7.2",
     "nuxt": "^3.12.3",
+    "nuxt-tiptap-editor": "^1.1.2",
     "pinia": "^2.1.7",
     "vue": "^3.4.27",
     "vue-router": "^4.3.3"

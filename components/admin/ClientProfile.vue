@@ -42,7 +42,7 @@
                     </button>
                 </li>
                 <li>
-                    <button class="btn btn--sm btn--tertiary" :title="`Add ${data.first_name} to a group.`">
+                    <button type="button" class="btn btn--sm btn--tertiary" :title="`Add ${data.first_name} to a group.`">
                         <span class="btn-action">
                             <PlusIcon css-class="icon--xs" />
                         </span>
