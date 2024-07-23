@@ -2,17 +2,24 @@
     --icon-size-xs: 0.66em;
     --icon-size-sm: 1em;
     --icon-size: calc((1em + var(--space-xs))*1px);
+    --icon-size: 1.1rem;
     --icon-size-med: 1.4rem;
     --icon-size-lg: 2.2rem;
 }
 
-.icon {
+// iconoir icons
+svg,
+path {
+    stroke-width: 2;
     display: inline-block;
-        fill: currentColor;
     height: var(--icon-size);
     width: var(--icon-size);
     flex-shrink: 0;
     transition: var(--transition);
+}
+
+.icon {
+    fill: currentColor;
 }
 
 .icon--xs {

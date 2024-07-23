@@ -49,11 +49,13 @@
         &:has(:valid) {
             .field-status__icon--valid {
                 aspect-ratio: 1 / 1;
-                background-color: var(--c-success-light);
-                border-radius: 50%;
-                color: var(--c-success-dark);
+                // background-color: var(--c-success-light);
+                // border-radius: 50%;
+                // color: var(--c-success-dark);
+                // outline: 2px solid var(--c-success-light);
+
+                color: var(--c-success);
                 display: block;
-                outline: 2px solid var(--c-success-light);
             }
 
             .required__indicator,

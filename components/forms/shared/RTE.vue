@@ -1,5 +1,8 @@
 <template>
     <div class="rte">
+        <pre>
+            Props: {{  editorContent }}
+        </pre>
         <div class="rte__buttons" v-if="editor">
             <button type="button" v-on:click="editor.chain().focus().setTextAlign('left').run()" :class="{ 'is-active': editor.isActive({ textAlign: 'left' }) }" class="btn btn--tertiary" title="Align Text Left">
                 <AlignLeft />
@@ -26,12 +29,11 @@
                 <Italic />
                 <!-- <span class="sr-only">bold</span> -->
             </button>
-            <button type="button" v-on:click="editor.chain().focus().toggleStrike().run()"
+            <!-- <button type="button" v-on:click="editor.chain().focus().toggleStrike().run()"
                 :disabled="!editor.can().chain().focus().toggleStrike().run()"
                 :class="{ 'is-active': editor.isActive('strike') }" class="btn btn--tertiary" title="Strikethrough">
                 <Strikethrough />
-                <!-- <span class="sr-only">Strikethrough</span> -->
-            </button>
+            </button> -->
             <!-- <button type="button" v-on:click="editor.chain().focus().unsetAllMarks().run()" class="btn btn--tertiary">
                 clear marks
             </button>
@@ -42,32 +44,37 @@
             <button type="button" v-on:click="editor.chain().focus().setParagraph().run()"
                 :class="{ 'is-active': editor.isActive('paragraph') }" class="btn btn--tertiary" title="Paragraph text">
                 <Text />
-                <span class="sr-only">Paragraph</span>
             </button>
-            <button type="button" v-on:click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
-                :class="{ 'is-active': editor.isActive('heading', { level: 1 }) }" class="btn btn--tertiary" title="Heading 1">
-                h1
+            <button type="button" v-on:click="editor.chain().focus().setParagraph().run()"
+                :class="{ 'is-active': editor.isActive('paragraph') }" class="btn btn--tertiary" title="Paragraph text">
+                <Text />
             </button>
-            <button type="button" v-on:click="editor.chain().focus().toggleHeading({ level: 2 }).run()"
-                :class="{ 'is-active': editor.isActive('heading', { level: 2 }) }" class="btn btn--tertiary" title="Heading 2">
-                h2
-            </button>
-            <button type="button" v-on:click="editor.chain().focus().toggleHeading({ level: 3 }).run()"
-                :class="{ 'is-active': editor.isActive('heading', { level: 3 }) }" class="btn btn--tertiary" title="Heading 3">
-                h3
-            </button>
-            <button type="button" v-on:click="editor.chain().focus().toggleHeading({ level: 4 }).run()"
-                :class="{ 'is-active': editor.isActive('heading', { level: 4 }) }" class="btn btn--tertiary" title="Heading 4">
+            <!-- Naming the heading buttons for their relative size, rather than actual element -->
+            <button type="button" v-on:click="editor.chain().focus().toggleHeading({ level: 6 }).run()"
+                :class="{ 'is-active': editor.isActive('heading', { level: 6 }) }" class="btn btn--tertiary" title="Small Heading">
                 h4
             </button>
             <button type="button" v-on:click="editor.chain().focus().toggleHeading({ level: 5 }).run()"
-                :class="{ 'is-active': editor.isActive('heading', { level: 5 }) }" class="btn btn--tertiary" title="Heading 5">
-                h5
+                :class="{ 'is-active': editor.isActive('heading', { level: 5 }) }" class="btn btn--tertiary" title="Medium Heading">
+                h3
             </button>
-            <button type="button" v-on:click="editor.chain().focus().toggleHeading({ level: 6 }).run()"
-                :class="{ 'is-active': editor.isActive('heading', { level: 6 }) }" class="btn btn--tertiary" title="Heading 6">
-                h6
+            <button type="button" v-on:click="editor.chain().focus().toggleHeading({ level: 4 }).run()"
+                :class="{ 'is-active': editor.isActive('heading', { level: 4 }) }" class="btn btn--tertiary" title="Large Heading">
+                h2
             </button>
+            <button type="button" v-on:click="editor.chain().focus().toggleHeading({ level: 3 }).run()"
+                :class="{ 'is-active': editor.isActive('heading', { level: 3 }) }" class="btn btn--tertiary" title="Largest Heading">
+                h1
+            </button>
+
+            <!-- <button type="button" v-on:click="setLink"
+                :class="{ 'is-active': editor.isActive('link') }" class="btn btn--tertiary" title="Link">
+                <LinkIcon />
+            </button>
+            <button type="button" v-on:click="editor.chain().focus().unsetLink().run()"
+            :disabled="!editor.isActive('link')" class="btn btn--tertiary" title="Remove link">
+                <LinkSlash />
+            </button> -->
             <button type="button" v-on:click="editor.chain().focus().toggleBulletList().run()"
                 :class="{ 'is-active': editor.isActive('bulletList') }" class="btn btn--tertiary" title="Bullet list">
                 <List />
@@ -106,15 +113,17 @@
                 <!-- <span class="sr-only">Redo</span> -->
             </button>
         </div>
-        <TiptapEditorContent :editor="editor" class="textarea rte__editor" />
+        <TiptapEditorContent :editor="editor" class="textarea rte__editor" v-on:blur="$emit('notesUpdate', editor.getHTML())" />
     </div>
 
 </template>
 
 <script setup>
-    import { AlignLeft, AlignRight, AlignCenter, AlignJustify, Bold, Italic, Strikethrough, List, NumberedListLeft, Text, QuoteSolid, Undo, Redo, Minus, Xmark, LongArrowDownLeft, Erase } from '@iconoir/vue';
-    import TextAlign from '@tiptap/extension-text-align'
+    import { AlignLeft, AlignRight, AlignCenter, AlignJustify, Bold, Italic, Strikethrough, List, NumberedListLeft, Text, QuoteSolid, Undo, Redo, Minus, Xmark, LongArrowDownLeft, Erase, LinkSlash, Link as LinkIcon } from '@iconoir/vue';
+    import TextAlign from '@tiptap/extension-text-align';
+    import Link from '@tiptap/extension-link';
 
+    const emit = defineEmits(['notesUpdate'])
 
     const props = defineProps({
         editorContent: {
@@ -130,8 +139,16 @@
             TextAlign.configure({
                 types: ['heading', 'paragraph', 'li', 'blockquote'],
                 alignments: ['left', 'center', 'right', 'justify']
-            })
+            }),
+            Link.configure({
+                openOnClick: false,
+                defaultProtocol: 'https',
+            }),
         ],
+        onBlur: function({editor}) {
+            console.log('blur:', editor.getHTML());
+            emit('notesUpdate', editor.getHTML());
+        }
     });
 
     onBeforeUnmount(() => {

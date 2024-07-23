@@ -1,6 +1,6 @@
 <template>
     <details class="disclosure" :class="cssClass" :open="open">
-        <summary>
+        <summary :class="variant === 'button'? `btn btn--sm btn--tertiary` : null">
             <span>{{ title}}</span>
         </summary>
         <div class="disclosure-content">
@@ -13,6 +13,10 @@
     const props = defineProps({
         cssClass: {
             type: String,
+        },
+        variant: {
+            type: String,
+            required: false
         },
         title: {
             type: String
@@ -29,7 +33,12 @@
     }
 
     .disclosure {
+        font-size: var(--p);
         margin-bottom: var(--space);
+
+        &.btn {
+            display: block;
+        }
     }
 
     summary {
@@ -44,6 +53,16 @@
         margin: 0;
         padding: 0;
         position: relative;
+        text-align: start;
+        width: 100%;
+
+        &.btn {
+            justify-content: start;
+
+            ~ div {
+                margin-top: var(--space);
+            }
+        }
 
         &::before {
             content: '▸';

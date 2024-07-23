@@ -1,5 +1,5 @@
 <template>
-    <form v-if="organisationStore.locations[id]" v-on:submit="handleSubmit" class="form form--location" :class="{ 'loading': form.state == 'loading' }" ref="locationFormElement">
+    <form v-if="organisationStore.locations[id]" v-on:notesUpdate="updateNotes" v-on:submit="handleSubmit" class="form form--location" :class="{ 'loading': form.state == 'loading' }" ref="locationFormElement">
         <fieldset class="location-fieldset__name">
             <!-- <legend>Location</legend> -->
 
@@ -144,12 +144,13 @@
                 />
             </Field>
 
-            <Disclosure title="Getting Latitude and Longitude via a Google Map">
+            <Disclosure title="Getting Latitude and Longitude via a Google Map" variant="button">
+                <p>You can get your latitude and logitude co-ordinates from a Google map in a few easy steps - </p>
                 <ol>
-                    <li>search for your location</li>
-                    <li>right-click on the marker</li>
-                    <li>click on the co-ordinates in the popup</li>
-                    <li>paste into the into the Latitude and Longitude field above (e.g. right-click and select 'paste')</li>
+                    <li>Search for your location</li>
+                    <li>Right-click on the marker</li>
+                    <li>Click on the co-ordinates in the popup</li>
+                    <li>Paste into the into the Latitude and Longitude field above (right-click and select 'paste')</li>
                 </ol>
                 <img src="@/assets/images/admin/get-lat-long.gif" alt="Push Pin" style="max-width: 300px" />
             </Disclosure>
@@ -158,7 +159,7 @@
         <fieldset class="location-fieldset__notes">
             <legend>Notes</legend>
 
-            <p>You may wish to include information such as available facilities, parking information, public availability, transportation routes etc.</p>
+            <p>You may wish to include helpful information such as available facilities, parking availability, public transportation routes etc.</p>
             <RTE :editorContent="fields.notes.value" />
         </fieldset>
 
@@ -177,11 +178,6 @@
     import RTE from '~/components/forms/shared/RTE.vue';
     import Disclosure from '@/components/interface/Disclosure.vue';
 
-
-    import ArrowIcon from '@/components/icons/arrow.vue';
-    import EyeIcon from '@/components/icons/eye.vue';
-    import EyeClosedIcon from '@/components/icons/eye-closed.vue';
-
     const organisationStore = useOrganisationStore();
 
     const props = defineProps({
@@ -189,6 +185,10 @@
             required: true
         }
     });
+
+    const updateNotes = (e) => {
+        console.log('notes update listner', e);
+    }
 
     const locationFormElement = ref(null);
 
@@ -247,10 +247,10 @@
     const handleSubmit = async (e) => {
         e.preventDefault();
         form.state = 'loading';
-        signupFormElement.value.reportValidity();
+        locationFormElement.value.reportValidity();
 
-        if (!signupFormElement.value.checkValidity()) {
-            const list = signupFormElement.value.querySelectorAll('fieldset :invalid');
+        if (!locationFormElement.value.checkValidity()) {
+            const list = locationFormElement.value.querySelectorAll('fieldset :invalid');
             list.forEach(elem => {
                 fields[elem.id].error = elem.validationMessage;
             })
@@ -266,7 +266,8 @@
             data[key] = value.value;
         }
 
-        const outcome = await useSiteAPI({ endpoint: 'register', data });
+        // const outcome = await useSiteAPI({ endpoint: '', data });
+        console.log('data', data);
         let errorMessage;
 
         if (outcome && outcome.error) {
@@ -279,11 +280,12 @@
 
         if (errorMessage) {
             form.error = errorMessage;
-            form.state = '';
             return;
         }
 
-        navigateTo(`/with/${fields.url_slug.value}/admin`);
+        form.state = '';
+
+        // navigateTo(`/with/${fields.url_slug.value}/admin`);
     };
 
     const clearError = (id) => {
@@ -306,6 +308,7 @@
         @include breakpoint(lg) {
             display: grid;
             grid-template-areas: "name name" "address map" "notes notes" "submit submit";
+            grid-template-columns: 1fr 1fr;
         }
 
         button[type="submit"] {
