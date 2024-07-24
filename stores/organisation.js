@@ -369,7 +369,7 @@ export const useOrganisationStore = defineStore('organisationStore', {
                         locationID1: {
                             name: "The Chapel Allerton Methodist Centre",
                             formatted_address: "Town Street, Chapel Allerton<br>Leeds LS7 4NB",
-                            notes: "<p>We are in the basement - the stairs going down are on the right hand side of the outside of the building.</p><p>Please note that toilets are only available after 8pm on a Tuesday and Thursday night.<p>",
+                            description: "<p>We are in the basement - the stairs going down are on the right hand side of the outside of the building.</p><p>Please note that toilets are only available after 8pm on a Tuesday and Thursday night.<p>",
                             url: "https://maps.app.goo.gl/yCQWvLQvkqsY7f5L8",
                             latLong: [53.8289522,-1.5371502],
                             address: {
@@ -383,7 +383,7 @@ export const useOrganisationStore = defineStore('organisationStore', {
                         locationID2: {
                             name: "East Keswick Village Hall",
                             formatted_address: "School Lane, East Keswick<br>Leeds LS17 9DA",
-                            notes: "<p>The village of East Keswick is found just off the A58 Leeds-Wetherby road. The A1 is 3 miles away at the Boston Spa exit.</p><p>The nearest main line railway station is Leeds.</p><p>East Keswick is serviced by bus route X99 which provide an hourly service from Leeds and Wetherby and by service 923 which provides a two hourly service daytimes to Wetherby and Otley. Full details on all bus times from www.wymetro.com",
+                            description: "<p>The village of East Keswick is found just off the A58 Leeds-Wetherby road. The A1 is 3 miles away at the Boston Spa exit.</p><p>The nearest main line railway station is Leeds.</p><p>East Keswick is serviced by bus route X99 which provide an hourly service from Leeds and Wetherby and by service 923 which provides a two hourly service daytimes to Wetherby and Otley. Full details on all bus times from www.wymetro.com",
                             url: "https://maps.app.goo.gl/ZG66rNfVVeGsTwKV7",
                             latLong: [53.8937194,-1.4522842],
                             address: {

@@ -1,9 +1,6 @@
 <template>
-    <div class="rte">
-        <pre>
-            Props: {{  editorContent }}
-        </pre>
-        <div class="rte__buttons" v-if="editor">
+    <div class="rte-editor">
+        <div class="rte-editor__buttons" v-if="editor">
             <button type="button" v-on:click="editor.chain().focus().setTextAlign('left').run()" :class="{ 'is-active': editor.isActive({ textAlign: 'left' }) }" class="btn btn--tertiary" title="Align Text Left">
                 <AlignLeft />
             </button>
@@ -21,13 +18,11 @@
                 :disabled="!editor.can().chain().focus().toggleBold().run()"
                 :class="{ 'is-active': editor.isActive('bold') }" class="btn btn--tertiary" title="Bold">
                     <Bold />
-                    <!-- <span class="sr-only">bold</span> -->
             </button>
             <button type="button" v-on:click="editor.chain().focus().toggleItalic().run()"
                 :disabled="!editor.can().chain().focus().toggleItalic().run()"
                 :class="{ 'is-active': editor.isActive('italic') }" class="btn btn--tertiary" title="Italic">
-                <Italic />
-                <!-- <span class="sr-only">bold</span> -->
+                    <Italic />
             </button>
             <!-- <button type="button" v-on:click="editor.chain().focus().toggleStrike().run()"
                 :disabled="!editor.can().chain().focus().toggleStrike().run()"
@@ -45,10 +40,7 @@
                 :class="{ 'is-active': editor.isActive('paragraph') }" class="btn btn--tertiary" title="Paragraph text">
                 <Text />
             </button>
-            <button type="button" v-on:click="editor.chain().focus().setParagraph().run()"
-                :class="{ 'is-active': editor.isActive('paragraph') }" class="btn btn--tertiary" title="Paragraph text">
-                <Text />
-            </button>
+
             <!-- Naming the heading buttons for their relative size, rather than actual element -->
             <button type="button" v-on:click="editor.chain().focus().toggleHeading({ level: 6 }).run()"
                 :class="{ 'is-active': editor.isActive('heading', { level: 6 }) }" class="btn btn--tertiary" title="Small Heading">
@@ -97,7 +89,7 @@
             <button style="margin-right: auto" type="button" v-on:click="editor.chain().focus().setHardBreak().run()" class="btn btn--tertiary" title="Hard break">
                 <LongArrowDownLeft />
             </button>
-            <button type="button" v-on:click="editor.chain().focus().unsetAllMarks().clearNodes().run()" class="btn btn--tertiary btn-rte-clear" title="Clear Formatting">
+            <button type="button" v-on:click="editor.chain().focus().unsetAllMarks().clearNodes().run()" class="btn btn--tertiary btn-rte-editor-clear" title="Clear Formatting">
                 <!-- clear formatting -->
                 <Erase />
                 <!-- <Text />
@@ -113,7 +105,7 @@
                 <!-- <span class="sr-only">Redo</span> -->
             </button>
         </div>
-        <TiptapEditorContent :editor="editor" class="textarea rte__editor" v-on:blur="$emit('notesUpdate', editor.getHTML())" />
+        <TiptapEditorContent :editor="editor" class="textarea rte-editor__editor" v-on:blur="$emit(props.updatedEventName, editor.getHTML())" />
     </div>
 
 </template>
@@ -123,11 +115,12 @@
     import TextAlign from '@tiptap/extension-text-align';
     import Link from '@tiptap/extension-link';
 
-    const emit = defineEmits(['notesUpdate'])
-
     const props = defineProps({
         editorContent: {
             default: ""
+        },
+        updatedEventName: {
+            default: "rteUpdate"
         }
     });
 
@@ -144,11 +137,7 @@
                 openOnClick: false,
                 defaultProtocol: 'https',
             }),
-        ],
-        onBlur: function({editor}) {
-            console.log('blur:', editor.getHTML());
-            emit('notesUpdate', editor.getHTML());
-        }
+        ]
     });
 
     onBeforeUnmount(() => {
@@ -157,10 +146,12 @@
 </script>
 
 <style lang="scss">
-    // @import '@/assets/css/rte.css';
-    .rte__buttons {
-        --icon-size: 0.9rem;
+    .rte-editor {
+        width: 100%;
+        word-break: break-all;
+    }
 
+    .rte-editor__buttons {
         display: flex;
             flex-wrap: wrap;
             gap: var(--space-xxs);
@@ -177,23 +168,18 @@
         }
 
         svg {
-            height: var(--icon-size);
-            width: var(--icon-size);
+            max-height: var(--icon-size-sm);
+            max-width: var(--icon-size-sm);
+
+            @include breakpoint(med) {
+                max-height: var(--icon-size);
+                max-width: var(--icon-size);
+            }
         }
     }
 
-    .btn-rte-clear {
-        // display: grid;
-        // grid-template-areas: "icon";
+    .btn-rte-editor-clear {
         gap: 0;
-
-        // svg {
-        //     grid-area: icon;
-
-        //     &:last-of-type {
-        //         transform: scale(0.85) translateX(0.5rem) translateY(0.25rem);
-        //     }
-        // }
     }
 </style>
 

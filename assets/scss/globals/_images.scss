@@ -1,7 +1,8 @@
 :root {
-    --icon-size-xs: 0.66em;
-    --icon-size-sm: 1em;
-    --icon-size: calc((1em + var(--space-xs))*1px);
+    // todo: check these
+    --icon-size-xs: 0.66rem;
+    --icon-size-sm: 0.94rem;
+    // --icon-size: calc((1em + var(--space-xs))*1px);
     --icon-size: 1.1rem;
     --icon-size-med: 1.4rem;
     --icon-size-lg: 2.2rem;
@@ -12,24 +13,26 @@ svg,
 path {
     stroke-width: 2;
     display: inline-block;
-    height: var(--icon-size);
-    width: var(--icon-size);
+        height: var(--icon-size);
+        width: var(--icon-size);
     flex-shrink: 0;
+    line-height: 1;
     transition: var(--transition);
 }
 
 .icon {
     fill: currentColor;
+    overflow: visible;
 }
 
 .icon--xs {
-    height: var(--icon-size-xs);
-    width: var(--icon-size-xs);
+    max-height: var(--icon-size-xs);
+    max-width: var(--icon-size-xs);
 }
 
 .icon--sm {
-    height: var(--icon-size-sm);
-    width: var(--icon-size-sm);
+    max-height: var(--icon-size-sm);
+    max-width: var(--icon-size-sm);
 }
 
 // .icon--med {

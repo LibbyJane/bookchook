@@ -25,14 +25,15 @@ body {
 }
 
 .main-content {
-    display: grid;
-        grid-template-columns: 1fr;
+    display: flex;
+        flex-direction: column;
     margin-bottom: auto;
     width: 100%;
 
     @include breakpoint(lg) {
+        display: grid;
         grid-template-areas: 'sidebar main-col';
-        grid-template-columns: minmax(max-content, 250px) 1fr;
+        grid-template-columns: max-content 1fr;
         gap: var(--space-lg);
     }
 }

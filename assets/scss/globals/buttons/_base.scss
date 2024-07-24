@@ -72,10 +72,10 @@
 
     .icon {
         flex-shrink: 0;
+        pointer-events: none;
         transition: transform var(--transition-speed-fast) var(--transition-type-motionless);
     }
 }
-
 
 .btn--sm {
     font-size: var(--p-sm);

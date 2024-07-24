@@ -1,5 +1,6 @@
 <template>
-    <form v-if="organisationStore.locations[id]" v-on:notesUpdate="updateNotes" v-on:submit="handleSubmit" class="form form--location" :class="{ 'loading': form.state == 'loading' }" ref="locationFormElement">
+    <form v-on:submit="handleSubmit" class="form form--location" :class="{ 'loading': form.state == 'loading' }" ref="locationFormElement">
+
         <fieldset class="location-fieldset__name">
             <!-- <legend>Location</legend> -->
 
@@ -156,11 +157,11 @@
             </Disclosure>
         </fieldset>
 
-        <fieldset class="location-fieldset__notes">
-            <legend>Notes</legend>
+        <fieldset class="location-fieldset__description">
+            <legend>Description</legend>
 
             <p>You may wish to include helpful information such as available facilities, parking availability, public transportation routes etc.</p>
-            <RTE :editorContent="fields.notes.value" />
+            <RTE :editorContent="fields.description.value" updatedEventName="descriptionUpdate" v-on:descriptionUpdate="fields.description.value = $event" />
         </fieldset>
 
         <button type="submit" class="btn btn--success">Save</button>
@@ -172,6 +173,7 @@
     import { useOrganisationStore } from '@/stores/organisation.js';
     import { useSiteAPI } from '@/api/useSiteAPI';
 
+
     import Field from '@/components/forms/shared/Field.vue';
     import Error from '@/components/forms/shared/Error.vue';
     import Help from '@/components/forms/shared/Help.vue'
@@ -181,14 +183,8 @@
     const organisationStore = useOrganisationStore();
 
     const props = defineProps({
-        id: {
-            required: true
-        }
+        id: {}
     });
-
-    const updateNotes = (e) => {
-        console.log('notes update listner', e);
-    }
 
     const locationFormElement = ref(null);
 
@@ -199,46 +195,47 @@
 
     const fields = reactive({
         location_name: {
-            value: organisationStore.locations[props.id].name,
+            value: organisationStore.locations[props.id]?.name ? organisationStore.locations[props.id].name : "",
+            required: true,
             error: null,
         },
         address_line_1: {
-            value: organisationStore.locations[props.id].address.address_line_1,
+            value: organisationStore.locations[props.id]?.address.address_line_1 ? organisationStore.locations[props.id].address.address_line_1 : "",
             required: true,
             error: null,
         },
         address_line_2: {
-            value: organisationStore.locations[props.id].address.address_line_2,
+            value: organisationStore.locations[props.id]?.address.address_line_2 ? organisationStore.locations[props.id].address.address_line_2 : "",
             required: false,
             error: null,
         },
         suburb: {
-            value: organisationStore.locations[props.id].address.suburb,
+            value: organisationStore.locations[props.id]?.address.suburb ? organisationStore.locations[props.id].address.suburb : "",
             required: true,
             error: null,
         },
         state: {
-            value: organisationStore.locations[props.id].address.state,
+            value: organisationStore.locations[props.id]?.address.state ? organisationStore.locations[props.id].address.state : "",
             required: true,
             error: null,
         },
         postcode: {
-            value: organisationStore.locations[props.id].address.postcode,
+            value: organisationStore.locations[props.id]?.address.postcode ? organisationStore.locations[props.id].address.postcode : "",
             required: true,
             error: null,
         },
         url: {
-            value: organisationStore.locations[props.id].address.url,
+            value: organisationStore.locations[props.id]?.address.url ? organisationStore.locations[props.id].address.url : "",
             required: false,
             error: null,
         },
         latLong: {
-            value: organisationStore.locations[props.id].latLong,
+            value: organisationStore.locations[props.id]?.latLong ? organisationStore.locations[props.id].latLong : "",
             required: false,
             error: null,
         },
-        notes: {
-            value: organisationStore.locations[props.id].notes,
+        description: {
+            value: organisationStore.locations[props.id]?.description ? organisationStore.locations[props.id].description : "",
             required: false,
             error: null,
         }
@@ -267,7 +264,8 @@
         }
 
         // const outcome = await useSiteAPI({ endpoint: '', data });
-        console.log('data', data);
+        let outcome;
+        // console.log('data', data);
         let errorMessage;
 
         if (outcome && outcome.error) {
@@ -304,17 +302,18 @@
 
         gap: 0 var(--space);
         max-width: none;
+        margin-bottom: var(--space-med);
 
         @include breakpoint(lg) {
             display: grid;
-            grid-template-areas: "name name" "address map" "notes notes" "submit submit";
-            grid-template-columns: 1fr 1fr;
+                grid-template-areas: "name name" "address map" "description description" "submit submit";
+                grid-template-columns: 1fr 1fr;
         }
 
         button[type="submit"] {
             // align-self: start;
             grid-area: submit;
-            margin-inline: auto;
+            margin-right: auto;
             min-width: 200px;
         }
     }
@@ -325,6 +324,11 @@
 
     .location-fieldset__name {
         grid-area: name;
+
+        input {
+            font-size: var(--h4);
+            font-weight: 600;
+        }
     }
 
     .location-fieldset__map {
@@ -335,7 +339,7 @@
         grid-area: address;
     }
 
-    .location-fieldset__notes {
-        grid-area: notes;
+    .location-fieldset__description {
+        grid-area: description;
     }
 </style>

@@ -5,13 +5,21 @@
 
             <ul class="admin-header__actions">
                 <li>
-                    <button type="button" class="btn btn--secondary">
-                        <PlusIcon css-class="icon--xs" />
-                        Add location
+                    <button type="button" class="btn btn--secondary" v-on:click="inEditMode == 'new' ? inEditMode = null : inEditMode = 'new'">
+                        <template v-if="inEditMode == 'new'">
+                                <CrossIcon css-class="icon--xs" />
+                                Cancel
+                            </template>
+                            <template v-if="inEditMode != 'new'">
+                                <PlusIcon css-class="icon icon--xs" />
+                                Add location
+                            </template>
                     </button>
                 </li>
             </ul>
         </header>
+        <Location v-if="inEditMode == 'new'" />
+
         <ul v-if="Object.keys(organisationStore.locations).length" class="locations-list">
             <li v-for="location, key in organisationStore.locations" class="location card" :class="{ 'editing': inEditMode == key }">
                 <header class="location__header">
@@ -32,9 +40,8 @@
                             Save
                         </button> -->
 
-                        <button v-if="inEditMode != key" type="button" class="btn btn--sm btn--tertiary btn--danger" v-on:click="inEditMode = key">
-                            <TrashIcon css-class="icon--sm" />
-                            <span class="sr-only">Delete this location</span>
+                        <button v-if="inEditMode != key" type="button" class="btn btn--sm btn--tertiary btn--danger" v-on:click="inEditMode = key" title="Delete this location">
+                            <TrashIcon css-class="icon icon--sm" />
                         </button>
                     </div>
                 </header>
@@ -93,9 +100,9 @@
     import { ref } from 'vue';
 
     import PlusIcon from '@/components/icons/plus.vue';
-    import PencilIcon from '@/components/icons/pencil.vue'
-    import CrossIcon from '@/components/icons/cross.vue';
+    import PencilIcon from '@/components/icons/pencil.vue';
     import TrashIcon from '@/components/icons/trash.vue';
+    import CrossIcon from '@/components/icons/cross.vue';
     import MapIcon from '@/components/icons/map.vue';
 
     import { useOrganisationStore } from '@/stores/organisation';
@@ -103,7 +110,7 @@
 
     const organisationStore = useOrganisationStore();
     const zoom = ref(17);
-    const inEditMode = ref('locationID1');
+    const inEditMode = ref(null);
 
     await useAsyncData(() => organisationStore.getOrganisationLocations());
 </script>

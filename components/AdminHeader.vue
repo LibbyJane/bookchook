@@ -1,6 +1,6 @@
 <template>
     <header id="header" class="main-header admin-header" :class="{ 'menu-open': userMenuOpen }" ref="headerRef">
-        <div class="main-header__brand"><strong>{{ organisationStore.account.account_name }}</strong> admin portal</div>
+        <div class="main-header__brand"><strong>{{ organisationStore.account.account_name }}</strong> admin&nbsp;portal</div>
 
         <nav id="main-menu" class="main-menu">
             <button type="button" v-on:click="() => menuOpen = false" class="main-header__nav-close" aria-controls="main-menu">

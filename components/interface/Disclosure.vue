@@ -1,6 +1,7 @@
 <template>
     <details class="disclosure" :class="cssClass" :open="open">
         <summary :class="variant === 'button'? `btn btn--sm btn--tertiary` : null">
+            <NavArrowRight />
             <span>{{ title}}</span>
         </summary>
         <div class="disclosure-content">
@@ -10,6 +11,8 @@
 </template>
 
 <script setup>
+    import { NavArrowRight } from '@iconoir/vue';
+
     const props = defineProps({
         cssClass: {
             type: String,
@@ -29,7 +32,7 @@
 
 <style lang="scss">
     :root {
-        --summary-icon-size: 1.5rem;
+        --summary-icon-size: var(--icon-size-sm);
     }
 
     .disclosure {
@@ -46,7 +49,7 @@
         grid-template-areas: "icon text";
             justify-content: start;
             align-items: center;
-            grid-template-columns: var(--summary-icon-size) 1fr;
+            grid-template-columns: max-content 1fr;
         font-size: var(--h5);
         font-weight: 600;
         list-style: none;
@@ -64,12 +67,12 @@
             }
         }
 
-        &::before {
-            content: '▸';
+        svg {
             display: block;
-            grid-area: icon;
-            margin-left: calc(var(--space-xs) * -1);
-            padding: var(--space-xs);
+                grid-area: icon;
+            max-height: var(--icon-size-sm);
+            max-width: var(--icon-size-sm);
+
             transform-origin: center;
             transition: transform var(--transition-speed-fast) var(--transition-type-motionless);
 
@@ -78,14 +81,30 @@
             }
         }
 
+        // &::before {
+        //     content: '▸';
+        //     display: block;
+        //     grid-area: icon;
+        //     margin-left: calc(var(--space-xs) * -1);
+        //     padding: var(--space-xs);
+        //     transform-origin: center;
+        //     transition: transform var(--transition-speed-fast) var(--transition-type-motionless);
+
+        //     details[open] & {
+        //         transform: rotate(90deg);
+        //     }
+        // }
+
         span {
             grid-area: text;
+            line-height: var(--line-height-sm);
+            white-space: normal;
         }
     }
 
     details {
         > div {
-            padding-left: var(--summary-icon-size);
+            padding-inline: var(--icon-size-sm);
         }
     }
 </style>
