@@ -62,14 +62,14 @@
 <script setup>
     import { ref } from 'vue';
     import { useOrganisationStore } from '@/stores/organisation';
-    import { useBookerStore } from '@/stores/booker.js';
+    import { useUserStore } from '@/stores/user';
     import Pill from '@/components/interface/Pill.vue';
     import CheckIcon from '@/components/icons/check.vue';
 
     const router = useRouter()
     const route = useRoute()
     const organisationStore = useOrganisationStore();
-    const bookerStore = useBookerStore();
+    const userStore = useUserStore();
 
     let currentYear;
     let currentMonth;
@@ -86,7 +86,7 @@
     const selectedEventID = ref(route.query.id);
 
     function getBookingStatus(eventID, availability) {
-        if (bookerStore.authenticated) {
+        if (userStore.authenticated) {
             eventID = parseInt(eventID);
             // TODO
             if (eventID % 4 === 0 || eventID % 9 === 0 )

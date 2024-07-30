@@ -37,19 +37,19 @@
 
     import { ref } from 'vue';
 
-    import { useBookerStore } from '@/stores/booker.js';
+    import { useUserStore } from '@/stores/user';
     import { useOrganisationStore } from '@/stores/organisation';
 
-    const bookerStore = useBookerStore();
+    const userStore = useUserStore();
     const organisationStore = useOrganisationStore();
 
     const activeForm = ref('login');
 
-    onMounted(()=>{
-        if (bookerStore.authenticated) {
-            navigateTo(`${organisationStore.organisationPagePrefix}${organisationStore.account.url_slug}`);
-        }
-    })
+    // onMounted(()=>{
+    //     if (userStore.authenticated) {
+    //         navigateTo(`${organisationStore.organisationPagePrefix}${organisationStore.account.url_slug}`);
+    //     }
+    // })
 </script>
 
 <style lang="scss">

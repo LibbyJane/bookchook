@@ -6,7 +6,7 @@ import type { NuxtPage } from 'nuxt/schema'
 export default defineNuxtConfig({
     devtools: { enabled: true },
     pages: true,
-    css: ['~/assets/scss/main.scss', '~/assets/scss/rte.scss'],
+    css: ['~/assets/scss/main.scss', '~/assets/scss/rte.scss', '~/assets/scss/datatables.scss'],
 
     vite: {
         css: {
@@ -28,6 +28,23 @@ export default defineNuxtConfig({
             cert: fs.readFileSync(path.resolve(__dirname, 'server.crt'))
         }
     },
+    // hooks: {
+    //     'pages:extend' (pages) {
+    //         function setMiddleware (pages: NuxtPage[]) {
+    //             for (const page of pages) {
+    //             if (/* some condition */ true) {
+    //                 page.meta ||= {}
+    //                 // Note that this will override any middleware set in `definePageMeta` in the page
+    //                 page.meta.middleware = ['auth']
+    //             }
+    //             if (page.children) {
+    //                 setMiddleware(page.children)
+    //             }
+    //             }
+    //         }
+    //         setMiddleware(pages)
+    //         }
+    //     },
 
     // hooks: {
     //     'pages:routerOptions' ({ files }) {

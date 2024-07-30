@@ -5,6 +5,49 @@
     container-type: inline-size;
     display: flex;
         flex-direction: column;
+    margin-bottom: var(--space);
     overflow: hidden;
     // padding: var(--content-padding-all);
+}
+
+.card__header {
+    display: flex;
+        justify-content: space-between;
+        gap: var(--space-med);
+        align-items: center;
+    grid-column-start: 1;
+    grid-column-end: -1;
+    padding: var(--content-padding);
+
+    &:hover,
+    &:focus {
+        button {
+            opacity: 1;
+        }
+    }
+
+    button {
+        opacity: 0.4;
+
+        .editing & {
+            opacity: 1;
+        }
+    }
+}
+
+.card__header--actions {
+    display: flex;
+        gap: var(--space-xs);
+    flex-shrink: 0;
+    margin-left: auto;
+}
+
+.card__header--heading {
+    margin: 0;
+    padding: 0;
+}
+
+.card__body {
+    padding: var(--content-padding-all);
+    padding-top: 0;
 }

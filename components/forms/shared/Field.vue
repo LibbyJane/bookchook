@@ -42,6 +42,7 @@
         //margin: 0 0 var(--space-sm) 0;
         margin: 0;
         padding: 0;
+        text-transform: capitalize; // for when object keys are used to generate label text, eg billing preferences
     }
 
     .field-wrapper {

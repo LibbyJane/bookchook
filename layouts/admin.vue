@@ -25,8 +25,9 @@
 
         <article class="main-content layout-admin">
             <AdminNav />
-
-            <slot />
+            <div class="container">
+                <slot />
+            </div>
         </article>
         <AdminFooter />
     </div>

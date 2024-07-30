@@ -20,11 +20,11 @@
 
 <script setup>
     import { ref, reactive } from 'vue';
-    import { useBookerStore } from '@/stores/booker.js';
+    import { useUserStore } from '@/stores/user';
     import Label from '@/components/forms/shared/Label.vue';
     import Error from '@/components/forms/shared/Error.vue';
 
-    const bookerStore = useBookerStore();
+    const userStore = useUserStore();
 
     const fields = reactive({
         email: {
@@ -47,7 +47,7 @@
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // const outcome = await bookerStore.performLogin({
+        // const outcome = await userStore.performLogin({
         //     email: fields.email.value,
         //     password: fields.password.value,
         // });

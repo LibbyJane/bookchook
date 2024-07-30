@@ -1,8 +1,8 @@
 <template>
     <section class="schedule-card__wrapper container sticky" v-if="eventData">
         <div class="schedule-card">
-            <header class="schedule-card__header">
-                <h2>{{ eventData.title }}</h2>
+            <header class="card__header">
+                <h2 class="card__header--heading">{{ eventData.title }}</h2>
                 <a v-if="eventActive" href="#tickets" class="btn btn--secondary">
                     <span class="btn__text">Book</span>
                     <ArrowIcon />
@@ -50,7 +50,7 @@
                 <template v-if="!eventActive">
                     <p>This event is no longer available for bookings.</p>
                 </template>
-                <template v-else-if="!bookerStore.authenticated">
+                <template v-else-if="!userStore.authenticated">
                     <p>Please <a href="login">login or register</a> to book on to this event.</p>
                 </template>
                 <template v-else>
@@ -64,7 +64,7 @@
 <script setup>
     import { computed } from 'vue'
     import { useOrganisationStore } from '@/stores/organisation';
-    import { useBookerStore } from '@/stores/booker.js';
+    import { useUserStore } from '@/stores/user';
     import Disclosure from '@/components/interface/Disclosure.vue';
 
     import ArrowIcon from '@/components/icons/arrow.vue';
@@ -74,7 +74,7 @@
     import MapIcon from '@/components/icons/map.vue';
 
     const organisationStore = useOrganisationStore();
-    const bookerStore = useBookerStore();
+    const userStore = useUserStore();
 
     const props = defineProps({
         eventID: {
@@ -82,9 +82,15 @@
         }
     });
 
+    console.log('event ID?', props.eventID);
+    console.log('schedule?', organisationStore.schedule);
+
+
     const eventData = computed(() => {
         return organisationStore.schedule.filter(event => event.id == props.eventID)[0];
     })
+
+    console.log('data?', eventData);
 
     const eventActive = ref();
 
@@ -116,19 +122,6 @@
         max-height: calc(100vh - var(--header-height) - var(--space-xl) - var(--space-xl));
         // position: sticky;
         //     top: 0;
-    }
-
-    .schedule-card__header {
-        display: flex;
-            justify-content: space-between;
-            gap: var(--space);
-            align-items: center;
-        padding: var(--content-padding);
-
-        h2 {
-            margin: 0;
-            padding: 0;
-        }
     }
 
     .schedule-card__body {

@@ -13,25 +13,25 @@
                         What&rsquo;s on
                     </a>
                 </li>
-                <li v-if="bookerStore.authenticated && organisationStore.purchaseTypes.passes">
+                <li v-if="userStore.authenticated && organisationStore.purchaseTypes.passes">
                     <a class="main-menu__item" :href="`${organisationStore.organisationPagePrefix}${organisationStore.account.url_slug}/passes`">
                         <TicketIcon />
                         Passes
                     </a>
                 </li>
-                <li v-if="bookerStore.authenticated && organisationStore.purchaseTypes.membership">
+                <li v-if="userStore.authenticated && organisationStore.purchaseTypes.membership">
                     <a class="main-menu__item" :href="`${organisationStore.organisationPagePrefix}${organisationStore.account.url_slug}/membership`">
                         <MembershipIcon />
                         Membership
                     </a>
                 </li>
                 <li>
-                    <button v-if="bookerStore.authenticated" type="button" v-on:click="() => userMenuOpen = !userMenuOpen" aria-controls="user-menu" class="main-menu__item menu-toggle">
+                    <button v-if="userStore.authenticated" type="button" v-on:click="() => userMenuOpen = !userMenuOpen" aria-controls="user-menu" class="main-menu__item menu-toggle">
                         <UserIcon />
                         Account
                     </button>
                 </li>
-                <li v-if="!bookerStore.authenticated">
+                <li v-if="!userStore.authenticated">
                     <a class="main-menu__item" :href="`${organisationStore.organisationPagePrefix}${organisationStore.account.url_slug}/login`">
                         <UserIcon />
                         Log in / Register
@@ -44,7 +44,7 @@
 
 <script setup>
     import { useOrganisationStore } from '@/stores/organisation';
-    import { useBookerStore } from '@/stores/booker.js';
+    import { useUserStore } from '@/stores/user';
 
     import CalendarIcon from '@/components/icons/calendar.vue';
     import TicketIcon from '@/components/icons/ticket.vue';
@@ -52,7 +52,7 @@
     import UserIcon from '@/components/icons/user.vue';
 
     const organisationStore = useOrganisationStore();
-    const bookerStore = useBookerStore();
+    const userStore = useUserStore();
     const userMenuOpen = ref(false);
 
 </script>

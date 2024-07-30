@@ -1,6 +1,6 @@
 import axios from "axios"
 import { apiBaseURL } from '@/api/config';
-import { useBookerStore } from '@/stores/booker';
+import { useUserStore } from '@/stores/user';
 
 const endpoints = {
     register: {
@@ -19,9 +19,9 @@ const endpoints = {
     },
 }
 
-export async function useBookerAPI(endpoint, data, id) {
-    const bookerStore = useBookerStore();
-    const token = bookerStore && bookerStore.getAuthenticationToken ? bookerStore.getAuthenticationToken : null;
+export async function useUserAPI(endpoint, data, id) {
+    const userStore = useUserStore();
+    const token = userStore && userStore.getAuthenticationToken ? userStore.getAuthenticationToken : null;
     // console.log('token', token)
 
     if (endpoint && endpoints[endpoint]) {
@@ -61,7 +61,7 @@ export async function useBookerAPI(endpoint, data, id) {
             if (error.response.status === 403) {
                 console.log('bad token, logout')
 
-                bookerStore.performLogout;
+                userStore.performLogout;
             }
             else if (error.response && error.response.data) {
                 return error.response.data
@@ -75,4 +75,4 @@ export async function useBookerAPI(endpoint, data, id) {
 
 }
 
-export default useBookerAPI
+export default useUserAPI

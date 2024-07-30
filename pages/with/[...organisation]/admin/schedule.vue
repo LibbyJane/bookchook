@@ -1,10 +1,8 @@
 <template>
-    <div class="container">
-        <h1>Schedule </h1>
-
-    </div>
+    <Header title="Schedule"></Header>
 </template>
 
 <script setup>
+    import Header from '@/components/admin/Header.vue';
 
 </script>

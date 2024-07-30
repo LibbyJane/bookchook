@@ -1,17 +1,15 @@
 <template>
-    <div class="clients container">
+    <Header title="Clients"></Header>
+
+    <div class="clients">
         <div class="client-list">
-            <h1>Clients</h1>
             <ul v-if="organisationStore.clients" class="clickable-list">
-                <li v-for="client in organisationStore.clients" role="button" class="clickable-list__item" :class="`${ client.id == selectedUser?.id ? 'active' : '' }`" v-on:click="selectedUser = client">
+                <li v-for="client in organisationStore.clients" role="button" class="clickable-list__item" :class="`${ client.id == selectedClient?.id ? 'active' : '' }`" v-on:click="selectedClient = client">
                     <h6>
                         {{ client.first_name }} {{ client.last_name }}
                         <small v-if="client.role_type.toLowerCase() == 'administrator'">{{ client.role_type }}</small>
                     </h6>
                     {{ client.email_address }}
-                    <!-- <a v-if="client.email_address" :href="`mailto:${client.email_address}`">
-
-                    </a> -->
                     <ArrowIcon />
                 </li>
             </ul>
@@ -21,7 +19,7 @@
         </p>
         </div>
         <div class="client-profile sticky">
-            <ClientProfile v-if="selectedUser" :data="selectedUser" />
+            <ClientProfile v-if="selectedClient" :data="selectedClient" />
         </div>
     </div>
 </template>
@@ -30,23 +28,22 @@
 <script setup>
     import { ref, onMounted } from 'vue';
     import { useOrganisationStore } from '@/stores/organisation';
+    import Header from '@/components/admin/Header.vue';
     import ClientProfile from '@/components/admin/ClientProfile.vue';
     import ArrowIcon from '@/components/icons/arrow.vue';
 
-    const selectedUser = ref(null);
+    const selectedClient = ref(null);
     const organisationStore = useOrganisationStore();
 
-    await useAsyncData(() => organisationStore.getOrganisationBookers());
+    await useAsyncData(() => organisationStore.getOrganisationClients());
 
     onMounted(()=>{
         if (organisationStore.clients.length === 1) {
             // if there's only one client, preselect them
-            selectedUser.value = organisationStore.clients[0];
+            selectedClient.value = organisationStore.clients[0];
         }
     })
-
 </script>
-
 
 <style lang="scss">
     .clients {

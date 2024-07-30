@@ -1,10 +1,8 @@
 <template>
-    <div class="container">
-        <h1>Bookings </h1>
-
-    </div>
+    <Header title="Bookings"></Header>
 </template>
 
 <script setup>
+    import Header from '@/components/admin/Header.vue';
 
 </script>

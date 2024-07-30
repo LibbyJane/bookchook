@@ -1,19 +1,19 @@
 <template>
     <div v-if="data" class="card">
-        <header class="client-profile__header">
-            <h3 class="client-profile__name">
+        <header class="user-profile__header">
+            <h3 class="user-profile__name">
                 {{ data.first_name }} {{ data.last_name }}
             </h3>
-            <small class="client-profile__role">{{ data.role_type }}</small>
-            <ul class="client-profile__dates">
+            <small class="user-profile__role">{{ data.role_type }}</small>
+            <ul class="user-profile__dates">
                 <li>Joined {{ memberSince }}</li>
                 <li>Last update on {{ lastUpdate }}</li>
             </ul>
         </header>
 
-        <div class="client-profile__section client-profile__section--contact">
+        <div class="user-profile__section user-profile__section--contact">
             <h5>Contact</h5>
-            <ul class="client-profile__contact-list">
+            <ul class="user-profile__contact-list">
                 <li v-if="data.email_address">
                     <a :href="`mailto:${data.email_address}`">
                         <EnvelopeIcon css-class="icon--sm" />
@@ -29,10 +29,10 @@
             </ul>
         </div>
 
-        <div class="client-profile__section client-profile__section--groups">
+        <div class="user-profile__section user-profile__section--groups">
             <h5>Groups</h5>
             <p v-if="!data.groups">{{ data.first_name }} does not belong to any groups.</p>
-            <ul class="client-profile__group-list">
+            <ul class="user-profile__group-list">
                 <li v-for="group in data.groups">
                     <a class="btn btn--sm btn--modify-duo" href="#" :title="`Go to ${group.name} settings`">{{ group.name }}</a>
                     <button class="btn btn--sm btn--modify-duo" :title="`Remove ${data.first_name} from ${group.name}?`">
@@ -47,16 +47,6 @@
                             <PlusIcon css-class="icon--xs" />
                         </span>
                     </button>
-                </li>
-            </ul>
-        </div>
-
-        <div v-if="data.bookings" class="client-profile__section client-profile__section--bookings">
-            <h5>Bookings</h5>
-            <ul class="client-profile__booking-list">
-                <li v-for="booking in data.bookings">
-                    <TicketIcon css-class="icon--sm" />
-                    {{ booking.title }}
                 </li>
             </ul>
         </div>
@@ -88,7 +78,7 @@
 </script>
 
 <style lang="scss">
-    .client-profile__header {
+    .user-profile__header {
         background-color: var(--c-text-lighter);
         color: var(--c-white);
         display: grid;
@@ -99,14 +89,14 @@
         padding: var(--content-padding);
     }
 
-    .client-profile__name {
+    .user-profile__name {
         grid-area: name;
         line-height: inherit;
         margin: 0;
         padding: 0;
     }
 
-    .client-profile__role {
+    .user-profile__role {
         grid-area: role;
 
         display: block;
@@ -120,7 +110,7 @@
         }
     }
 
-    .client-profile__dates {
+    .user-profile__dates {
         grid-area: dates;
 
         display: flex;
@@ -139,12 +129,12 @@
         }
     }
 
-    .client-profile__section {
+    .user-profile__section {
         padding: var(--content-padding);
         padding-bottom: 0;
     }
 
-    .client-profile__contact-list {
+    .user-profile__contact-list {
         display: flex;
             gap: var(--space-med);
         list-style: none;
@@ -157,7 +147,7 @@
         }
     }
 
-    .client-profile__group-list {
+    .user-profile__group-list {
         display: flex;
             gap: var(--space-sm);
             flex-wrap: wrap;
@@ -172,7 +162,7 @@
         }
     }
 
-    .client-profile__booking-list {
+    .user-profile__booking-list {
         display: flex;
             flex-direction: column;
         list-style: none;

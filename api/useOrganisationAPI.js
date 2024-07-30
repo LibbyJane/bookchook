@@ -1,36 +1,35 @@
 import axios from "axios"
 import { apiBaseURL, config } from '@/api/config';
-// import { useOrganisationStore } from '@/stores/organisation';
+import { useUserStore } from '@/stores/user';
 
 const endpoints = {
     getAccountBySlug: {
         uri: `account/by_slug`,
         method: 'GET'
     },
-    getOrganisationBookers: {
+    getOrganisationUsers: {
         uri: `private/user/list`,
         method: 'GET',
         query: `?search=`
+    },
+    getOrganisationBillingSettings: {
+        uri: `private/account/billing_settings`,
+        method: 'GET'
     }
 }
 
-export async function useOrganisationAPI({endpoint, data, id, qs}) {
-    console.log('useOrganisationAPI config::::', config);
+export async function useOrganisationAPI({endpoint, data, id, qs, $pinia }) {
+    const userStore = useUserStore($pinia)
+
+    console.log('useOrganisationAPI config:', config);
     console.log('useOrganisationAPI endpoint, endpoints[endpoint]', endpoint, endpoints[endpoint]);
     console.log('useOrganisationAPI endpoint, data, id, qs', data, id, qs);
 
     if (endpoint && endpoints[endpoint]) {
-        console.log('continue');
-
-        // let config = {
-        //     baseURL: apiBaseURL,
-        //     url: `/api/${endpoints[endpoint].uri}`,
-        //     method: endpoints[endpoint].method
-        // };
         config.baseURL = apiBaseURL;
         config.url =  `/api/${endpoints[endpoint].uri}`;
         config.method = endpoints[endpoint].method;
-        console.log('updated config', config);
+        // console.log('updated config', config);
 
         if (config.url.indexOf('upload') > -1) {
             config.headers['content-type'] = 'multipart/form-data';
@@ -56,8 +55,9 @@ export async function useOrganisationAPI({endpoint, data, id, qs}) {
         } catch (error) {
             console.log('error', error)
             // console.log("There was a problem.", error)
-            if (error.response.status === 403) {
-                console.log('bad token, logout')
+            if (error.response.status === 403 || error.response.status === 401) {
+                console.warn('bad token, logout');
+                userStore.$state.authenticated = false;
             }
             else if (error.response && error.response.data) {
                 return error.response.data

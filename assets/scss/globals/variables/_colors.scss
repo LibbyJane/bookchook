@@ -25,6 +25,7 @@
     --c-background-sat: 80%;
     --c-background-lum: 98%;
     --c-background: hsl(var(--c-background-hue), var(--c-background-sat), var(--c-background-lum));
+    --c-background-light: hsl(var(--c-background-hue), var(--c-background-sat), 100%);
     // --c-background-hue: 186;
     // --c-background-sat: 5%;
     // --c-background-lum: 96%;

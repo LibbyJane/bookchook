@@ -37,11 +37,12 @@
 
 <script setup>
     import { ref, reactive } from 'vue';
-    import { useBookerStore } from '@/stores/booker.js';
+    import { useUserStore } from '@/stores/user';
     import Label from '@/components/forms/shared/Label.vue';
     import Error from '@/components/forms/shared/Error.vue';
+    const route = useRoute();
 
-    const bookerStore = useBookerStore();
+    const userStore = useUserStore();
 
     const fields = reactive({
         email_address: {
@@ -64,20 +65,28 @@
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const outcome = await bookerStore.performLogin({
+        const outcome = await userStore.performLogin({
             email_address: fields.email_address.value,
             password: fields.password.value,
         });
 
         console.log('outcome', outcome);
+console.log('route?', route);
 
         if (outcome && outcome.error) {
             formError.value = outcome.error;
-        } else if (outcome && outcome.errors) {
+            return;
+        }
+
+        if (outcome && outcome.errors) {
             for (let error of outcome.errors) {
-                console.log('error', error);
                 formError.value += `${error}`;
             }
+            return;
         }
+
+        // console.log('redirected?', route.redirectedFrom);
+        console.log('go to: ', route.path.split('/login')[0]);
+        navigateTo(route.path.split('/login')[0]);
     };
 </script>

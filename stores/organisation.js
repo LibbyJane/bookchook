@@ -17,7 +17,10 @@ export const useOrganisationStore = defineStore('organisationStore', {
             passes: true,
             membership: true
         },
-        clients: []
+        clients: [],
+        settings: {
+            billing: {}
+        }
     }),
     actions: {
         async getOrganisationData(organisationID) {
@@ -266,15 +269,14 @@ export const useOrganisationStore = defineStore('organisationStore', {
                 return error
             }
         },
-        async getOrganisationBookers() {
-            console.log('get organisation bookers');
-            // TODO: remove test data when client details page complete
-            const response = await useOrganisationAPI({endpoint: `getOrganisationBookers`});
-            console.log('response', response.data.users);
+        async getOrganisationClients() {
+            // TODO: remove test data when endpoint complete
+            // const response = await useOrganisationAPI({endpoint: `getOrganisationUsers`});
+            const response = {};
 
-            if (response.data?.users) {
+            if (response.data?.clients) {
             //if (response.usethistogettestdata?.users) {
-                this.clients = response.data.users;
+                this.clients = response.data.clients;
             } else {
                 this.clients = [
                     {
@@ -360,13 +362,93 @@ export const useOrganisationStore = defineStore('organisationStore', {
                 ];
             }
         },
+        async getOrganisationUsers() {
+            // TODO: remove test data when client details page complete
+            // const response = await useOrganisationAPI({endpoint: `getOrganisationUsers`});
+            const response = {};
+
+            if (response.data?.users) {
+            //if (response.usethistogettestdata?.users) {
+                this.users = response.data.users;
+            } else {
+                this.users = [
+                    {
+                        "id": "52155d7d-ff16-430d-b51b-c73985697772",
+                        "account_id": "11d1c59b-38f4-4cce-ba8b-6e8af2d2a115",
+                        "first_name": "Andrew",
+                        "last_name": "Chapman",
+                        "country_code": "GB",
+                        "timezone": "Europe/London",
+                        "email_address": "info@communityttc.com",
+                        "phone": "07123 1234133",
+                        "created_dtm": 1720047009,
+                        "updated_dtm": 1720047009,
+                        "role_type": "ADMINISTRATOR",
+                        "groups": [
+                            {
+                                name: "Three Plus",
+                                id: 1
+                            },
+                            {
+                                name: "Annual Members",
+                                id: 2
+                            },
+                            {
+                                name: "League Player",
+                                id: 3
+                            }
+                        ],
+                        "bookings": [
+                            {
+                                title: "Open Session",
+                                id: 1
+                            },
+                            {
+                                title: "Annual Members",
+                                id: 2
+                            },
+                            {
+                                title: "League Player",
+                                id: 3
+                            }
+                        ]
+                    },
+                    {
+                        "id": "52155d7d-ff16-430d-b51b-c73985697773",
+                        "account_id": "11d1c59b-38f4-4cce-ba8b-6e8af2d2a116",
+                        "first_name": "Stan",
+                        "last_name": "Ntiajuka",
+                        "country_code": "GB",
+                        "timezone": "Europe/London",
+                        "email_address": "stan.ntiajuka@gmail.com",
+                        "phone": "07122 1234133",
+                        "created_dtm": 1710057010,
+                        "updated_dtm": 1720047009,
+                        "role_type": "ADMINISTRATOR"
+                    },
+                    {
+                        "id": "52155d7d-ff16-430d-b51b-c73985697774",
+                        "account_id": "11d1c59b-38f4-4cce-ba8b-6e8af2d2a117",
+                        "first_name": "Pudsey",
+                        "last_name": "Paul",
+                        "country_code": "GB",
+                        "timezone": "Europe/London",
+                        "email_address": "pudseypaul@communityttc.com",
+                        "phone": "07111 1234133",
+                        "created_dtm": 1620047009,
+                        "updated_dtm": 1720047009,
+                        "role_type": "LEADER"
+                    }
+                ];
+            }
+        },
         async getOrganisationLocations() {
             // TODO: wire up when endpoint is ready
             //const response = await useOrganisationAPI({endpoint: `getOrganisationLocations`});
             const response = {
                 data: {
                     locations: {
-                        locationID1: {
+                        l1: {
                             name: "The Chapel Allerton Methodist Centre",
                             formatted_address: "Town Street, Chapel Allerton<br>Leeds LS7 4NB",
                             description: "<p>We are in the basement - the stairs going down are on the right hand side of the outside of the building.</p><p>Please note that toilets are only available after 8pm on a Tuesday and Thursday night.<p>",
@@ -380,7 +462,7 @@ export const useOrganisationStore = defineStore('organisationStore', {
                                 postcode: "LS7 4NB"
                             }
                         },
-                        locationID2: {
+                        l2: {
                             name: "East Keswick Village Hall",
                             formatted_address: "School Lane, East Keswick<br>Leeds LS17 9DA",
                             description: "<p>The village of East Keswick is found just off the A58 Leeds-Wetherby road. The A1 is 3 miles away at the Boston Spa exit.</p><p>The nearest main line railway station is Leeds.</p><p>East Keswick is serviced by bus route X99 which provide an hourly service from Leeds and Wetherby and by service 923 which provides a two hourly service daytimes to Wetherby and Otley. Full details on all bus times from www.wymetro.com",
@@ -402,5 +484,15 @@ export const useOrganisationStore = defineStore('organisationStore', {
                 this.locations = response.data.locations;
             };
         },
+        async getOrganisationBillingSettings() {
+            // TODO: remove test data when client details page complete
+            const response = await useOrganisationAPI({endpoint: `getOrganisationBillingSettings`});
+
+            console.log('response', response);
+
+            if (response.data?.billing_settings) {
+                this.settings.billing = response.data.billing_settings;
+            }
+        }
     }
 })

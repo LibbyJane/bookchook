@@ -40,11 +40,11 @@ body {
 
 .main-content__sidebar {
     grid-area: sidebar;
+    align-self: start;
 }
 
 .main-col {
     grid-area: main-col;
-
 }
 
 .container {

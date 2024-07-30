@@ -9,14 +9,14 @@
 <script setup>
     import Login from '@/components/forms/Login.vue';
 
-    import { useBookerStore } from '@/stores/booker.js';
+    import { useUserStore } from '@/stores/user';
     import { useOrganisationStore } from '@/stores/organisation';
 
-    const bookerStore = useBookerStore();
+    const userStore = useUserStore();
     const organisationStore = useOrganisationStore();
 
     onMounted(()=>{
-        if (bookerStore.authenticated) {
+        if (userStore.authenticated) {
             navigateTo(organisationStore.baseURL);
         }
     })
