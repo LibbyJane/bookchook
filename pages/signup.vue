@@ -26,7 +26,7 @@
                     id="url_slug"
                     labelText="Account Handle"
                     :required="fields.url_slug.required"
-                    :help="`e.g. ${url.host}${organisationStore.organisationPagePrefix}${fields.url_slug.value ? fields.url_slug.value : 'your-name-here'}`"
+                    :help="`e.g. ${url.host}${organisationStore.organisation_page_prefix}${fields.url_slug.value ? fields.url_slug.value : 'your-name-here'}`"
                     :error="fields.url_slug.error"
                 >
                     <input

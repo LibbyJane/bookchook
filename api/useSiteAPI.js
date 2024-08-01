@@ -1,5 +1,5 @@
 import axios from "axios"
-import { apiBaseURL } from '@/api/config';
+import { apibase_URL } from '@/api/config';
 
 const endpoints = {
     getRegions: {
@@ -37,7 +37,7 @@ export async function useSiteAPI({endpoint, data, id, qs}) {
     if (endpoint && endpoints[endpoint]) {
         let config = {
             headers: {},
-            baseURL: apiBaseURL,
+            base_URL: apibase_URL,
             url: `/api/${endpoints[endpoint].uri}`,
             method: endpoints[endpoint].method
         }

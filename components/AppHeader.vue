@@ -1,6 +1,6 @@
 <template>
     <header id="header" class="main-header" :class="{ 'menu-open': userMenuOpen }" ref="headerRef">
-        <a class="main-header__brand" :href="`${organisationStore.organisationPagePrefix}${organisationStore.account.url_slug}`" >
+        <a class="main-header__brand" :href="`${organisationStore.organisation_page_prefix}${organisationStore.account.url_slug}`" >
             <NuxtImg v-if="organisationStore.account.logo_url" :src="organisationStore.account.logo_url" :alt="organisationStore.account.account_name" />
             <span v-if="!organisationStore.account.logo_url">{{ organisationStore.account.account_name }}</span>
         </a>
@@ -8,19 +8,19 @@
         <nav id="main-menu" class="main-menu">
             <ul class="main-menu__list">
                 <li>
-                    <a class="main-menu__item" :href="`${organisationStore.organisationPagePrefix}${organisationStore.account.url_slug}/schedule`">
+                    <a class="main-menu__item" :href="`${organisationStore.organisation_page_prefix}${organisationStore.account.url_slug}/schedule`">
                         <CalendarIcon />
                         What&rsquo;s on
                     </a>
                 </li>
-                <li v-if="userStore.authenticated && organisationStore.purchaseTypes.passes">
-                    <a class="main-menu__item" :href="`${organisationStore.organisationPagePrefix}${organisationStore.account.url_slug}/passes`">
+                <li v-if="userStore.authenticated && organisationStore.purchase_types.passes">
+                    <a class="main-menu__item" :href="`${organisationStore.organisation_page_prefix}${organisationStore.account.url_slug}/passes`">
                         <TicketIcon />
                         Passes
                     </a>
                 </li>
-                <li v-if="userStore.authenticated && organisationStore.purchaseTypes.membership">
-                    <a class="main-menu__item" :href="`${organisationStore.organisationPagePrefix}${organisationStore.account.url_slug}/membership`">
+                <li v-if="userStore.authenticated && organisationStore.purchase_types.membership">
+                    <a class="main-menu__item" :href="`${organisationStore.organisation_page_prefix}${organisationStore.account.url_slug}/membership`">
                         <MembershipIcon />
                         Membership
                     </a>
@@ -32,7 +32,7 @@
                     </button>
                 </li>
                 <li v-if="!userStore.authenticated">
-                    <a class="main-menu__item" :href="`${organisationStore.organisationPagePrefix}${organisationStore.account.url_slug}/login`">
+                    <a class="main-menu__item" :href="`${organisationStore.organisation_page_prefix}${organisationStore.account.url_slug}/login`">
                         <UserIcon />
                         Log in / Register
                     </a>

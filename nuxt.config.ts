@@ -6,7 +6,7 @@ import type { NuxtPage } from 'nuxt/schema'
 export default defineNuxtConfig({
     devtools: { enabled: true },
     pages: true,
-    css: ['~/assets/scss/main.scss', '~/assets/scss/rte.scss', '~/assets/scss/datatables.scss'],
+    css: ['~/assets/scss/main.scss', '~/assets/scss/rte.scss'],
 
     vite: {
         css: {

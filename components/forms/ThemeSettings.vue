@@ -1,5 +1,5 @@
 <template>
-    <form v-on:submit="handleSubmit" class="form form--settings-billing" :class="{ 'loading': form.state == 'loading' }" ref="billingFormElement">
+    <form v-on:submit="handleSubmit" class="form form--settings-billing" :class="{ 'loading': form.state == 'loading' }" ref="themeFormElement">
         <fieldset>
             <Field
                 v-for="(field, key) in fields"
@@ -19,21 +19,21 @@
             </Field>
         </fieldset>
 
+        <ColorPicker />
+
+
         <button type="submit" class="btn btn--success">Save</button>
     </form>
 </template>
 
 <script setup>
     import { ref, reactive } from 'vue';
+    import ColorPicker from '@/components/interface/ColorPicker.vue';
     import Field from '@/components/forms/shared/Field.vue';
     import { useOrganisationStore } from '@/stores/organisation.js';
     const organisationStore = useOrganisationStore();
 
-    const props = defineProps({
-        id: {}
-    });
-
-    const billingFormElement = ref(null);
+    const themeFormElement = ref(null);
 
     let form = reactive({
         state: 'init',
@@ -41,53 +41,70 @@
     })
 
     function getLabelText(key) {
-        let transformedText = key.replace('_', ' ');
-
-        if (key == "tax_rate") {
-            transformedText += ' (%)';
-        }
+        let transformedText = key.replaceAll('_', ' ');
 
         return transformedText;
     };
 
     const fields = reactive({
-        currency_symbol: {
-            value: organisationStore.settings.billing.currency_symbol,
-            required: true,
+        background_color: {
+            value: organisationStore.account.theme_config.colors.background,
+            required: false,
             error: null,
-            placeholder: "£",
+            placeholder: "",
             type: "text"
         },
-        invoice_title: {
-            value: organisationStore.settings.billing.invoice_title,
-            required: true,
+        text_color: {
+            value: organisationStore.account.theme_config.colors.text,
+            required: false,
             error: null,
-            placeholder: "Invoice Title",
+            placeholder: "",
             type: "text"
         },
-        tax_name: {
-            value: organisationStore.settings.billing.tax_name,
-            required: true,
+        accent_color: {
+            value: organisationStore.account.theme_config.colors.accent,
+            required: false,
             error: null,
-            placeholder: "VAT",
+            placeholder: "",
             type: "text"
         },
-        tax_rate: {
-            value: organisationStore.settings.billing.tax_rate,
-            required: true,
+        accent_contrast_color: {
+            value: organisationStore.account.theme_config.colors.accent_contrast,
+            required: false,
             error: null,
-            placeholder: "20",
-            type: "number"
+            placeholder: "",
+            type: "text"
         },
+        header_background_color: {
+            value: organisationStore.account.theme_config.colors.header_background,
+            required: false,
+            error: null,
+            placeholder: "",
+            type: "text"
+        },
+        header_text_color: {
+            value: organisationStore.account.theme_config.colors.header_text,
+            required: false,
+            error: null,
+            placeholder: "",
+            type: "text"
+        },
+        header_accent_color: {
+            value: organisationStore.account.theme_config.colors.header_accent,
+            required: false,
+            error: null,
+            placeholder: "",
+            type: "text"
+        }
     });
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         form.state = 'loading';
-        billingFormElement.value.reportValidity();
+        tne.value.reportValidity();
 
-        if (!billingFormElement.value.checkValidity()) {
-            const list = billingFormElement.value.querySelectorAll('fieldset :invalid');
+        if (!themeFormElement.value.checkValidity()) {
+            const list = themeFormElement.value.querySelectorAll('fieldset :invalid');
             list.forEach(elem => {
                 fields[elem.id].error = elem.validationMessage;
             })

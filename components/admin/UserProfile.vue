@@ -68,12 +68,16 @@
         }
     });
 
+    function formatDTM(dtm) {
+        return new Intl.DateTimeFormat('default', {dateStyle: 'long'}).format(new Date(dtm * 1000));
+    }
+
     const memberSince = computed(() => {
-        return new Intl.DateTimeFormat('default', {dateStyle: 'full'}).format(new Date(props.data.created_dtm * 1000));
+        return formatDTM(props.data.created_dtm);
     })
 
     const lastUpdate = computed(() => {
-        return new Intl.DateTimeFormat('default', {dateStyle: 'full'}).format(new Date(props.data.updated_dtm * 1000));
+        return formatDTM(props.data.updated_dtm);
     })
 </script>
 
@@ -84,6 +88,7 @@
         display: grid;
             grid-template-areas: 'name dates' 'role dates';
             gap: 0 var(--space-med);
+            align-items: center;
         line-height: var(--line-height-sm);
         margin: 0;
         padding: var(--content-padding);
@@ -136,7 +141,7 @@
 
     .user-profile__contact-list {
         display: flex;
-            gap: var(--space-med);
+            gap: 0 var(--space);
         list-style: none;
         margin: 0;
         padding: 0;

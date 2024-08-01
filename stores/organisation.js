@@ -4,20 +4,28 @@ export const useOrganisationStore = defineStore('organisationStore', {
     state: () => ({
         account: {
             theme_config: {
-                colors: {}
+                colors: {
+                    background: '',
+                    text: '',
+                    accent: '',
+                    accent_contrast: '',
+                    header_background: '',
+                    header_text: '',
+                    header_accent: ''
+                }
             },
         },
-        organisationPagePrefix: '\/with\/',
-        adminURL: '',
-        baseURL: '',
+        organisation_page_prefix: '\/with\/',
+        admin_URL: '',
+        base_URL: '',
         clients: [],
         schedule: [],
         locations: {},
-        purchaseTypes: {
+        purchase_types: {
             passes: true,
             membership: true
         },
-        clients: [],
+        users: [],
         settings: {
             billing: {}
         }
@@ -29,8 +37,8 @@ export const useOrganisationStore = defineStore('organisationStore', {
             this.account = response.data.account;
             if (response.data.status) {
                 this.account = response.data.account;
-                this.baseURL = `${this.organisationPagePrefix}${organisationID}`;
-                this.adminURL = `${this.organisationPagePrefix}${organisationID}/admin`;
+                this.base_URL = `${this.organisation_page_prefix}${organisationID}`;
+                this.admin_URL = `${this.organisation_page_prefix}${organisationID}/admin`;
                 // TODO: remove logo and theme hard wiring when properly set up
                 this.account.logo_url = '/demo/logo.svg';
 

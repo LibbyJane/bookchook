@@ -1,0 +1,23 @@
+.user-listing {
+
+
+    @include breakpoint(lg) {
+        display: grid;
+        grid-template-areas: 'table profile';
+        grid-template-columns: 3fr 2fr;
+        gap: var(--space-med);
+    }
+
+    .bh-datatable {
+        grid-area: table;
+        container-type: inline-size;
+    }
+}
+
+.user-listing_empty-message {
+    grid-area: table;
+}
+
+.user-listing__profile {
+    grid-area: profile
+}
