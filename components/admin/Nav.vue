@@ -1,5 +1,6 @@
 <template>
     <aside class="container main-content__sidebar">
+        <h1>URL: {{ organisationStore.admin_URL }}</h1>
         <nav class="admin-nav sidebar sticky">
             <ul class="admin-nav__list">
                 <li>

@@ -65,32 +65,28 @@
 <style lang="scss">
     @import url("~/assets/scss/components/_data-tables.scss");
     @import url("~/assets/scss/components/_user-listing.scss");
-    .user-listing  {
-        .bh-table-responsive {
-
-
-    tr {
-        cursor: pointer;
-    }
-
-    td, th {
-        display: none;
-
-        @container (min-width: 700px) {
-            display: table-cell;
+    .user-listing .bh-table-responsive {
+        tr {
+            cursor: pointer;
         }
 
-        &:nth-child(1),
-        &:nth-child(2) {
-            display: table-cell;
-        }
+        td, th {
+            display: none;
 
-        &:nth-child(3) {
-            @container (min-width: 600px) {
+            @container (min-width: 700px) {
                 display: table-cell;
+            }
+
+            &:nth-child(1),
+            &:nth-child(2) {
+                display: table-cell;
+            }
+
+            &:nth-child(3) {
+                @container (min-width: 600px) {
+                    display: table-cell;
+                }
             }
         }
     }
-}
-}
 </style>

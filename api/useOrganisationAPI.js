@@ -15,6 +15,10 @@ const endpoints = {
     getOrganisationBillingSettings: {
         uri: `private/account/billing_settings`,
         method: 'GET'
+    },
+    updateOrganisationBillingSettings: {
+        uri: `private/account/billing_settings`,
+        method: 'PATCH'
     }
 }
 
@@ -29,7 +33,7 @@ export async function useOrganisationAPI({endpoint, data, id, qs, $pinia }) {
         config.base_URL = apibase_URL;
         config.url =  `/api/${endpoints[endpoint].uri}`;
         config.method = endpoints[endpoint].method;
-        // console.log('updated config', config);
+        console.log('updated config', config);
 
         if (config.url.indexOf('upload') > -1) {
             config.headers['content-type'] = 'multipart/form-data';

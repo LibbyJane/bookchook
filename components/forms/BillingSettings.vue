@@ -62,7 +62,7 @@
             value: organisationStore.settings.billing.invoice_title,
             required: true,
             error: null,
-            placeholder: "Invoice Title",
+            placeholder: "Invoice",
             type: "text"
         },
         tax_name: {
@@ -103,8 +103,7 @@
             data[key] = value.value;
         }
 
-        // const outcome = await useSiteAPI({ endpoint: '', data });
-        let outcome;
+        const outcome = await organisationStore.updateOrganisationBillingSettings({ endpoint: 'updateOrganisationBillingSettings', data });
         // console.log('data', data);
         let errorMessage;
 

@@ -17,6 +17,7 @@ select  {
     font-weight: normal;
     font-size: var(--p);
     line-height: var(--line-height-sm);
+    outline: 2px solid transparent;
     margin: 0 0 var(--space);
     padding: var(--space-sm);
     // padding-left: 1.5rem;

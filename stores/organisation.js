@@ -27,13 +27,16 @@ export const useOrganisationStore = defineStore('organisationStore', {
         },
         users: [],
         settings: {
-            billing: {}
+            billing: {
+                bs: "true"
+            }
         }
     }),
     actions: {
         async getOrganisationData(organisationID) {
+            console.log('organisation store: get data for', organisationID);
             const response = await useOrganisationAPI({endpoint: `getAccountBySlug`,  id: organisationID});
-            console.log('account', this.account);
+            console.log('response', response);
             this.account = response.data.account;
             if (response.data.status) {
                 this.account = response.data.account;
@@ -44,13 +47,13 @@ export const useOrganisationStore = defineStore('organisationStore', {
 
                 // TODO: make sure the HSL values are taken from whichever color picker plugin
                 this.account.theme_config.colors = {
-                    headerBackground: '207, 96%, 25%',
-                    headerText:  '0, 0%, 100%',
-                    headerAccent: '55, 100%, 50%',
+                    header_background: '207, 96%, 25%',
+                    header_text:  '0, 0%, 100%',
+                    header_accent: '55, 100%, 50%',
                     text: '208, 100%, 18%',
                     background: '207, 25%, 97%',
                     accent: '207, 96%, 50%',
-                    accentContrast: '0, 0%, 100%',
+                    accent_contrast: '0, 0%, 100%',
                 };
             }
 
@@ -449,6 +452,8 @@ export const useOrganisationStore = defineStore('organisationStore', {
                     }
                 ];
             }
+
+            return true;
         },
         async getOrganisationLocations() {
             // TODO: wire up when endpoint is ready
@@ -493,7 +498,6 @@ export const useOrganisationStore = defineStore('organisationStore', {
             };
         },
         async getOrganisationBillingSettings() {
-            // TODO: remove test data when client details page complete
             const response = await useOrganisationAPI({endpoint: `getOrganisationBillingSettings`});
 
             console.log('response', response);
@@ -501,6 +505,17 @@ export const useOrganisationStore = defineStore('organisationStore', {
             if (response.data?.billing_settings) {
                 this.settings.billing = response.data.billing_settings;
             }
+
+            return true;
+        },
+        async updateOrganisationBillingSettings(data) {
+            const response = await useOrganisationAPI({endpoint: `updateOrganisationBillingSettings`, data});
+
+            if (response.data?.billing_settings) {
+                this.settings.billing = response.data.billing_settings;
+            }
+
+            return true;
         }
     }
 })

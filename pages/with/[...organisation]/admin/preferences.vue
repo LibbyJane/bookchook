@@ -1,6 +1,8 @@
 <template>
     <Header title="Preferences"></Header>
 
+    <pre>usrs {{ organisationStore.users }}</pre>
+
     <Card
         title="Account"
         titleCssClass="h3"
@@ -39,7 +41,7 @@
             <pre>
                 inEditMode: {{ inEditMode }}
                 inEditMode != 'billing': {{ inEditMode != 'billing' }}
-                {{ organisationStore.settings.billing }}
+                billingData: {{ organisationStore.settings.billing }}
             </pre>
             <dl v-if="inEditMode != 'billing'" class="settings-list" >
                 <template v-for="setting, key in organisationStore.settings.billing">
@@ -63,10 +65,17 @@
     import PencilIcon from '@/components/icons/cross.vue';
     import CrossIcon from '@/components/icons/cross.vue';
 
-
     const organisationStore = useOrganisationStore();
 
-    await useAsyncData(() => organisationStore.getOrganisationBillingSettings());
+    const users = await useAsyncData(() => organisationStore.getOrganisationUsers());
+    console.log('??? users',users);
+
+
+
+
+    console.log('???', organisationStore.settings.billing);
+    const aaargh = await useAsyncData(() => organisationStore.getOrganisationBillingSettings('test'));
+    console.log('aaargh', aaargh);
     const inEditMode = ref('');
 
 

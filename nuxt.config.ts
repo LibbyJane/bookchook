@@ -69,7 +69,5 @@ export default defineNuxtConfig({
             linkActiveClass: 'active',
             linkExactActiveClass: 'active-page',
         }
-    },
-
-    compatibilityDate: '2024-07-09'
+    }
 })
