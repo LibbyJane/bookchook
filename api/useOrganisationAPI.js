@@ -15,15 +15,19 @@ const endpoints = {
     getOrganisationBillingSettings: {
         uri: `private/account/billing_settings`,
         method: 'GET'
+    },
+    updateOrganisationBillingSettings: {
+        uri: `private/account/billing_settings`,
+        method: 'PATCH'
     }
 }
 
 export async function useOrganisationAPI({endpoint, data, id, qs, $pinia }) {
     const userStore = useUserStore($pinia)
 
-    console.log('useOrganisationAPI config:', config);
-    console.log('useOrganisationAPI endpoint, endpoints[endpoint]', endpoint, endpoints[endpoint]);
-    console.log('useOrganisationAPI endpoint, data, id, qs', data, id, qs);
+    // console.log('useOrganisationAPI config:', config);
+    // console.log('useOrganisationAPI endpoint, endpoints[endpoint]', endpoint, endpoints[endpoint]);
+    // console.log('useOrganisationAPI endpoint, data, id, qs', data, id, qs);
 
     if (endpoint && endpoints[endpoint]) {
         config.baseURL = apiBaseURL;
@@ -47,19 +51,24 @@ export async function useOrganisationAPI({endpoint, data, id, qs, $pinia }) {
             config.url = config.url + `${endpoints[endpoint].query}${qs}`;
         }
 
-        console.log('final config', config);
+        // console.log('final config', config);
 
         try {
             const response = await axios(config)
             return response;
         } catch (error) {
-            console.log('error', error)
+            // console.log('error', error)
+            // console.log('error.response', error.response)
+            // console.log('error.response.data', error.response.data)
+
             // console.log("There was a problem.", error)
             if (error.response.status === 403 || error.response.status === 401) {
                 console.warn('bad token, logout');
                 userStore.$state.authenticated = false;
             }
+
             else if (error.response && error.response.data) {
+                // console.log('return error', error.response.data);
                 return error.response.data
             }
         }
@@ -68,7 +77,6 @@ export async function useOrganisationAPI({endpoint, data, id, qs, $pinia }) {
         //     ourRequest.cancel()
         // }
     }
-
 }
 
 export default useOrganisationAPI

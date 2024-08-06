@@ -1,5 +1,5 @@
 <template>
-    <form v-on:submit="handleSubmit" class="form form--settings-billing" :class="{ 'loading': form.state == 'loading' }" ref="billingFormElement">
+    <form v-on:submit="handleSubmit" class="form form--settings-billing" :class="{ 'loading': form.state == 'loading', 'form-error': form.error }" ref="billingFormElement">
 
         <fieldset>
             <Field
@@ -8,38 +8,58 @@
                 :labelText="getLabelText(key)"
                 :required="field.required"
                 :error="field.error"
+                :cssClass="{ 'disabled': key == 'tax_rate' && fields.tax_name.value == 'NONE' }"
             >
-                <input
+                <select
+                    v-if="field.type == 'select'"
                     v-model="fields[key].value"
-                    v-on:keyup="clearError(key)"
+                    v-on:change="handleChange(key)"
+                    :id="key"
+                    :required="fields[key].required"
+                >
+                    <option v-for="option in field.options" :value="option">{{ `${option === 'NONE' ? 'None' : option}` }}</option>
+                </select>
+
+                <input
+                    v-else
+                    v-model="fields[key].value"
+                    v-on:change="handleChange(key)"
                     :id="key"
                     :type="field.type"
                     :required="fields[key].required"
                     :placeholder="fields[key].placeholder"
+                    :disabled="key == 'tax_rate' && fields.tax_name.value == 'NONE'"
                 />
             </Field>
         </fieldset>
 
-        <button type="submit" class="btn btn--success">Save</button>
+        <Error v-if="form.error" :message="form.error"></Error>
+        <button type="submit" class="btn btn--success" :disabled="form.pristine">Save</button>
     </form>
 </template>
 
 <script setup>
+
     import { ref, reactive } from 'vue';
+    import Error from '@/components/forms/shared/Error.vue';
     import Field from '@/components/forms/shared/Field.vue';
     import { useOrganisationStore } from '@/stores/organisation.js';
     const organisationStore = useOrganisationStore();
 
     const props = defineProps({
-        id: {}
+        callback: {
+            type: Function
+        }
     });
 
     const billingFormElement = ref(null);
 
     let form = reactive({
+        pristine: true,
         state: 'init',
         error: null
     })
+
 
     function getLabelText(key) {
         let transformedText = key.replace('_', ' ');
@@ -57,25 +77,28 @@
             required: true,
             error: null,
             placeholder: "£",
-            type: "text"
+            type: "select",
+            options: ["$", "£", "R"],
         },
         invoice_title: {
             value: organisationStore.settings.billing.invoice_title,
             required: true,
             error: null,
-            placeholder: "Invoice Title",
-            type: "text"
+            placeholder: "Invoice",
+            type: "select",
+            options: ["Invoice", "Tax Invoice"],
         },
         tax_name: {
             value: organisationStore.settings.billing.tax_name,
             required: true,
             error: null,
             placeholder: "VAT",
-            type: "text"
+            type: "select",
+            options: ["NONE", "GST", "VAT", "Sales Tax"],
         },
         tax_rate: {
             value: organisationStore.settings.billing.tax_rate,
-            required: true,
+            required: false,
             error: null,
             placeholder: "20",
             type: "number"
@@ -105,8 +128,8 @@
         }
 
         // const outcome = await useSiteAPI({ endpoint: '', data });
-        let outcome;
-        // console.log('data', data);
+        const outcome = await organisationStore.updateOrganisationBillingSettings(data);
+        form.state = '';
         let errorMessage;
 
         if (outcome && outcome.error) {
@@ -118,13 +141,14 @@
         }
 
         if (errorMessage) {
+            errorMessage = errorMessage.replaceAll('_', ' ');
             form.error = errorMessage;
+
+            fields.currency_symbol.error = null;
             return;
         }
 
-        form.state = '';
-
-        // navigateTo(`/with/${fields.url_slug.value}/admin`);
+        props.callback();
     };
 
     const clearError = (id) => {
@@ -133,7 +157,10 @@
         form.error = '';
     };
 
-
+    const handleChange = (id) => {
+        form.pristine = false;
+        clearError(id);
+    }
 </script>
 
 <style lang="scss">

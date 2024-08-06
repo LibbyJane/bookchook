@@ -1,5 +1,5 @@
 <template>
-    <label :for="labelFor">
+    <label class="field-label" :for="labelFor">
         {{ text }}
 
         <span class="field-status">
@@ -30,7 +30,7 @@
 </script>
 
 <style lang="scss">
-    label {
+    .field-label {
         color: var(--c-text);
         font-size: var(--p-sm);
         font-weight: 500;
@@ -38,5 +38,28 @@
             gap: var(--space-xxs);
         margin: 0 0 var(--space-sm) 0;
         padding: 0;
+    }
+
+    .field-status {
+        display: grid;
+            grid-template-areas: "indicator";
+            align-items: center;
+            justify-content: center;
+    }
+
+    .required__indicator {
+        grid-area: indicator;
+        color: var(--c-accent);
+        text-decoration: none;
+    }
+
+    .field-status__icon {
+        aspect-ratio: 1 / 1;
+        grid-area: indicator;
+        display: none;
+    }
+
+    .field-status__icon--valid {
+        color: var(--c-success);
     }
 </style>

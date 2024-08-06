@@ -1,5 +1,5 @@
 <template>
-    <div class="field-wrapper">
+    <div class="field-wrapper" :class="cssClass">
         <Label :labelFor="id" :text="labelText" :required="required" />
         <Help v-if="help" :message="help" />
         <slot />
@@ -16,6 +16,7 @@
         id: {
             type: String
         },
+        cssClass: {},
         labelText: {
             type: String
         },
@@ -46,16 +47,8 @@
     }
 
     .field-wrapper {
-        // &:has(~:valid, +.help+ :valid, +div :valid) {
         &:has(:valid) {
             .field-status__icon--valid {
-                aspect-ratio: 1 / 1;
-                // background-color: var(--c-success-light);
-                // border-radius: 50%;
-                // color: var(--c-success-dark);
-                // outline: 2px solid var(--c-success-light);
-
-                color: var(--c-success);
                 display: block;
             }
 
@@ -65,19 +58,8 @@
             }
         }
 
-        // &:has(:invalid) {
-        //     .field-status__icon--invalid {
-        //         color: var(--c-danger-dark);
-        //         opacity: 1;
-        //     }
-
-        //     .required__indicator,
-        //     .field-status__icon--valid {
-        //         opacity: 0;
-        //     }
-        // }
-
-        &:has(:placeholder-shown) {
+        &:has(:placeholder-shown),
+        .form-error & {
             .required__indicator {
                 display: block;
             }
@@ -86,23 +68,5 @@
                 display: none;
             }
         }
-    }
-
-    .field-status {
-        display: grid;
-            grid-template-areas: "indicator";
-            align-items: center;
-            justify-content: center;
-    }
-
-    .required__indicator {
-        grid-area: indicator;
-        color: var(--c-accent);
-        text-decoration: none;
-    }
-
-    .field-status__icon {
-        grid-area: indicator;
-        display: none;
     }
 </style>

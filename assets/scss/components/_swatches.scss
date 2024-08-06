@@ -1,0 +1,12 @@
+.swatch {
+    display: flex;
+        gap: var(--space-sm);
+        justify-content: start;
+        align-items: center;
+}
+
+.swatch__color {
+    aspect-ratio: 1 / 1;
+    height: var(--space-med);
+    box-shadow: var(--box-shadow-swatch);
+}

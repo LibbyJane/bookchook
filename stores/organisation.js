@@ -4,7 +4,25 @@ export const useOrganisationStore = defineStore('organisationStore', {
     state: () => ({
         account: {
             theme_config: {
-                colors: {}
+                version: 1,
+                colors: {
+                    background: '',
+                    text: '',
+                    accent: '',
+                    accent_contrast: '',
+                    header_background: '',
+                    header_text: '',
+                    header_accent: ''
+                },
+                colorsAsHex: {
+                    background: '',
+                    text: '',
+                    accent: '',
+                    accent_contrast: '',
+                    header_background: '',
+                    header_text: '',
+                    header_accent: ''
+                }
             },
         },
         organisationPagePrefix: '\/with\/',
@@ -36,13 +54,13 @@ export const useOrganisationStore = defineStore('organisationStore', {
 
                 // TODO: make sure the HSL values are taken from whichever color picker plugin
                 this.account.theme_config.colors = {
-                    headerBackground: '207, 96%, 25%',
-                    headerText:  '0, 0%, 100%',
-                    headerAccent: '55, 100%, 50%',
+                    header_background: '207, 96%, 25%',
+                    header_text:  '0, 0%, 100%',
+                    header_accent: '55, 100%, 50%',
                     text: '208, 100%, 18%',
                     background: '207, 25%, 97%',
                     accent: '207, 96%, 50%',
-                    accentContrast: '0, 0%, 100%',
+                    accent_contrast: '0, 0%, 100%',
                 };
             }
 
@@ -492,7 +510,23 @@ export const useOrganisationStore = defineStore('organisationStore', {
 
             if (response.data?.billing_settings) {
                 this.settings.billing = response.data.billing_settings;
+                return;
             }
+
+            return response;
+        },
+
+        async updateOrganisationBillingSettings(data) {
+            console.log('update billing settings', data);
+            const response = await useOrganisationAPI({endpoint: `updateOrganisationBillingSettings`, data});
+            console.log('response', response);
+
+            if (response.data?.billing_settings) {
+                this.settings.billing = response.data.billing_settings;
+                return;
+            }
+            console.log('return error response', response.error);
+            return response;
         }
     }
 })

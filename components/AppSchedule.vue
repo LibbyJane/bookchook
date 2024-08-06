@@ -9,7 +9,7 @@
                 <template v-for="event in organisationStore.schedule">
                     <tr v-if="rowIsHeader(event.date.month, event.date.year)" class="schedule__header" >
                         <th :colspan="colspan">
-                            {{ getScheduleHeaderText(event.date.month, event.date.year) }}
+                            {{ getScheduleheader_text(event.date.month, event.date.year) }}
                         </th>
                     </tr>
                     <tr v-if="newDay(event.date.day)" class="schedule__subheader" >
@@ -124,7 +124,7 @@
         return month != currentMonth || year != currentYear;
     }
 
-    function getScheduleHeaderText(month, year) {
+    function getScheduleheader_text(month, year) {
         let returnValue = month;
 
         if (year != currentYear) {

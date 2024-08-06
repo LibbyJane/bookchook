@@ -1,7 +1,10 @@
 <template>
-    <p class="error">
+    <p class="error" v-if="message">
         <AlertIcon css-class="icon--sm" />
-        {{ message }}
+        <div class="error__message">
+            {{ message }}
+            <slot name="message"></slot>
+        </div>
     </p>
 </template>
 
@@ -33,6 +36,12 @@
     input {
         +.error {
             transform: translateY(calc(var(--space-sm) * -1));
+        }
+    }
+
+    .error__message {
+        &::first-letter {
+            text-transform: uppercase;
         }
     }
 </style>

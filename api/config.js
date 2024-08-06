@@ -2,7 +2,7 @@
 
 // const token = localStorage.getItem('userToken');
 // 'authorization': `Bearer ${token}`,
-export const token = "ef1d34c8-9076-4896-9fe5-0b36ab5c47b1";
+export const token = "7944ea10-6182-4373-96ce-76abae07ceb4";
 
 export const apiBaseURL = import.meta.env.VITE_APP_API_BASE_URL;
 

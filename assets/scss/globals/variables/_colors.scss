@@ -64,7 +64,7 @@
     --c-success-lum: 50%;
     --c-success-hsl: var(--c-success-hue), var(--c-success-sat), var(--c-success-lum);
     --c-success: hsl(var(--c-success-hsl));
-    --c-success-dark: hsl(var(--c-success-hue), var(--c-success-sat), 30%);
+    --c-success-dark: hsl(var(--c-success-hue), var(--c-success-sat), 25%);
     --c-success-light: hsl(var(--c-success-hue), var(--c-success-sat), 90%);
 
     --c-warning-hue: 40;
