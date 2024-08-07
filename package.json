@@ -12,7 +12,6 @@
   "dependencies": {
     "@bhplugin/vue3-datatable": "^1.1.4",
     "@ctrl/tinycolor": "^4.1.0",
-    "@cyhnkckali/vue3-color-picker": "^2.0.2",
     "@iconoir/vue": "^7.8.0",
     "@nuxt/image": "^1.7.0",
     "@nuxtjs/leaflet": "^1.0.14",
@@ -24,6 +23,7 @@
     "nuxt-tiptap-editor": "^1.1.2",
     "pinia": "^2.1.7",
     "vue": "^3.4.27",
+    "vue-accessible-color-picker": "^5.0.1",
     "vue-router": "^4.3.3"
   },
   "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610",

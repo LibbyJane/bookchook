@@ -21,7 +21,7 @@
         <template #body>
             <dl v-if="inEditMode != 'account'" class="settings-list" >
                 <div v-for="setting, key in organisationStore.account.theme_config.colors" class="settings-list__item swatch">
-                    <dd class="swatch__color" :style="`background-color: hsl(${setting});`"></dd>
+                    <dd class="swatch__color" :style="`background-color: hsl(${setting.hsl.hsl});`"></dd>
                     <dt class="swatch__label" style="text-transform: capitalize;">{{ getLabelText(key) }}</dt>
                 </div>
             </dl>

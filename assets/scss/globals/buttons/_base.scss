@@ -120,6 +120,19 @@
     }
 }
 
+.btn--plain {
+    background: transparent;
+    color: var(--c-text);
+    padding-inline: 0;
+
+    &:hover,
+    &:focus {
+        background: transparent;
+        box-shadow: none;
+        color: var(--c-accent);
+    }
+}
+
 // .btn--outline {
 //     background: transparent;
 //     color: var(--c-text);

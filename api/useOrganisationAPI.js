@@ -19,6 +19,10 @@ const endpoints = {
     updateOrganisationBillingSettings: {
         uri: `private/account/billing_settings`,
         method: 'PATCH'
+    },
+    updateThemeConfig: {
+        uri: `private/account/theme_config`,
+        method: 'PATCH'
     }
 }
 
