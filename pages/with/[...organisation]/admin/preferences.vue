@@ -87,7 +87,7 @@
         message: 'test',
         cssClass: '',
         clear: () => {
-            console.log('clear toast');
+            // console.log('clear toast');
             toast.message = '';
             toast.cssClass = '';
         }

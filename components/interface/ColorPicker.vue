@@ -1,9 +1,7 @@
 <template>
 	<ColorPicker :color="color"  v-on:color-change="callback" :alpha-channel="alphaChannel" :default-format="defaultFormat" :visible-formats="['hex', 'hsl', 'rgb']" >
-
-        <slot name="copy-button">bbbbb</slot>
-        <slot name="format-switch-button">ccccc</slot>
-        <template #copy-button></template>
+<!--
+        <template #copy-button></template> -->
 
     </ColorPicker>
 </template>
@@ -65,7 +63,6 @@
 
                 svg {
                     transform: scale(1.1);
-
                 }
             }
         }

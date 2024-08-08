@@ -8,66 +8,66 @@ export const useOrganisationStore = defineStore('organisationStore', {
                 colors: {
                     background: {
                         hsl: {
-                            h: '',
-                            s: '',
-                            l: '',
-                            hsl: ''
+                            h: 207,
+                            s: 25,
+                            l: 97,
+                            hsl: '207, 25%, 97%'
                         },
-                        hex: ''
+                        hex: '#f5f8f9'
                     },
                     text: {
                         hsl: {
-                            h: '',
-                            s: '',
-                            l: '',
-                            hsl: ''
+                            h: 207,
+                            s: 100,
+                            l: 18,
+                            hsl: '207, 100%, 18%'
                         },
-                        hex: ''
+                        hex: '#00315c'
                     },
                     accent: {
                         hsl: {
-                            h: '',
-                            s: '',
-                            l: '',
-                            hsl: ''
+                            h: 207,
+                            s: 96,
+                            l: 50,
+                            hsl: '207, 96%, 50%'
                         },
-                        hex: ''
+                        hex: '#058cfa'
                     },
                     accent_contrast: {
                         hsl: {
-                            h: '',
-                            s: '',
-                            l: '',
-                            hsl: ''
+                            h: 0,
+                            s: 0,
+                            l: 100,
+                            hsl: '0, 0%, 100%'
                         },
-                        hex: ''
+                        hex: '#ffffff'
                     },
                     header_background: {
                         hsl: {
-                            h: '',
-                            s: '',
-                            l: '',
-                            hsl: ''
+                            h: 207,
+                            s: 96,
+                            l: 25,
+                            hsl: '207, 96%, 25%'
                         },
-                        hex: ''
+                        hex: '#03467d'
                     },
                     header_text: {
                         hsl: {
-                            h: '',
-                            s: '',
-                            l: '',
-                            hsl: ''
+                            h: 0,
+                            s: 0,
+                            l: 100,
+                            hsl: '0, 0%, 100%'
                         },
-                        hex: ''
+                        hex: '#ffffff'
                     },
                     header_accent: {
                         hsl: {
-                            h: '',
-                            s: '',
-                            l: '',
-                            hsl: ''
+                            h: 55,
+                            s: 100,
+                            l: 50,
+                            hsl: '55, 100%, 50%'
                         },
-                        hex: ''
+                        hex: '#ffea00'
                     }
                 }
             },
@@ -90,7 +90,7 @@ export const useOrganisationStore = defineStore('organisationStore', {
     actions: {
         async getOrganisationData(organisationID) {
             const response = await useOrganisationAPI({endpoint: `getAccountBySlug`,  id: organisationID});
-            console.log('account', this.account);
+            // console.log('account', this.account);
             this.account = response.data.account;
             if (response.data.status) {
                 this.account = response.data.account;
@@ -608,7 +608,7 @@ export const useOrganisationStore = defineStore('organisationStore', {
             // TODO: remove test data when client details page complete
             const response = await useOrganisationAPI({endpoint: `getOrganisationBillingSettings`});
 
-            console.log('response', response);
+            // console.log('response', response);
 
             if (response.data?.billing_settings) {
                 this.settings.billing = response.data.billing_settings;
@@ -629,7 +629,6 @@ export const useOrganisationStore = defineStore('organisationStore', {
         },
 
         async updateThemeConfig(data) {
-            console.log('updateThemeConfig', data);
             const response = await useOrganisationAPI({endpoint: `updateThemeConfig`, data});
 
             if (response.data?.theme_config) {

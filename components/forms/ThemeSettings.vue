@@ -2,7 +2,7 @@
     <form v-on:submit="handleSubmit" class="form form--settings-theme" :class="{ 'loading': form.state == 'loading' }" ref="themeFormElement">
         <fieldset class="fieldset--colors">
             <div class="fieldset--colors__picker sticky">
-                <ColorPicker v-if="selectedKey" :color="fields[selectedKey].value.hex" :callback="handleColorChange" />
+                <ColorPicker v-if="selectedKey" :color="fields[selectedKey].value.hex" :callback="handleColorPickerChange" />
             </div>
 
             <div class="fieldset--colors__fields">
@@ -13,6 +13,7 @@
                         :required="field.required"
                         :error="field.error"
                     >
+                        <!-- <span class="color-preview" role="img" aria-label="Preview of the selected color" ></span> -->
                         <input
                             v-model="fields[key].value.hex"
                             v-on:focus="() => {selectedKey = key}"
@@ -23,11 +24,12 @@
                             :required="fields[key].required"
                             :placeholder="fields[key].placeholder"
                             minlength="4"
-                            pattern="[#]{0,1}[a-fA-F0-9]{3,8}"
+                            pattern="[#]{0,1}[a-fA-F0-9]{6}"
                             :style="`--c-preview: ${fields[key].value.hex}`"
+                            :ref="`${key}_ref`"
                         />
-                        <button class="btn btn--plain" type="button" v-on:click="resetColor()">
-                            <Undo />
+                        <button class="btn btn--plain" type="button" v-on:click="resetColor()" :disabled="fields[key].pristine" title="Reset">
+                            <RefreshDouble />
                             <span class="visually-hidden">reset</span>
                         </button>
                     </Field>
@@ -41,94 +43,220 @@
 </template>
 
 <script setup>
-    import { ref, reactive, computed } from 'vue';
+    import { ref, reactive, computed, watch, onMounted, nextTick } from 'vue';
     import ColorPicker from '@/components/interface/ColorPicker.vue';
+    import { isReadable } from '@ctrl/tinycolor';
     import Field from '@/components/forms/shared/Field.vue';
+    import Error from '@/components/forms/shared/Error.vue';
     import { useOrganisationStore } from '@/stores/organisation.js';
-    import { Undo } from '@iconoir/vue';
+    import { RefreshDouble } from '@iconoir/vue';
 
     const selectedKey = ref(null);
-
     const organisationStore = useOrganisationStore();
     const themeFormElement = ref(null);
 
     let form = reactive({
-        pristine: true,
+        pristine: computed( () => {
+            let p = true;
+            Object.keys(fields).forEach((k, _i) => {
+                if (p && !(fields[k]).pristine ) {
+                    p = false;
+                    return;
+                }
+            });
+            return p;
+        }),
         state: 'init',
         error: null
     })
+
+    const background_ref = ref(null);
+    const text_ref = ref(null);
+    const accent_ref = ref(null);
+    const accent_contrast_ref = ref(null);
+    const header_background_ref = ref(null);
+    const header_text_ref = ref(null);
+    const header_accent_ref = ref(null);
+
 
     // keep the field key synchronisied with the store key
     const fields = reactive({
         background: {
             value: organisationStore.account.theme_config.colors.background,
-            required: false,
+            required: true,
             error: null,
             placeholder: "",
-            type: "text"
+            type: "text",
+            pristine: computed( () => { return fields.background.value.hex == organisationStore.account.theme_config.colors.background.hex })
         },
         text: {
             value: organisationStore.account.theme_config.colors.text,
-            required: false,
+            required: true,
             error: null,
             placeholder: "",
-            type: "text"
+            type: "text",
+            pristine: computed( () => { return fields.text.value.hex == organisationStore.account.theme_config.colors.text.hex })
         },
         accent: {
             value: organisationStore.account.theme_config.colors.accent,
-            required: false,
+            required: true,
             error: null,
             placeholder: "",
-            type: "text"
+            type: "text",
+            pristine: computed( () => { return fields.accent.value.hex == organisationStore.account.theme_config.colors.accent.hex })
         },
         accent_contrast: {
             value: organisationStore.account.theme_config.colors.accent_contrast,
-            required: false,
+            required: true,
             error: null,
             placeholder: "",
-            type: "text"
+            type: "text",
+            pristine: computed( () => { return fields.accent_contrast.value.hex == organisationStore.account.theme_config.colors.accent_contrast.hex })
         },
         header_background: {
             value: organisationStore.account.theme_config.colors.header_background,
-            required: false,
+            required: true,
             error: null,
             placeholder: "",
-            type: "text"
+            type: "text",
+            pristine: computed( () => { return fields.header_background.value.hex == organisationStore.account.theme_config.colors.header_background.hex })
         },
         header_text: {
             value: organisationStore.account.theme_config.colors.header_text,
-            required: false,
+            required: true,
             error: null,
             placeholder: "",
-            type: "text"
+            type: "text",
+            pristine: computed( () => { return fields.header_text.value.hex == organisationStore.account.theme_config.colors.header_text.hex })
         },
         header_accent: {
             value: organisationStore.account.theme_config.colors.header_accent,
             valueFromColorPicker: null,
-            required: false,
+            required: true,
             error: null,
             placeholder: "",
-            type: "text"
+            type: "text",
+            pristine: computed( () => { return fields.header_accent.value.hex == organisationStore.account.theme_config.colors.header_accent.hex })
         }
+    });
+    onMounted(() => {
+        watch( () => fields.background.error, (error) => {
+            if (error) {
+                background_ref.value[0].setCustomValidity(error );
+                return;
+            }
+
+            background_ref.value[0].setCustomValidity('' );
+        });
+
+        watch( () => fields.text.error, (error) => {
+            if (error) {
+                text_ref.value[0].setCustomValidity(error );
+                return;
+            }
+
+            text_ref.value[0].setCustomValidity('' );
+        });
+
+        watch( () => fields.accent.error, (error) => {
+            if (error) {
+                accent_ref.value[0].setCustomValidity(error );
+                return;
+            }
+
+            accent_ref.value[0].setCustomValidity('' );
+        });
+
+        watch( () => fields.accent_contrast.error, (error) => {
+            if (error) {
+                accent_contrast_ref.value[0].setCustomValidity(error );
+                return;
+            }
+
+            accent_contrast_ref.value[0].setCustomValidity('' );
+        });
+
+        watch( () => fields.header_background.error, (error) => {
+            if (error) {
+                header_background_ref.value[0].setCustomValidity(error );
+                return;
+            }
+
+            header_background_ref.value[0].setCustomValidity('' );
+        });
+
+        watch( () => fields.header_text.error, (error) => {
+            if (error) {
+                header_text_ref.value[0].setCustomValidity(error );
+                return;
+            }
+
+            header_text_ref.value[0].setCustomValidity('' );
+        });
+
+        watch( () => fields.header_accent.error, (error) => {
+            if (error) {
+                header_accent.value[0].setCustomValidity(error );
+                return;
+            }
+
+            header_accent.value[0].setCustomValidity('' );
+        });
     });
 
 
-    function handleColorChange(eventData) {
-        fields[selectedKey.value].value = {
-            hsl: {
-                h: eventData.colors.hsl.h,
-                s: eventData.colors.hsl.s,
-                l: eventData.colors.hsl.h,
-                hsl: `${eventData.colors.hsl.h}, ${eventData.colors.hsl.s}%,  ${eventData.colors.hsl.l}%`
-            },
-            hex: (eventData.colors.hex).slice(0, -2)
-        };
+    function handleColorPickerChange(eventData) {
+        // console.log('handleColorPickerChange', eventData);
+        let comparisonColorKey;
 
-        clearError(selectedKey.value);
+        switch (selectedKey.value) {
+            case "background":
+                comparisonColorKey = "text";
+                break;
+            case "header_background":
+                comparisonColorKey = "header_text";
+                break;
+            case "header_text":
+                comparisonColorKey = "header_background";
+                break;
+            case "accent":
+                comparisonColorKey = "accent_contrast";
+                break;
+            case "accent_contrast":
+                comparisonColorKey = "accent";
+                break;
+            default:
+                comparisonColorKey = "background";
+        }
+
+        fields[selectedKey.value].value = {
+                hsl: {
+                    h: eventData.colors.hsl.h,
+                    s: eventData.colors.hsl.s,
+                    l: eventData.colors.hsl.h,
+                    hsl: `${eventData.colors.hsl.h}, ${eventData.colors.hsl.s}%,  ${eventData.colors.hsl.l}%`
+                },
+                hex: (eventData.colors.hex).slice(0, -2)
+            };
+
+        if (!comparisonColorKey) return;
+
+        if ( isReadable(fields[selectedKey.value].value.hex, fields[comparisonColorKey].value.hex, { level: "AA", size: "large"} )) {
+            clearError(selectedKey.value);
+            clearError(comparisonColorKey);
+            return;
+        }
+
+        const errorMessage = `Insufficient constrast with the ${(comparisonColorKey).replace('_', ' ')} color.`;
+
+        setTimeout(() => {
+            fields[selectedKey.value].error = errorMessage;
+        }, 100);
     }
 
     function resetColor() {
         fields[selectedKey.value].value = organisationStore.account.theme_config.colors[selectedKey.value];
+        fields[selectedKey.value].error = '';
     }
 
     const handleSubmit = async (e) => {
@@ -189,7 +317,7 @@
         if (event?.type == "blur" && !fields[id].value.hex.startsWith('#')) {
             fields[id].value.hex = '#' +  fields[id].value.hex;
         }
-        form.pristine = false;
+
         clearError(id);
     };
 </script>
@@ -203,7 +331,7 @@
 
         .field-wrapper {
             display: grid;
-                grid-template-areas: "label input reset";
+                grid-template-areas: "label input reset" "error error error";
                 grid-template-columns: 1fr 1fr max-content;
                 align-items: center;
                 gap: var(--space-sm);
@@ -211,6 +339,9 @@
 
             label {
                 grid-area: label;
+                    align-items: center;
+                    justify-content: end;
+                margin: 0;
             }
 
             input {
@@ -226,9 +357,13 @@
                 grid-area: reset;
 
                 svg {
-                    height: var(--icon-size-sm);
-                    width: var(--icon-size-sm);
+                    height: var(--icon-size-xs);
+                    width: var(--icon-size-xs);
                 }
+            }
+
+            .error {
+                grid-area: error;
             }
         }
     }
