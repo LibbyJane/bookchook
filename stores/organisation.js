@@ -1,75 +1,96 @@
 import { useOrganisationAPI } from '@/api/useOrganisationAPI';
 
+export let defaultColors = {
+    theme_type: 'light',
+    background: {
+        hsl: {
+            h: 207,
+            s: 25,
+            l: 97,
+            hsl: '207, 25%, 97%'
+        },
+        hex: '#f5f8f9'
+    },
+    background_alt: {
+        hsl: {
+            h: 0,
+            s: 0,
+            l: 100,
+            hsl: '0, 0%, 100%'
+        },
+        hex: '#ffffff'
+    },
+    background_alt2: {
+        hsl: {
+            h: 207,
+            s: 25,
+            l: 92,
+            hsl: '207, 25%, 92%'
+        },
+        hex: '#fbfcfc'
+    },
+    text: {
+        hsl: {
+            h: 207,
+            s: 100,
+            l: 18,
+            hsl: '207, 100%, 18%'
+        },
+        hex: '#00315c'
+    },
+    accent: {
+        hsl: {
+            h: 207,
+            s: 96,
+            l: 50,
+            hsl: '207, 96%, 50%'
+        },
+        hex: '#058cfa'
+    },
+    accent_contrast: {
+        hsl: {
+            h: 0,
+            s: 0,
+            l: 100,
+            hsl: '0, 0%, 100%'
+        },
+        hex: '#ffffff'
+    },
+    header_background: {
+        hsl: {
+            h: 207,
+            s: 96,
+            l: 25,
+            hsl: '207, 96%, 25%'
+        },
+        hex: '#03467d'
+    },
+    header_text: {
+        hsl: {
+            h: 0,
+            s: 0,
+            l: 100,
+            hsl: '0, 0%, 100%'
+        },
+        hex: '#ffffff'
+    },
+    header_accent: {
+        hsl: {
+            h: 55,
+            s: 100,
+            l: 50,
+            hsl: '55, 100%, 50%'
+        },
+        hex: '#ffea00'
+    }
+}
+
 export const useOrganisationStore = defineStore('organisationStore', {
     state: () => ({
         account: {
             theme_config: {
                 version: 1,
-                colors: {
-                    background: {
-                        hsl: {
-                            h: 207,
-                            s: 25,
-                            l: 97,
-                            hsl: '207, 25%, 97%'
-                        },
-                        hex: '#f5f8f9'
-                    },
-                    text: {
-                        hsl: {
-                            h: 207,
-                            s: 100,
-                            l: 18,
-                            hsl: '207, 100%, 18%'
-                        },
-                        hex: '#00315c'
-                    },
-                    accent: {
-                        hsl: {
-                            h: 207,
-                            s: 96,
-                            l: 50,
-                            hsl: '207, 96%, 50%'
-                        },
-                        hex: '#058cfa'
-                    },
-                    accent_contrast: {
-                        hsl: {
-                            h: 0,
-                            s: 0,
-                            l: 100,
-                            hsl: '0, 0%, 100%'
-                        },
-                        hex: '#ffffff'
-                    },
-                    header_background: {
-                        hsl: {
-                            h: 207,
-                            s: 96,
-                            l: 25,
-                            hsl: '207, 96%, 25%'
-                        },
-                        hex: '#03467d'
-                    },
-                    header_text: {
-                        hsl: {
-                            h: 0,
-                            s: 0,
-                            l: 100,
-                            hsl: '0, 0%, 100%'
-                        },
-                        hex: '#ffffff'
-                    },
-                    header_accent: {
-                        hsl: {
-                            h: 55,
-                            s: 100,
-                            l: 50,
-                            hsl: '55, 100%, 50%'
-                        },
-                        hex: '#ffea00'
-                    }
-                }
+                colors: defaultColors
             },
         },
         organisationPagePrefix: '\/with\/',
@@ -91,79 +112,15 @@ export const useOrganisationStore = defineStore('organisationStore', {
         async getOrganisationData(organisationID) {
             const response = await useOrganisationAPI({endpoint: `getAccountBySlug`,  id: organisationID});
             // console.log('account', this.account);
-            this.account = response.data.account;
             if (response.data.status) {
-                this.account = response.data.account;
+                // this.account = {...this.account, ...response.data.account};
                 this.baseURL = `${this.organisationPagePrefix}${organisationID}`;
                 this.adminURL = `${this.organisationPagePrefix}${organisationID}/admin`;
                 // TODO: remove logo and theme hard wiring when properly set up
                 this.account.logo_url = '/demo/logo.svg';
+                console.log('this.account.theme_config', this.account.theme_config);
+                console.log('this.account.theme_config2', this.account.theme_config);
 
-                this.account.theme_config.colors = {
-                    background: {
-                        hsl: {
-                            h: 207,
-                            s: 25,
-                            l: 97,
-                            hsl: '207, 25%, 97%'
-                        },
-                        hex: '#f5f8f9'
-                    },
-                    text: {
-                        hsl: {
-                            h: 207,
-                            s: 100,
-                            l: 18,
-                            hsl: '207, 100%, 18%'
-                        },
-                        hex: '#00315c'
-                    },
-                    accent: {
-                        hsl: {
-                            h: 207,
-                            s: 96,
-                            l: 50,
-                            hsl: '207, 96%, 50%'
-                        },
-                        hex: '#058cfa'
-                    },
-                    accent_contrast: {
-                        hsl: {
-                            h: 0,
-                            s: 0,
-                            l: 100,
-                            hsl: '0, 0%, 100%'
-                        },
-                        hex: '#ffffff'
-                    },
-                    header_background: {
-                        hsl: {
-                            h: 207,
-                            s: 96,
-                            l: 25,
-                            hsl: '207, 96%, 25%'
-                        },
-                        hex: '#03467d'
-                    },
-                    header_text: {
-                        hsl: {
-                            h: 0,
-                            s: 0,
-                            l: 100,
-                            hsl: '0, 0%, 100%'
-                        },
-                        hex: '#ffffff'
-                    },
-                    header_accent: {
-                        hsl: {
-                            h: 55,
-                            s: 100,
-                            l: 50,
-                            hsl: '55, 100%, 50%'
-                        },
-                        hex: '#ffea00'
-                    }
-                };
             }
 
             return true;
@@ -629,6 +586,7 @@ export const useOrganisationStore = defineStore('organisationStore', {
         },
 
         async updateThemeConfig(data) {
+            console.log('update theme config with ', data);
             const response = await useOrganisationAPI({endpoint: `updateThemeConfig`, data});
             console.log('response', response);
             console.log('this.account.theme_config', this.account.theme_config);

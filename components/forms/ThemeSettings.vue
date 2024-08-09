@@ -40,7 +40,7 @@
         <Error v-if="form.error" :message="form.error"></Error>
         <div class="btn-bar">
             <button type="submit" class="btn btn--success" :disabled="form.pristine">Save</button>
-            <button type="button" class="btn btn--plain" :disabled="form.pristine" v-on:click="resetAllToDefault()">Reset to default colours</button>
+            <button type="button" class="btn btn--plain" v-on:click="resetAllToDefault()">Reset to default colours</button>
         </div>
     </form>
 </template>
@@ -51,7 +51,7 @@
     import { isReadable, TinyColor } from '@ctrl/tinycolor';
     import Field from '@/components/forms/shared/Field.vue';
     import Error from '@/components/forms/shared/Error.vue';
-    import { useOrganisationStore } from '@/stores/organisation.js';
+    import { useOrganisationStore, defaultColors } from '@/stores/organisation.js';
     import { RefreshDouble } from '@iconoir/vue';
 
     const selectedKey = ref(null);
@@ -263,7 +263,7 @@
     }
 
     async function resetAllToDefault() {
-        await organisationStore.updateThemeConfig({reset: true});
+        await organisationStore.updateThemeConfig(defaultColors);
     }
 
     function resetColor(key) {
@@ -296,13 +296,12 @@
         for (let [key, value] of Object.entries(fields)) {
             data.colors[key] = value.value;
         }
-        console.log('data: background', data.colors.background);
 
-        data.theme_type = (new TinyColor(fields.background.value.hex)).isLight() ? 'light' : 'dark';
+        data.colors.theme_type = (new TinyColor(fields.background.value.hex)).isLight() ? 'light' : 'dark';
 
         // let background_alt_tc = new TinyColor(fields.background.value.hex).lighten(12);
 
-        let background_alt_tc = data.theme_type == 'light' ? new TinyColor(fields.background.value.hex).lighten(15) : new TinyColor(fields.background.value.hex).lighten(7);
+        let background_alt_tc = data.colors.theme_type == 'light' ? new TinyColor(fields.background.value.hex).lighten(15) : new TinyColor(fields.background.value.hex).lighten(7);
 
         data.colors.background_alt = {
             hex: background_alt_tc.toHexString(),
@@ -313,7 +312,7 @@
         data.colors.background_alt.hsl.s = data.colors.background_alt.hsl.s * 100;
         data.colors.background_alt.hsl.l = data.colors.background_alt.hsl.l * 100;
 
-        let background_alt2_tc = data.theme_type == 'light' ? new TinyColor(fields.background.value.hex).lighten(2) : new TinyColor(fields.background.value.hex).lighten(12);
+        let background_alt2_tc = data.colors.theme_type == 'light' ? new TinyColor(fields.background.value.hex).lighten(2) : new TinyColor(fields.background.value.hex).lighten(12);
 
         data.colors.background_alt2 = {
             hex: background_alt2_tc.toHexString(),
@@ -337,9 +336,9 @@
         // data.colors.background_subtle.hsl.l = data.colors.background_subtle.hsl.l * 100;
 
 
-        console.log('data: background_alt', data.colors.background_alt);
+        console.log('update theme with data', data);
 
-        const outcome = await organisationStore.updateThemeConfig({data});
+        const outcome = await organisationStore.updateThemeConfig(data);
 
         let errorMessage;
 

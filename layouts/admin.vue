@@ -1,5 +1,5 @@
 <template>
-    <div class="main-outer" :class="`theme-${organisationStore.account.theme_config.theme_type}`" :style="`
+    <div class="main-outer" :class="`theme-${organisationStore.account.theme_config.colors.theme_type ? organisationStore.account.theme_config.colors.theme_type : 'light'}`" :style="`
         --c-header-bg-hsl: ${ organisationStore.account.theme_config.colors.header_background.hsl.hsl ? organisationStore.account.theme_config.colors.header_background.hsl.hsl : '--c-background-hsl' };
         --c-header-bg: hsl(var(--c-header-bg-hsl));
 
@@ -26,8 +26,6 @@
 
         --c-background-alt-hsl: ${ organisationStore.account.theme_config.colors.background_alt?.hsl.hsl ? organisationStore.account.theme_config.colors.background_alt.hsl.hsl : '--c-background-hsl' };
         --c-background-alt: hsl(var(--c-background-alt-hsl));
-
-        --theme-type: ${ organisationStore.account.theme_config.theme_type};
 
         --c-input-bg-hsl: ${ organisationStore.account.theme_config.colors.background_alt2?.hsl.hsl ? organisationStore.account.theme_config.colors.background_alt2.hsl.hsl : '--c-input-bg-hsl' };
 
