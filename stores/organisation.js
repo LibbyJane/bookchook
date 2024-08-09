@@ -630,6 +630,8 @@ export const useOrganisationStore = defineStore('organisationStore', {
 
         async updateThemeConfig(data) {
             const response = await useOrganisationAPI({endpoint: `updateThemeConfig`, data});
+            console.log('response', response);
+            console.log('this.account.theme_config', this.account.theme_config);
 
             if (response.data?.theme_config) {
                 this.account.theme_config = response.data.theme_config;

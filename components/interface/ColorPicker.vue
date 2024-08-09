@@ -74,7 +74,7 @@
     }
 
     .vacp-color-input {
-        // background-color: hsla(var(--c-text-hsl), 0.05);
+        background-color: var(--c-input-bg);
         // border: 0;
         border-width: 2px;
         border-color: hsla(var(--c-text-hsl), 0.25);

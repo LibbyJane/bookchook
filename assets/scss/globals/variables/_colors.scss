@@ -13,10 +13,10 @@
     --c-text-lum: 17%;
     --c-text-hsl: var(--c-text-hue), var(--c-text-sat), var(--c-text-lum);
     --c-text: hsl(var(--c-text-hsl));
-    --c-text-dark: hsl(var(--c-text-hue), var(--c-text-sat), calc(var(--c-text-lum) - 5%));
+    --c-text-inc-contrast: hsl(var(--c-text-hue), var(--c-text-sat), calc(var(--c-text-lum) - 5%));
     --c-text-lighter: hsl(var(--c-text-hue), var(--c-text-sat), 25%);
-    --c-text-ultralight: hsl(var(--c-text-hue), var(--c-text-sat), 96%);
-    --c-text-ultralight-hover: hsl(var(--c-text-hue), var(--c-text-sat), 92%);
+    --c-background-subtle: hsl(var(--c-text-hue), var(--c-text-sat), 96%);
+    --c-background-subtle-hover: hsl(var(--c-text-hue), var(--c-text-sat), 92%);
 
 
     --c-background-hsl: 32, 80%, 98%;
@@ -25,7 +25,7 @@
     --c-background-sat: 80%;
     --c-background-lum: 98%;
     --c-background: hsl(var(--c-background-hue), var(--c-background-sat), var(--c-background-lum));
-    --c-background-light: hsl(var(--c-background-hue), var(--c-background-sat), 100%);
+    --c-background-alt: hsl(var(--c-background-hue), var(--c-background-sat), 100%);
     // --c-background-hue: 186;
     // --c-background-sat: 5%;
     // --c-background-lum: 96%;
@@ -107,4 +107,9 @@
     --c-border: hsla(var(--c-text-hsl), 0.4);
     --c-border-light: hsla(var(--c-text-hsl), 0.1);
     --c-input-bg: hsla(var(--c-text-hsl), 0.05);
+}
+
+.theme-dark {
+    --c-background-subtle: hsl(var(--c-text-hue), var(--c-text-sat), calc(var(--c-background-lum) + 4%));
+    --c-background-subtle-hover: hsl(var(--c-text-hue), var(--c-text-sat), calc(var(--c-background-lum) + 8%));
 }

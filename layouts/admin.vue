@@ -1,5 +1,5 @@
 <template>
-    <div class="main-outer" :style="`
+    <div class="main-outer" :class="`theme-${organisationStore.account.theme_config.theme_type}`" :style="`
         --c-header-bg-hsl: ${ organisationStore.account.theme_config.colors.header_background.hsl.hsl ? organisationStore.account.theme_config.colors.header_background.hsl.hsl : '--c-background-hsl' };
         --c-header-bg: hsl(var(--c-header-bg-hsl));
 
@@ -12,6 +12,9 @@
         --c-text-hsl: ${ organisationStore.account.theme_config.colors.text.hsl.hsl ? organisationStore.account.theme_config.colors.text.hsl.hsl : '--c-text-hsl' };
         --c-text: hsl(var(--c-text-hsl));
 
+        --c-text-inc-contrast: hsl(${ organisationStore.account.theme_config.colors.text.hsl.h}, ${ organisationStore.account.theme_config.colors.text.hsl.s}, calc(${ organisationStore.account.theme_config.colors.text.hsl.l} - 5%));
+        --c-text-light: hsl(${ organisationStore.account.theme_config.colors.text.hsl.h}, ${ organisationStore.account.theme_config.colors.text.hsl.s}, calc(${ organisationStore.account.theme_config.colors.text.hsl.l} + 5%));
+
         --c-accent-hsl: ${organisationStore.account.theme_config.colors.accent.hsl.hsl ? organisationStore.account.theme_config.colors.accent.hsl.hsl : '--c-accent-hsl' };
         --c-accent: hsl(var(--c-accent-hsl));
 
@@ -20,6 +23,18 @@
 
         --c-background-hsl: ${ organisationStore.account.theme_config.colors.background.hsl.hsl ? organisationStore.account.theme_config.colors.background.hsl.hsl : '--c-background-hsl' };
         --c-background: hsl(var(--c-background-hsl));
+
+        --c-background-alt-hsl: ${ organisationStore.account.theme_config.colors.background_alt?.hsl.hsl ? organisationStore.account.theme_config.colors.background_alt.hsl.hsl : '--c-background-hsl' };
+        --c-background-alt: hsl(var(--c-background-alt-hsl));
+
+        --theme-type: ${ organisationStore.account.theme_config.theme_type};
+
+        --c-input-bg-hsl: ${ organisationStore.account.theme_config.colors.background_alt2?.hsl.hsl ? organisationStore.account.theme_config.colors.background_alt2.hsl.hsl : '--c-input-bg-hsl' };
+
+
+        --c-input-bg: hsl(var(--c-input-bg-hsl));
+        --c-border: hsla(var(--c-text-hsl), 0.1);
+        --c-border-light: hsla(var(--c-text-hsl), 0.1);
     `">
         <AdminHeader />
 

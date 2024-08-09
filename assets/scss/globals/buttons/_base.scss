@@ -150,13 +150,17 @@
 // }
 
 .btn--tertiary {
-    background-color: var(--c-text-ultralight);
+    background-color: var(--c-background-subtle);
     color: var(--c-text);
+    opacity: 0.9;
 
     &:hover,
     &:focus {
-        background-color: hsl(var(--c-text-hue), var(--c-text-sat), 92%);
+        // background-color: hsl(var(--c-text-hue), var(--c-text-sat), 92%);
+        background-color: var(--c-background-subtle-hover);
+
         color: var(--c-text);
+        opacity: 1;
     }
 
     &.btn--danger {
@@ -174,7 +178,7 @@
 .btn--modify-duo {
     // eg on client profile, when the group button is hovered to show the 'remove' icon
     background-color: transparent;
-    outline: 2px solid var(--c-text-ultralight);
+    outline: 2px solid var(--c-background-subtle);
     border-radius: var(--border-radius) 0 0 var(--border-radius);
     color: var(--c-text);
     display: inline-flex;
@@ -184,8 +188,8 @@
 
     &:hover,
     &:focus {
-        background-color: var(--c-text-ultralight-hover);
-        outline-color: var(--c-text-ultralight-hover);
+        background-color: var(--c-background-subtle-hover);
+        outline-color: var(--c-background-subtle-hover);
         box-shadow: none;
         color: var(--c-text);
         text-indent: 0;
@@ -197,7 +201,7 @@
 
     +.btn--modify-duo {
         border-radius: 0 var(--border-radius) var(--border-radius) 0;
-        background-color: var(--c-text-ultralight);
+        background-color: var(--c-background-subtle);
 
         &:hover,
         &:focus {

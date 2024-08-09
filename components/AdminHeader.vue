@@ -38,6 +38,13 @@
 </script>
 
 <style lang="scss">
+    .main-header {
+        --c-accent: var(--c-header-accent);
+        background: var(--c-header-bg, --c-accent);
+        color: var(--c-header-text, --c-accent-contrast);
+        position: relative;
+    }
+
     .main-header__brand {
         font-size: var(--h3);
         font-weight: normal;
@@ -58,6 +65,9 @@
     }
 
     .main-menu__dropdown {
+        background: var(--c-header-bg);
+        box-shadow: var(--box-shadow-soft);
+        // filter: brightness(0.95);
         width: 100%;
     }
 </style>

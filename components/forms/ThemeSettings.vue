@@ -28,7 +28,7 @@
                             :style="`--c-preview: ${fields[key].value.hex}`"
                             :ref="`${key}_ref`"
                         />
-                        <button class="btn btn--plain" type="button" v-on:click="resetColor()" :disabled="fields[key].pristine" title="Reset">
+                        <button class="btn btn--plain" type="button" v-on:click="resetColor(key)" :disabled="fields[key].pristine" title="Reset">
                             <RefreshDouble />
                             <span class="visually-hidden">reset</span>
                         </button>
@@ -38,14 +38,17 @@
         </fieldset>
 
         <Error v-if="form.error" :message="form.error"></Error>
-        <button type="submit" class="btn btn--success" :disabled="form.pristine">Save</button>
+        <div class="btn-bar">
+            <button type="submit" class="btn btn--success" :disabled="form.pristine">Save</button>
+            <button type="button" class="btn btn--plain" :disabled="form.pristine" v-on:click="resetAllToDefault()">Reset to default colours</button>
+        </div>
     </form>
 </template>
 
 <script setup>
     import { ref, reactive, computed, watch, onMounted, nextTick } from 'vue';
     import ColorPicker from '@/components/interface/ColorPicker.vue';
-    import { isReadable } from '@ctrl/tinycolor';
+    import { isReadable, TinyColor } from '@ctrl/tinycolor';
     import Field from '@/components/forms/shared/Field.vue';
     import Error from '@/components/forms/shared/Error.vue';
     import { useOrganisationStore } from '@/stores/organisation.js';
@@ -196,11 +199,11 @@
 
         watch( () => fields.header_accent.error, (error) => {
             if (error) {
-                header_accent.value[0].setCustomValidity(error );
+                header_accent_ref.value[0].setCustomValidity(error );
                 return;
             }
 
-            header_accent.value[0].setCustomValidity('' );
+            header_accent_ref.value[0].setCustomValidity('' );
         });
     });
 
@@ -213,31 +216,36 @@
             case "background":
                 comparisonColorKey = "text";
                 break;
-            case "header_background":
-                comparisonColorKey = "header_text";
-                break;
-            case "header_text":
-                comparisonColorKey = "header_background";
-                break;
             case "accent":
                 comparisonColorKey = "accent_contrast";
                 break;
             case "accent_contrast":
                 comparisonColorKey = "accent";
                 break;
+            case "header_background":
+                comparisonColorKey = "header_text";
+                break;
+            case "header_text":
+                comparisonColorKey = "header_background";
+                break;
+            case "header_accent":
+                // leave blank for now
+                break;
             default:
                 comparisonColorKey = "background";
         }
 
         fields[selectedKey.value].value = {
-                hsl: {
-                    h: eventData.colors.hsl.h,
-                    s: eventData.colors.hsl.s,
-                    l: eventData.colors.hsl.h,
-                    hsl: `${eventData.colors.hsl.h}, ${eventData.colors.hsl.s}%,  ${eventData.colors.hsl.l}%`
-                },
-                hex: (eventData.colors.hex).slice(0, -2)
-            };
+            hsl: {
+                h: eventData.colors.hsl.h,
+                s: eventData.colors.hsl.s,
+                l: eventData.colors.hsl.l,
+                hsl: `${eventData.colors.hsl.h}, ${eventData.colors.hsl.s}%,  ${eventData.colors.hsl.l}%`
+            },
+            hex: (eventData.colors.hex).slice(0, -2)
+        };
+
+        console.log('comparisonColorKey?', comparisonColorKey);
 
         if (!comparisonColorKey) return;
 
@@ -254,15 +262,21 @@
         }, 100);
     }
 
-    function resetColor() {
-        fields[selectedKey.value].value = organisationStore.account.theme_config.colors[selectedKey.value];
-        fields[selectedKey.value].error = '';
+    async function resetAllToDefault() {
+        await organisationStore.updateThemeConfig({reset: true});
+    }
+
+    function resetColor(key) {
+        fields[key].value = organisationStore.account.theme_config.colors[key];
+        fields[key].error = '';
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         form.state = 'loading';
         themeFormElement.value.reportValidity();
+
+        console.log('form valid?' ,        themeFormElement.value.reportValidity());
 
         if (!themeFormElement.value.checkValidity()) {
             const list = themeFormElement.value.querySelectorAll('fieldset :invalid');
@@ -276,19 +290,57 @@
         }
 
         let data = {
-            colors: {
-
-            }
+            colors: {}
         };
 
         for (let [key, value] of Object.entries(fields)) {
             data.colors[key] = value.value;
         }
+        console.log('data: background', data.colors.background);
 
-        // const outcome = await useSiteAPI({ endpoint: '', data });
-        const outcome = await organisationStore.updateThemeConfig(data);
+        data.theme_type = (new TinyColor(fields.background.value.hex)).isLight() ? 'light' : 'dark';
 
-        // console.log('data', data);
+        // let background_alt_tc = new TinyColor(fields.background.value.hex).lighten(12);
+
+        let background_alt_tc = data.theme_type == 'light' ? new TinyColor(fields.background.value.hex).lighten(15) : new TinyColor(fields.background.value.hex).lighten(7);
+
+        data.colors.background_alt = {
+            hex: background_alt_tc.toHexString(),
+            hsl: background_alt_tc.toHsl()
+        };
+
+        data.colors.background_alt.hsl.hsl = background_alt_tc.toHslString().replace('hsl(', '').replace(')', '');
+        data.colors.background_alt.hsl.s = data.colors.background_alt.hsl.s * 100;
+        data.colors.background_alt.hsl.l = data.colors.background_alt.hsl.l * 100;
+
+        let background_alt2_tc = data.theme_type == 'light' ? new TinyColor(fields.background.value.hex).lighten(2) : new TinyColor(fields.background.value.hex).lighten(12);
+
+        data.colors.background_alt2 = {
+            hex: background_alt2_tc.toHexString(),
+            hsl: background_alt2_tc.toHsl()
+        };
+
+        data.colors.background_alt2.hsl.hsl = background_alt2_tc.toHslString().replace('hsl(', '').replace(')', '');
+        data.colors.background_alt2.hsl.s = data.colors.background_alt2.hsl.s * 100;
+        data.colors.background_alt2.hsl.l = data.colors.background_alt2.hsl.l * 100;
+
+
+        // let background_subtle_tc = background_alt_tc.mix(new TinyColor(fields.accent.value.hex), 10);
+
+        // data.colors.background_subtle = {
+        //     hex: background_subtle_tc.toHexString(),
+        //     hsl: background_subtle_tc.toHsl()
+        // };
+
+        // data.colors.background_subtle.hsl.hsl = background_subtle_tc.toHslString().replace('hsl(', '').replace(')', '');
+        // data.colors.background_subtle.hsl.s = data.colors.background_subtle.hsl.s * 100;
+        // data.colors.background_subtle.hsl.l = data.colors.background_subtle.hsl.l * 100;
+
+
+        console.log('data: background_alt', data.colors.background_alt);
+
+        const outcome = await organisationStore.updateThemeConfig({data});
+
         let errorMessage;
 
         if (outcome && outcome.error) {
