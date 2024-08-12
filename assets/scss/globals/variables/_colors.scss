@@ -98,8 +98,8 @@
     --c-accent-lum: 64%;
     --c-accent-hsl: var(--c-accent-hue), var(--c-accent-sat), var(--c-accent-lum);
     --c-accent: hsl(var(--c-accent-hsl));
-    // --c-accent-dark: hsl(var(--c-accent-hue), var(--c-accent-sat), 40%);
-    // --c-accent-light: hsl(var(--c-accent-hue), var(--c-accent-sat), 90%);
+    --c-accent-dark: hsl(var(--c-accent-hue), var(--c-accent-sat), 40%);
+    --c-accent-light: hsl(var(--c-accent-hue), var(--c-accent-sat), 90%);
 
     --c-accent-contrast-hsl: 32, 90%, 100%;
     --c-accent-contrast: hsl(var(--c-accent-contrast-hsl));

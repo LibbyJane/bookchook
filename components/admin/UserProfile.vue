@@ -1,5 +1,5 @@
 <template>
-    <div v-if="data" class="card">
+    <div v-if="data" class="card user-profile">
         <header class="user-profile__header">
             <h3 class="user-profile__name">
                 {{ data.first_name }} {{ data.last_name }}
@@ -82,9 +82,19 @@
 </script>
 
 <style lang="scss">
+    // .user-profile {
+    //     background-color: var(--c-input-bg);
+    // }
+
     .user-profile__header {
-        background-color: var(--c-text-lighter);
-        color: var(--c-white);
+        // background-color: var(--c-header-bg);
+        // color: var(--c-header-text);
+        // background-color: hsla(var(--c-accent-hsl), 1.05);
+        // color: hsla(var(--c-accent-contrast), 1);
+        // background-color: var(--c-background-alt);
+        // color: var(--c-text);
+        background-color: var(--c-accent-dark);
+        color: var(--c-accent-contrast);
         display: grid;
             grid-template-areas: 'name dates' 'role dates';
             gap: 0 var(--space-med);

@@ -148,7 +148,7 @@
             return;
         }
 
-        props.callback();
+        props.callback('billing');
     };
 
     const clearError = (id) => {

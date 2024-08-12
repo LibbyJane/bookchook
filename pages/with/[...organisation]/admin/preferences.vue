@@ -26,7 +26,7 @@
                 </div>
             </dl>
 
-            <ThemeSettings v-if="inEditMode == 'account'"  />
+            <ThemeSettings v-if="inEditMode == 'account'" :callback="handleSettingsUpdated" />
         </template>
     </Card>
 
@@ -34,7 +34,7 @@
         title="Billing"
         titleCssClass="h3"
         elemType="section"
-        v-on:billingSettingsUpdated="console.log('handleBillingSettingsUpdated() ')"
+        v-on:billingSettingsUpdated="console.log('handleSettingsUpdated() ')"
     >
         <template #actions>
             <button type="button" class="btn btn--sm btn--tertiary" v-on:click="inEditMode == 'billing' ? inEditMode = '' : inEditMode = 'billing'">
@@ -56,7 +56,7 @@
                 </div>
             </dl>
 
-            <BillingSettings v-if="inEditMode == 'billing'" :callback="handleBillingSettingsUpdated"  />
+            <BillingSettings v-if="inEditMode == 'billing'" :callback="handleSettingsUpdated"  />
         </template>
     </Card>
     <pre>
@@ -93,13 +93,12 @@
         }
     });
 
-    function handleBillingSettingsUpdated() {
-        console.log('bilings settings updated?');
-        if (inEditMode.value == 'billing' ) {
+    function handleSettingsUpdated(section) {
+        if (inEditMode.value == section ) {
             inEditMode.value = '';
         }
 
-        toast.message = 'billing settings updated';
+        toast.message = `${section} settings updated`;
     }
 
 

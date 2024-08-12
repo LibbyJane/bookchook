@@ -17,7 +17,6 @@
                         <input
                             v-model="fields[key].value.hex"
                             v-on:focus="() => {selectedKey = key}"
-                            v-on:keyup="handleChange(key, $event)"
                             v-on:blur="handleChange(key, $event)"
                             :id="key"
                             :type="field.type"
@@ -40,19 +39,25 @@
         <Error v-if="form.error" :message="form.error"></Error>
         <div class="btn-bar">
             <button type="submit" class="btn btn--success" :disabled="form.pristine">Save</button>
-            <button type="button" class="btn btn--plain" v-on:click="resetAllToDefault()">Reset to default colours</button>
+            <button type="button" class="btn btn--plain btn--sm" v-on:click="resetAllToDefault()">Reset to default colours</button>
         </div>
     </form>
 </template>
 
 <script setup>
     import { ref, reactive, computed, watch, onMounted, nextTick } from 'vue';
-    import ColorPicker from '@/components/interface/ColorPicker.vue';
     import { isReadable, TinyColor } from '@ctrl/tinycolor';
+    import ColorPicker from '@/components/interface/ColorPicker.vue';
     import Field from '@/components/forms/shared/Field.vue';
     import Error from '@/components/forms/shared/Error.vue';
     import { useOrganisationStore, defaultColors } from '@/stores/organisation.js';
     import { RefreshDouble } from '@iconoir/vue';
+
+    const props = defineProps({
+        callback: {
+            type: Function
+        }
+    });
 
     const selectedKey = ref(null);
     const organisationStore = useOrganisationStore();
@@ -71,18 +76,9 @@
         }),
         state: 'init',
         error: null
-    })
+    });
 
-    const background_ref = ref(null);
-    const text_ref = ref(null);
-    const accent_ref = ref(null);
-    const accent_contrast_ref = ref(null);
-    const header_background_ref = ref(null);
-    const header_text_ref = ref(null);
-    const header_accent_ref = ref(null);
-
-
-    // keep the field key synchronisied with the store key
+    // keep the field key synchronised with the store key
     const fields = reactive({
         background: {
             value: organisationStore.account.theme_config.colors.background,
@@ -142,6 +138,15 @@
             pristine: computed( () => { return fields.header_accent.value.hex == organisationStore.account.theme_config.colors.header_accent.hex })
         }
     });
+
+    const background_ref = ref(null);
+    const text_ref = ref(null);
+    const accent_ref = ref(null);
+    const accent_contrast_ref = ref(null);
+    const header_background_ref = ref(null);
+    const header_text_ref = ref(null);
+    const header_accent_ref = ref(null);
+
     onMounted(() => {
         watch( () => fields.background.error, (error) => {
             if (error) {
@@ -207,9 +212,8 @@
         });
     });
 
-
     function handleColorPickerChange(eventData) {
-        // console.log('handleColorPickerChange', eventData);
+        console.log('handleColorPickerChange', eventData);
         let comparisonColorKey;
 
         switch (selectedKey.value) {
@@ -217,7 +221,7 @@
                 comparisonColorKey = "text";
                 break;
             case "accent":
-                comparisonColorKey = "accent_contrast";
+                comparisonColorKey = "background";
                 break;
             case "accent_contrast":
                 comparisonColorKey = "accent";
@@ -262,23 +266,37 @@
         }, 100);
     }
 
-    async function resetAllToDefault() {
-        await organisationStore.updateThemeConfig(defaultColors);
-    }
-
     function resetColor(key) {
         fields[key].value = organisationStore.account.theme_config.colors[key];
         fields[key].error = '';
     }
 
-    const handleSubmit = async (e) => {
+    function clearError(id) {
+        if (!id || !fields[id])  return;
+        fields[id].error = null;
+        form.error = '';
+    };
+
+    function handleChange(id, event) {
+        if (event?.type == "blur" && !fields[id].value.hex.startsWith('#')) {
+            fields[id].value.hex = '#' +  fields[id].value.hex;
+        }
+
+        clearError(id);
+    };
+
+    function resetAllToDefault() {
+        updateConfig(defaultColors);
+    }
+
+    function handleSubmit(e) {
         e.preventDefault();
+
         form.state = 'loading';
         themeFormElement.value.reportValidity();
 
-        console.log('form valid?' ,        themeFormElement.value.reportValidity());
-
         if (!themeFormElement.value.checkValidity()) {
+            // console.log('invalid', themeFormElement.value.checkValidity());
             const list = themeFormElement.value.querySelectorAll('fieldset :invalid');
             list.forEach(elem => {
                 fields[elem.id].error = elem.validationMessage;
@@ -289,7 +307,10 @@
             return;
         }
 
+        const background_tc = new TinyColor(fields.background.value.hex);
+
         let data = {
+            theme_type:  background_tc.isLight() ? 'light' : 'dark',
             colors: {}
         };
 
@@ -297,11 +318,15 @@
             data.colors[key] = value.value;
         }
 
-        data.colors.theme_type = (new TinyColor(fields.background.value.hex)).isLight() ? 'light' : 'dark';
+            // let background_alt_tc = new TinyColor(fields.background.value.hex).lighten(12);
 
-        // let background_alt_tc = new TinyColor(fields.background.value.hex).lighten(12);
+            // let background_alt_tc = data.colors.theme_type == 'light' ? background_tc.clone().lighten(15) : background_tc.clone().lighten(7);
+        let background_lum = background_tc.getLuminance();
 
-        let background_alt_tc = data.colors.theme_type == 'light' ? new TinyColor(fields.background.value.hex).lighten(15) : new TinyColor(fields.background.value.hex).lighten(7);
+        let background_alt_tc =
+            background_lum > 0.95 ? background_tc.clone().darken(4) :
+            background_lum < 0.1 ? background_tc.clone().lighten(5) :
+            background_tc.clone().lighten(background_lum * 14);
 
         data.colors.background_alt = {
             hex: background_alt_tc.toHexString(),
@@ -312,7 +337,13 @@
         data.colors.background_alt.hsl.s = data.colors.background_alt.hsl.s * 100;
         data.colors.background_alt.hsl.l = data.colors.background_alt.hsl.l * 100;
 
-        let background_alt2_tc = data.colors.theme_type == 'light' ? new TinyColor(fields.background.value.hex).lighten(2) : new TinyColor(fields.background.value.hex).lighten(12);
+        console.log('getLuminance', background_tc.getLuminance());
+
+
+        let background_alt2_tc =
+            background_lum > 0.93 ? background_tc.clone().darken(1.5) :
+            background_lum < 0.1 ? background_tc.clone().lighten(5) :
+            background_tc.clone().lighten(background_lum * 8);
 
         data.colors.background_alt2 = {
             hex: background_alt2_tc.toHexString(),
@@ -323,20 +354,11 @@
         data.colors.background_alt2.hsl.s = data.colors.background_alt2.hsl.s * 100;
         data.colors.background_alt2.hsl.l = data.colors.background_alt2.hsl.l * 100;
 
+        updateConfig(data);
+    }
 
-        // let background_subtle_tc = background_alt_tc.mix(new TinyColor(fields.accent.value.hex), 10);
-
-        // data.colors.background_subtle = {
-        //     hex: background_subtle_tc.toHexString(),
-        //     hsl: background_subtle_tc.toHsl()
-        // };
-
-        // data.colors.background_subtle.hsl.hsl = background_subtle_tc.toHslString().replace('hsl(', '').replace(')', '');
-        // data.colors.background_subtle.hsl.s = data.colors.background_subtle.hsl.s * 100;
-        // data.colors.background_subtle.hsl.l = data.colors.background_subtle.hsl.l * 100;
-
-
-        console.log('update theme with data', data);
+    async function updateConfig(data) {
+        form.state = 'loading';
 
         const outcome = await organisationStore.updateThemeConfig(data);
 
@@ -356,22 +378,10 @@
         }
 
         form.state = '';
-    };
-
-    const clearError = (id) => {
-        if (!id || !fields[id])  return;
-        fields[id].error = null;
-        form.error = '';
-    };
-
-    const handleChange = (id, event) => {
-        if (event?.type == "blur" && !fields[id].value.hex.startsWith('#')) {
-            fields[id].value.hex = '#' +  fields[id].value.hex;
-        }
-
-        clearError(id);
-    };
+        props.callback('account');
+    }
 </script>
+
 
 <style lang="scss">
     .fieldset--colors {
