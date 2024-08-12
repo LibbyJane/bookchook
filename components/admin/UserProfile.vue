@@ -29,27 +29,9 @@
             </ul>
         </div>
 
-        <div class="user-profile__section user-profile__section--groups">
-            <h5>Groups</h5>
-            <p v-if="!data.groups">{{ data.first_name }} does not belong to any groups.</p>
-            <ul class="user-profile__group-list">
-                <li v-for="group in data.groups">
-                    <a class="btn btn--sm btn--modify-duo" href="#" :title="`Go to ${group.name} settings`">{{ group.name }}</a>
-                    <button class="btn btn--sm btn--modify-duo" :title="`Remove ${data.first_name} from ${group.name}?`">
-                        <span class="btn-action">
-                            <CrossIcon css-class="icon--xs" />
-                        </span>
-                    </button>
-                </li>
-                <li>
-                    <button type="button" class="btn btn--sm btn--tertiary" :title="`Add ${data.first_name} to a group.`">
-                        <span class="btn-action">
-                            <PlusIcon css-class="icon--xs" />
-                        </span>
-                    </button>
-                </li>
-            </ul>
-        </div>
+        <slot name="body"/>
+
+
     </div>
 </template>
 
@@ -57,9 +39,7 @@
     import { computed } from 'vue';
     import EnvelopeIcon from '@/components/icons/envelope.vue';
     import PhoneIcon from '@/components/icons/smartphone.vue';
-    import TicketIcon from '@/components/icons/ticket.vue';
-    import PlusIcon from '@/components/icons/plus.vue';
-    import CrossIcon from '@/components/icons/cross.vue';
+
 
     const props = defineProps({
         data: {

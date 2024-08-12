@@ -325,7 +325,7 @@
 
         let background_alt_tc =
             background_lum > 0.95 ? background_tc.clone().darken(4) :
-            background_lum < 0.1 ? background_tc.clone().lighten(5) :
+            background_lum < 0.1 ? background_tc.clone().lighten(3) :
             background_tc.clone().lighten(background_lum * 14);
 
         data.colors.background_alt = {

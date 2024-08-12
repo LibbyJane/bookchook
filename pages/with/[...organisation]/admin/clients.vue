@@ -35,7 +35,32 @@
         </p>
 
         <div class="user-listing__profile sticky">
-            <UserProfile v-if="selectedUser" :data="selectedUser" />
+            <UserProfile v-if="selectedUser" :data="selectedUser">
+                <template #body>
+                    <div class="user-profile__section user-profile__section--groups">
+                        <h5>Groups</h5>
+                        <p v-if="!selectedUser.groups">{{ selectedUser.first_name }} does not belong to any groups.</p>
+                        <ul class="user-profile__group-list">
+                            <li v-for="group in selectedUser.groups">
+                                <a class="btn btn--sm btn--modify-duo" href="#" :title="`Go to ${group.name} settings`">{{ group.name }}</a>
+                                <button class="btn btn--sm btn--modify-duo" :title="`Remove ${selectedUser.first_name} from ${group.name}?`">
+                                    <span class="btn-action">
+                                        <CrossIcon css-class="icon--xs" />
+                                    </span>
+                                </button>
+                            </li>
+                            <li>
+                                <button type="button" class="btn btn--sm btn--tertiary" :title="`Add ${selectedUser.first_name} to a group.`">
+                                    <span class="btn-action">
+                                        <PlusIcon css-class="icon--xs" />
+                                    </span>
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </template>
+
+            </UserProfile>
         </div>
     </div>
 </template>
@@ -47,7 +72,9 @@
     import { useOrganisationStore } from '@/stores/organisation';
     import Header from '@/components/admin/Header.vue';
     import UserProfile from '@/components/admin/UserProfile.vue';
-
+    import TicketIcon from '@/components/icons/ticket.vue';
+    import PlusIcon from '@/components/icons/plus.vue';
+    import CrossIcon from '@/components/icons/cross.vue';
     const selectedUser = ref(null);
     const tableOpacity = ref(0);
     const organisationStore = useOrganisationStore();
