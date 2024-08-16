@@ -3,6 +3,7 @@
         <NuxtLayout :name="getLayout($route.path)" dir="pages" current-route>
             <NuxtLoadingIndicator />
             <NuxtPage :page-key="route => route.fullPath" />
+            <NuxtSnackbar />
         </NuxtLayout>
     </main>
 </template>

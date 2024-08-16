@@ -272,8 +272,7 @@
                 justify-content: space-between;
         }
 
-        &:hover,
-        &:focus  {
+        #{$hover}  {
             // outline-color: var(--c-accent);
             // outline-offset: 2px;
             transform: scale(1.01);
@@ -282,11 +281,6 @@
 
         &.availability-none {
             color: var(--c-neutral-50);
-
-            // &:hover,
-            // &:focus {
-            //     outline-color: var(--c-neutral-80);
-            // }
         }
 
         // &[data-booking-status="unavailable"] {

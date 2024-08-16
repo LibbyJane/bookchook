@@ -25,9 +25,7 @@
         cssClass: {
             type: String,
         },
-        title: {
-            type: String
-        },
+        title: {},
         titleCssClass:  {
             type: String,
             default: "h3"

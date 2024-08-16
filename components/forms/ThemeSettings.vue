@@ -378,7 +378,7 @@
         }
 
         form.state = '';
-        props.callback('account');
+        props.callback('colors');
     }
 </script>
 

@@ -138,8 +138,7 @@ a,
     text-decoration: 2px solid underline var(--c-accent);
     transition: color var(--transition-speed-fast) var(--transition-type-motionless);
 
-    &:hover,
-    &:focus {
+    #{$hover} {
         color: var(--c-accent);
         // text-decoration-style: dashed;
         // text-decoration-color: hsla(var(--c-accent-hsl), 0.4);
@@ -155,8 +154,7 @@ a,
         border-bottom: thin dotted var(--c-text-lighter);
         text-decoration: none;
 
-        &:hover,
-        &:focus {
+        #{$hover} {
             border-bottom-style: solid;
             border-color: currentColor;
         }
@@ -171,8 +169,7 @@ a,
     text-decoration: none;
     transition: color var(--transition-speed-fast) var(--transition-type-motionless);
 
-    &:hover,
-    &:focus {
+    #{$hover} {
         text-decoration: none;
 
         &::before {

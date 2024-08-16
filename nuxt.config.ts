@@ -18,7 +18,26 @@ export default defineNuxtConfig({
         }
     },
 
-    modules: ["@pinia/nuxt", "@nuxt/image", "@nuxtjs/leaflet", "nuxt-tiptap-editor"],
+    modules: [
+        "@pinia/nuxt",
+        "@nuxt/image",
+        "@nuxtjs/leaflet",
+        "nuxt-tiptap-editor",
+        "nuxt-snackbar"
+    ],
+
+    snackbar: {
+        bottom: true,
+        right: true,
+        duration: 3000,
+        dense: true,
+        messageClass: "snackbar-message-custom",
+        success: "var(--c-success)",
+        error: "var(--c-error)",
+        warning: "var(--c-warning)",
+        info: "var(--c-info)"
+    },
+
     tiptap: {
         prefix: "Tiptap", //prefix for Tiptap components
     },

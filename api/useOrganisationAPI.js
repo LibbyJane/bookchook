@@ -23,10 +23,27 @@ const endpoints = {
     updateThemeConfig: {
         uri: `private/account/theme_config`,
         method: 'PATCH'
+    },
+    getCustomerGroupsList: {
+        uri: `private/customerGroup`,
+        method: 'GET'
+    },
+    createCustomerGroup: {
+        uri: `private/customerGroup`,
+        method: 'POST'
+    },
+    deleteCustomerGroup: {
+        uri: `private/customerGroup`,
+        method: 'DELETE'
+    },
+    updateCustomerGroup: {
+        uri: `private/customerGroup`,
+        method: 'PATCH'
     }
 }
 
 export async function useOrganisationAPI({endpoint, data, id, qs, $pinia }) {
+    console.log('use organiisation api', endpoint, data, id, qs, $pinia);
     const userStore = useUserStore($pinia)
 
     // console.log('useOrganisationAPI config:', config);

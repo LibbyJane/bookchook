@@ -1,16 +1,16 @@
 <template>
-    <Header title="Clients"></Header>
+    <Header title="Customers"></Header>
 
     <div class="user-listing" :style="`opacity: ${tableOpacity};`">
         <vue3-datatable
-            v-if="organisationStore.clients"
-            :rows="organisationStore.clients"
+            v-if="organisationStore.customers"
+            :rows="organisationStore.customers"
             :columns="cols"
             :sortable="true"
             :columnFilter="true"
             :pageSizeOptions="[20, 50, 100]"
-            :showPageSize="organisationStore.clients.length > 20"
-            :pagination="organisationStore.clients.length > 20"
+            :showPageSize="organisationStore.customers.length > 20"
+            :pagination="organisationStore.customers.length > 20"
             noDataContent="No matches found."
             :loader="true"
             skin="bh-table-hover"
@@ -20,8 +20,8 @@
                 <a :href="`mailto:${data.value.email_address}`" class="text-primary hover:underline">{{ data.value.email_address }}</a>
             </template> -->
         </vue3-datatable>
-        <!-- <ul v-if="organisationStore.clients" class="clickable-list">
-            <li v-for="client in organisationStore.clients" role="button" class="clickable-list__item" :class="`${ client.id == selectedClient?.id ? 'active' : '' }`" v-on:click="selectedClient = client">
+        <!-- <ul v-if="organisationStore.customers" class="clickable-list">
+            <li v-for="client in organisationStore.customers" role="button" class="clickable-list__item" :class="`${ client.id == selectedClient?.id ? 'active' : '' }`" v-on:click="selectedClient = client">
                 <h6>
                     {{ client.first_name }} {{ client.last_name }}
                     <small v-if="client.role_type.toLowerCase() == 'administrator'">{{ client.role_type }}</small>
@@ -30,8 +30,8 @@
                 <ArrowIcon />
             </li>
         </ul> -->
-        <p v-if="!organisationStore.clients" class="user-listing_empty-message">
-            You don&rsquo;t have any clients to display yet.
+        <p v-if="!organisationStore.customers" class="user-listing_empty-message">
+            You don&rsquo;t have any customers to display yet.
         </p>
 
         <div class="user-listing__profile sticky">
@@ -92,13 +92,13 @@
     function handleRowClick(user) {
         selectedUser.value = user;
     }
-    await useAsyncData(() => organisationStore.getOrganisationClients());
+    await useAsyncData(() => organisationStore.getOrganisationCustomers());
 
     onMounted(()=>{
         tableOpacity.value = 1;
-        if (organisationStore.clients.length === 1) {
+        if (organisationStore.customers.length === 1) {
             // if there's only one client, preselect them
-            selectedUser.value = organisationStore.clients[0];
+            selectedUser.value = organisationStore.customers[0];
         }
     })
 </script>

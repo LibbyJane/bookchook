@@ -98,14 +98,21 @@ export const useOrganisationStore = defineStore('organisationStore', {
         organisationPagePrefix: '\/with\/',
         adminURL: '',
         baseURL: '',
-        clients: [],
+        customers: [],
         schedule: [],
         locations: {},
         purchaseTypes: {
-            passes: true,
-            membership: true
+            pass: {
+                enabled: true,
+                options: []
+            },
+            membership: {
+                enabled: true,
+                options: []
+            },
+
         },
-        clients: [],
+        customerGroups: [],
         settings: {
             billing: {}
         }
@@ -115,14 +122,12 @@ export const useOrganisationStore = defineStore('organisationStore', {
             //await this.updateThemeConfig(defaultColors);
             const response = await useOrganisationAPI({endpoint: `getAccountBySlug`,  id: organisationID});
             // console.log('account', this.account);
-            if (response.data.status) {
+            if (response.data?.status) {
                 this.account = response.data.account;
                 this.baseURL = `${this.organisationPagePrefix}${organisationID}`;
                 this.adminURL = `${this.organisationPagePrefix}${organisationID}/admin`;
                 // TODO: remove logo and theme hard wiring when properly set up
                 this.account.logo_url = '/demo/logo.svg';
-
-                console.log('this.account.theme_config', this.account.theme_config);
             }
 
             return true;
@@ -348,16 +353,16 @@ export const useOrganisationStore = defineStore('organisationStore', {
                 return error
             }
         },
-        async getOrganisationClients() {
+        async getOrganisationCustomers() {
             // TODO: remove test data when endpoint complete
             // const response = await useOrganisationAPI({endpoint: `getOrganisationUsers`});
             const response = {};
 
-            if (response.data?.clients) {
+            if (response.data?.users) {
             //if (response.usethistogettestdata?.users) {
-                this.clients = response.data.clients;
+                this.customers = response.data.users;
             } else {
-                this.clients = [
+                this.customers = [
                     {
                         "id": "52155d7d-ff16-430d-b51b-c73985697772",
                         "account_id": "11d1c59b-38f4-4cce-ba8b-6e8af2d2a115",
@@ -443,83 +448,83 @@ export const useOrganisationStore = defineStore('organisationStore', {
         },
         async getOrganisationUsers() {
             // TODO: remove test data when client details page complete
-            // const response = await useOrganisationAPI({endpoint: `getOrganisationUsers`});
-            const response = {};
+            const response = await useOrganisationAPI({endpoint: `getOrganisationUsers`});
+            // const response = {};
 
-            if (response.data?.users) {
-            //if (response.usethistogettestdata?.users) {
+            if (response.data?.status) {
                 this.users = response.data.users;
-            } else {
-                this.users = [
-                    {
-                        "id": "52155d7d-ff16-430d-b51b-c73985697772",
-                        "account_id": "11d1c59b-38f4-4cce-ba8b-6e8af2d2a115",
-                        "first_name": "Andrew",
-                        "last_name": "Chapman",
-                        "country_code": "GB",
-                        "timezone": "Europe/London",
-                        "email_address": "info@communityttc.com",
-                        "phone": "07123 1234133",
-                        "created_dtm": 1720047009,
-                        "updated_dtm": 1720047009,
-                        "role_type": "ADMINISTRATOR",
-                        "groups": [
-                            {
-                                name: "Three Plus",
-                                id: 1
-                            },
-                            {
-                                name: "Annual Members",
-                                id: 2
-                            },
-                            {
-                                name: "League Player",
-                                id: 3
-                            }
-                        ],
-                        "bookings": [
-                            {
-                                title: "Open Session",
-                                id: 1
-                            },
-                            {
-                                title: "Annual Members",
-                                id: 2
-                            },
-                            {
-                                title: "League Player",
-                                id: 3
-                            }
-                        ]
-                    },
-                    {
-                        "id": "52155d7d-ff16-430d-b51b-c73985697773",
-                        "account_id": "11d1c59b-38f4-4cce-ba8b-6e8af2d2a116",
-                        "first_name": "Stan",
-                        "last_name": "Ntiajuka",
-                        "country_code": "GB",
-                        "timezone": "Europe/London",
-                        "email_address": "stan.ntiajuka@gmail.com",
-                        "phone": "07122 1234133",
-                        "created_dtm": 1710057010,
-                        "updated_dtm": 1720047009,
-                        "role_type": "ADMINISTRATOR"
-                    },
-                    {
-                        "id": "52155d7d-ff16-430d-b51b-c73985697774",
-                        "account_id": "11d1c59b-38f4-4cce-ba8b-6e8af2d2a117",
-                        "first_name": "Pudsey",
-                        "last_name": "Paul",
-                        "country_code": "GB",
-                        "timezone": "Europe/London",
-                        "email_address": "pudseypaul@communityttc.com",
-                        "phone": "07111 1234133",
-                        "created_dtm": 1620047009,
-                        "updated_dtm": 1720047009,
-                        "role_type": "LEADER"
-                    }
-                ];
             }
+            // else {
+            //     this.users = [
+            //         {
+            //             "id": "52155d7d-ff16-430d-b51b-c73985697772",
+            //             "account_id": "11d1c59b-38f4-4cce-ba8b-6e8af2d2a115",
+            //             "first_name": "Andrew",
+            //             "last_name": "Chapman",
+            //             "country_code": "GB",
+            //             "timezone": "Europe/London",
+            //             "email_address": "info@communityttc.com",
+            //             "phone": "07123 1234133",
+            //             "created_dtm": 1720047009,
+            //             "updated_dtm": 1720047009,
+            //             "role_type": "ADMINISTRATOR",
+            //             "groups": [
+            //                 {
+            //                     name: "Three Plus",
+            //                     id: 1
+            //                 },
+            //                 {
+            //                     name: "Annual Members",
+            //                     id: 2
+            //                 },
+            //                 {
+            //                     name: "League Player",
+            //                     id: 3
+            //                 }
+            //             ],
+            //             "bookings": [
+            //                 {
+            //                     title: "Open Session",
+            //                     id: 1
+            //                 },
+            //                 {
+            //                     title: "Annual Members",
+            //                     id: 2
+            //                 },
+            //                 {
+            //                     title: "League Player",
+            //                     id: 3
+            //                 }
+            //             ]
+            //         },
+            //         {
+            //             "id": "52155d7d-ff16-430d-b51b-c73985697773",
+            //             "account_id": "11d1c59b-38f4-4cce-ba8b-6e8af2d2a116",
+            //             "first_name": "Stan",
+            //             "last_name": "Ntiajuka",
+            //             "country_code": "GB",
+            //             "timezone": "Europe/London",
+            //             "email_address": "stan.ntiajuka@gmail.com",
+            //             "phone": "07122 1234133",
+            //             "created_dtm": 1710057010,
+            //             "updated_dtm": 1720047009,
+            //             "role_type": "ADMINISTRATOR"
+            //         },
+            //         {
+            //             "id": "52155d7d-ff16-430d-b51b-c73985697774",
+            //             "account_id": "11d1c59b-38f4-4cce-ba8b-6e8af2d2a117",
+            //             "first_name": "Pudsey",
+            //             "last_name": "Paul",
+            //             "country_code": "GB",
+            //             "timezone": "Europe/London",
+            //             "email_address": "pudseypaul@communityttc.com",
+            //             "phone": "07111 1234133",
+            //             "created_dtm": 1620047009,
+            //             "updated_dtm": 1720047009,
+            //             "role_type": "LEADER"
+            //         }
+            //     ];
+            // }
         },
         async getOrganisationLocations() {
             // TODO: wire up when endpoint is ready
@@ -586,16 +591,55 @@ export const useOrganisationStore = defineStore('organisationStore', {
             return response;
         },
         async updateThemeConfig(data) {
-            console.log('update theme config with ', data);
+            // console.log('update theme config with ', data);
             const response = await useOrganisationAPI({endpoint: `updateThemeConfig`, data});
-            console.log('original this.account.theme_config', this.account.theme_config);
+            // console.log('original this.account.theme_config', this.account.theme_config);
 
             if (response.data?.theme_config) {
-                console.log('response.data.theme_config', response.data.theme_config);
+                // console.log('response.data.theme_config', response.data.theme_config);
 
                 this.account.theme_config = response.data.theme_config;
-                console.log('new this.account.theme_config', this.account.theme_config);
+                // console.log('new this.account.theme_config', this.account.theme_config);
 
+                return;
+            }
+            return response;
+        },
+        async getCustomerGroupsList() {
+            console.log('get customer groups');
+            const response = await useOrganisationAPI({endpoint: `getCustomerGroupsList`});
+            console.log('get customer groups response', response);
+            if (response.data?.status) {
+                this.customerGroups = response.data.customer_groups;
+                return;
+            }
+            return response;
+        },
+        async createCustomerGroup({data}) {
+            console.log('create customer group');
+            const response = await useOrganisationAPI({endpoint: `createCustomerGroup`, data});
+            console.log('create customer group', response);
+            if (response.data?.status) {
+                console.log('is this right?', {...this.customerGroups, ...response.data.customerGroup} );
+                this.customerGroups = await this.getCustomerGroupsList();
+                console.log('vs', this.customerGroups );
+                return;
+            }
+            return response;
+        },
+        async deleteCustomerGroup({id}) {
+            console.log('delete customer group');
+            const response = await useOrganisationAPI({endpoint: `deleteCustomerGroup`, id});
+            if (response.data?.status) {
+                this.customerGroups = await this.getCustomerGroupsList();
+                return;
+            }
+            return response;
+        },
+        async updateCustomerGroup({id, data}) {
+            const response = await useOrganisationAPI({endpoint: `updateCustomerGroup`, id, data});
+            if (response.data?.status) {
+                this.getCustomerGroupsList();
                 return;
             }
             return response;

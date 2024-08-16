@@ -1,0 +1,31 @@
+.snackbar-message-custom.snackbar-message-custom {
+    .vue3-snackbar-message-title {
+        font-weight: normal;
+        font-size: var(--p-sm);
+    }
+
+    .vue3-snackbar-message-close {
+        button {
+            justify-content: end;
+            opacity: 0.5;
+
+            #{$hover} {
+                opacity: 0.75;
+            }
+
+            &::before {
+                content: none !important;
+            }
+        }
+    }
+
+    .vue3-snackbar-message-icon {
+        margin-right: var(--space-sm);
+    }
+
+    &.is-dense {
+        .vue3-snackbar-message-wrapper {
+            padding: var(--space-xs) var(--space-sm);
+        }
+    }
+}

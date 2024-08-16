@@ -13,7 +13,7 @@
                         What&rsquo;s on
                     </a>
                 </li>
-                <li v-if="userStore.authenticated && organisationStore.purchaseTypes.passes">
+                <!-- <li v-if="userStore.authenticated && organisationStore.purchaseTypes.passes">
                     <a class="main-menu__item" :href="`${organisationStore.organisationPagePrefix}${organisationStore.account.url_slug}/passes`">
                         <TicketIcon />
                         Passes
@@ -24,7 +24,7 @@
                         <MembershipIcon />
                         Membership
                     </a>
-                </li>
+                </li> -->
                 <li>
                     <button v-if="userStore.authenticated" type="button" v-on:click="() => userMenuOpen = !userMenuOpen" aria-controls="user-menu" class="main-menu__item menu-toggle">
                         <UserIcon />
@@ -142,8 +142,7 @@
             padding: 0;
             position: relative;
 
-            &:hover,
-            &:focus {
+            #{$hover} {
                 .main-menu__item {
                     color: currentColor;
                     text-decoration-color: var(--c-header-accent);
@@ -236,8 +235,7 @@
             margin-left: var(--space-med);
         }
 
-        &:hover,
-        &:focus {
+        #{$hover} {
             --path-point-6: var(--shape-size) 50%;
             box-shadow: var(--box-shadow-soft);
             background: hsla(var(--c-accent-hsl),1);

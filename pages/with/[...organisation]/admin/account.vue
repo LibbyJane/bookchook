@@ -1,5 +1,5 @@
 <template>
-    <Header title="Preferences"></Header>
+    <Header title="Account"></Header>
 
     <Card
         title="Account"
@@ -7,26 +7,26 @@
         elemType="section"
     >
         <template #actions>
-            <button type="button" class="btn btn--sm btn--tertiary" v-on:click="inEditMode == 'account' ? inEditMode = '' : inEditMode = 'account'">
-                <template v-if="inEditMode != 'account'">
+            <button type="button" class="btn btn--sm btn--tertiary" v-on:click="inEditMode == 'colors' ? inEditMode = '' : inEditMode = 'colors'">
+                <template v-if="inEditMode != 'colors'">
                     <PencilIcon css-class="icon--xs" />
                     Edit
                 </template>
-                <template v-if="inEditMode == 'account'">
+                <template v-if="inEditMode == 'colors'">
                     <CrossIcon css-class="icon--xs" />
                     Cancel
                 </template>
             </button>
         </template>
         <template #body>
-            <dl v-if="inEditMode != 'account'" class="settings-list" >
+            <dl v-if="inEditMode != 'colors'" class="settings-list" >
                 <div v-for="setting, key in organisationStore.account.theme_config.colors" class="settings-list__item swatch">
                     <dd class="swatch__color" :style="`background-color: hsl(${setting.hsl.hsl});`"></dd>
                     <dt class="swatch__label" style="text-transform: capitalize;">{{ getLabelText(key) }}</dt>
                 </div>
             </dl>
 
-            <ThemeSettings v-if="inEditMode == 'account'" :callback="handleSettingsUpdated" />
+            <ThemeSettings v-if="inEditMode == 'colors'" :callback="handleSettingsUpdated" />
         </template>
     </Card>
 
@@ -68,7 +68,7 @@
     import Card from '@/components/interface/Card.vue';
     import ThemeSettings from '@/components/forms/ThemeSettings.vue';
     import BillingSettings from '@/components/forms/BillingSettings.vue';
-    import PencilIcon from '@/components/icons/cross.vue';
+    import PencilIcon from '@/components/icons/pencil.vue';
     import CrossIcon from '@/components/icons/cross.vue';
 
 
@@ -83,6 +83,7 @@
         if (inEditMode.value == section ) {
             inEditMode.value = '';
         }
+
         snackbar.add({
             type: 'success',
             text: `${section} settings updated`

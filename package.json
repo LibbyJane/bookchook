@@ -20,6 +20,7 @@
     "@tiptap/extension-text-align": "^2.5.5",
     "axios": "^1.7.2",
     "nuxt": "^3.12.3",
+    "nuxt-snackbar": "^1.1.2",
     "nuxt-tiptap-editor": "^1.1.2",
     "pinia": "^2.1.7",
     "vue": "^3.4.27",

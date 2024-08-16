@@ -45,8 +45,7 @@
         display: none;
     }
 
-    &:hover,
-    &:focus {
+    #{$hover} {
         opacity: 1;
     }
 }
@@ -103,8 +102,7 @@
         padding: 0;
         position: relative;
 
-        &:hover,
-        &:focus {
+        #{$hover} {
             .main-menu__item {
                 color: currentColor;
                 text-decoration-color: var(--c-accent);

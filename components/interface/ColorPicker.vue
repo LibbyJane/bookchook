@@ -53,8 +53,7 @@
         }
 
         &:enabled {
-            &:hover,
-            &:focus {
+            #{$hover} {
                 background-color: transparent;
                 border-color: transparent;
                 // color: var(--c-accent);

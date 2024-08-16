@@ -94,8 +94,7 @@
                 background-color: var(--c-white-transparent);
                 color: var(--c-text);
 
-                &:hover,
-                &:focus {
+                #{$hover} {
                     color: var(--c-accent);
 
                     span {

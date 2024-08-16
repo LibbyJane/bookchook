@@ -20,8 +20,7 @@
     grid-column-end: -1;
     padding: var(--content-padding);
 
-    &:hover,
-    &:focus {
+    #{$hover} {
         button {
             opacity: 1;
         }

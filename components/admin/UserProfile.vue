@@ -6,8 +6,8 @@
             </h3>
             <small class="user-profile__role">{{ data.role_type }}</small>
             <ul class="user-profile__dates">
-                <li>Joined {{ memberSince }}</li>
-                <li>Last update on {{ lastUpdate }}</li>
+                <li>Joined {{ formatDtmLong(data.created_dtm) }}</li>
+                <li>Last update on {{ formatDtmLong(data.updated_dtm) }}</li>
             </ul>
         </header>
 
@@ -36,10 +36,9 @@
 </template>
 
 <script setup>
-    import { computed } from 'vue';
+    import { formatDtmLong } from '@/utils/dates';
     import EnvelopeIcon from '@/components/icons/envelope.vue';
     import PhoneIcon from '@/components/icons/smartphone.vue';
-
 
     const props = defineProps({
         data: {
@@ -47,18 +46,6 @@
             required: true
         }
     });
-
-    function formatDTM(dtm) {
-        return new Intl.DateTimeFormat('default', {dateStyle: 'long'}).format(new Date(dtm * 1000));
-    }
-
-    const memberSince = computed(() => {
-        return formatDTM(props.data.created_dtm);
-    })
-
-    const lastUpdate = computed(() => {
-        return formatDTM(props.data.updated_dtm);
-    })
 </script>
 
 <style lang="scss">

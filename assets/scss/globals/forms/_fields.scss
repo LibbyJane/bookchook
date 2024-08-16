@@ -31,8 +31,7 @@ select  {
     }
 
 
-    &:hover,
-    &:focus {
+    #{$hover} {
         outline: 2px solid hsla(var(--c-accent-hsl), 0.25);
         outline-offset: 0;
     }

@@ -2,7 +2,11 @@
     <details class="disclosure" :class="cssClass" :open="open">
         <summary :class="variant === 'button'? `btn btn--sm btn--tertiary` : null">
             <NavArrowRight />
-            <span>{{ title}}</span>
+            <div class="summary__text">
+                <span v-if="title">{{ title}}</span>
+                <slot name="summary"></slot>
+            </div>
+
         </summary>
         <div class="disclosure-content">
             <slot />
@@ -22,7 +26,8 @@
             required: false
         },
         title: {
-            type: String
+            type: String,
+            required: false
         },
         open: {
             default: false
@@ -80,26 +85,12 @@
                 transform: rotate(90deg);
             }
         }
+    }
 
-        // &::before {
-        //     content: '▸';
-        //     display: block;
-        //     grid-area: icon;
-        //     margin-left: calc(var(--space-xs) * -1);
-        //     padding: var(--space-xs);
-        //     transform-origin: center;
-        //     transition: transform var(--transition-speed-fast) var(--transition-type-motionless);
-
-        //     details[open] & {
-        //         transform: rotate(90deg);
-        //     }
-        // }
-
-        span {
-            grid-area: text;
-            line-height: var(--line-height-sm);
-            white-space: normal;
-        }
+    .summary__text {
+        grid-area: text;
+        line-height: var(--line-height-sm);
+        white-space: normal;
     }
 
     details {

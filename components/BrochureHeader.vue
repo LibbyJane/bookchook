@@ -124,8 +124,7 @@
             margin-left: var(--space-med);
         }
 
-        &:hover,
-        &:focus {
+        #{$hover} {
             --path-point-6: var(--shape-size) 50%;
             box-shadow: var(--box-shadow-soft);
             background: hsla(var(--c-accent-hsl),1);

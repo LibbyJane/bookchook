@@ -4,44 +4,50 @@
             <ul class="admin-nav__list">
                 <li>
                     <nuxt-link :to="`${organisationStore.adminURL}/`" class="admin-nav__item" title="Admin dashboard">
-                        <HomeIcon />
+                        <Home />
                         <span class="admin-nav__text">Dashboard</span>
                     </nuxt-link>
                 </li>
                 <li>
                     <nuxt-link :to="`${organisationStore.adminURL}/schedule`" class="admin-nav__item" title="Schedule">
-                        <CalendarIcon />
+                        <Calendar />
                         <span class="admin-nav__text">Schedule</span>
                     </nuxt-link>
                 </li>
                 <li>
                     <nuxt-link :to="`${organisationStore.adminURL}/bookings`" class="admin-nav__item" title="Bookings">
-                        <TicketsIcon />
+                        <HandCard />
                         <span class="admin-nav__text">Bookings</span>
                     </nuxt-link>
                 </li>
                 <li>
-                    <nuxt-link :to="`${organisationStore.adminURL}/clients`" class="admin-nav__item" title="Clients">
-                        <UsersIcon />
-                        <span class="admin-nav__text">Clients</span>
+                    <nuxt-link :to="`${organisationStore.adminURL}/customers`" class="admin-nav__item" title="Customers">
+                        <Group />
+                        <span class="admin-nav__text">Customers</span>
+                    </nuxt-link>
+                </li>
+                <li>
+                    <nuxt-link :to="`${organisationStore.adminURL}/customer-groups`" class="admin-nav__item" title="Customer Groups">
+                        <Community   />
+                        <span class="admin-nav__text">Customer Groups</span>
                     </nuxt-link>
                 </li>
                 <li>
                     <nuxt-link :to="`${organisationStore.adminURL}/locations`" class="admin-nav__item" title="Locations">
-                        <MapPinIcon />
+                        <MapPin />
                         <span class="admin-nav__text">Locations</span>
                     </nuxt-link>
                 </li>
                 <li>
                     <nuxt-link :to="`${organisationStore.adminURL}/team`" class="admin-nav__item" title="Team">
-                        <IdBadge />
+                        <UserScan />
                         <span class="admin-nav__text">Team</span>
                     </nuxt-link>
                 </li>
                 <li>
-                    <nuxt-link :to="`${organisationStore.adminURL}/preferences`" class="admin-nav__item" title="Preferences">
-                        <CogIcon />
-                        <span class="admin-nav__text">Preferences</span>
+                    <nuxt-link :to="`${organisationStore.adminURL}/account`" class="admin-nav__item" title="Account settings">
+                        <Settings />
+                        <span class="admin-nav__text">Account</span>
                     </nuxt-link>
                 </li>
             </ul>
@@ -51,6 +57,7 @@
 
 <script setup>
     import { useOrganisationStore } from '@/stores/organisation';
+    import { Home, Wallet, LotOfCash, Community, Settings, MapPin, Group, Calendar, UserScan, HandCard} from '@iconoir/vue';
     import CogIcon from '@/components/icons/cog.vue';
     import CalendarIcon from '@/components/icons/calendar.vue';
     import HomeIcon from '@/components/icons/home.vue';
@@ -97,13 +104,19 @@
             text-decoration: none;
             transition: color var(--transition-fast) var(--transition-type-motionless);
 
-            &:hover,
-            &:focus {
+            #{$hover} {
                 border: none;
+                color: currentColor;
                 text-decoration: none;
+
+                .icon,
+                svg {
+                    color: var(--c-accent);
+                }
             }
 
-            .icon {
+            .icon,
+            svg {
                 max-height: var(--icon-size-med);
                 max-width: var(--icon-size-med);
                 margin: auto;
@@ -112,7 +125,11 @@
         }
 
         .active {
-            color: var(--c-accent);
+            &,
+            &:focus {
+               color: var(--c-accent);
+
+            }
         }
     }
 

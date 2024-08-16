@@ -17,8 +17,7 @@
         border: 0 none;
     }
 
-    &:hover,
-    &:focus {
+    #{$hover} {
         background: hsla(var(--c-accent-hsl), 1);
         box-shadow: var(--box-shadow-card-hover);
         color: var(--c-accent-contrast);
@@ -50,8 +49,7 @@
         background: hsla(var(--c-danger-hsl), 0.85);
         color: var(--c-status-contrast);
 
-        &:hover,
-        &:focus {
+        #{$hover} {
             background: var(--c-danger);
             color: var(--c-status-contrast);
             outline-color: var(--c-danger);
@@ -62,15 +60,15 @@
         background: hsla(var(--c-success-hsl), 0.85);
         color: var(--c-status-contrast);
 
-        &:hover,
-        &:focus {
+        #{$hover} {
             background: var(--c-success);
             color: var(--c-status-contrast);
             outline-color: var(--c-success);
         }
     }
 
-    .icon {
+    .icon,
+    svg {
         flex-shrink: 0;
         pointer-events: none;
         transition: transform var(--transition-speed-fast) var(--transition-type-motionless);
@@ -78,6 +76,7 @@
 }
 
 .btn--sm {
+    gap: var(--space-xs);
     font-size: var(--p-sm);
     padding: var(--space-xs) var(--space-sm);
 }
@@ -88,8 +87,7 @@
     outline: 2px solid;
     outline-offset: -2px;
 
-    &:hover,
-    &:focus {
+    #{$hover}  {
         box-shadow: none;
         background: var(--c-accent);
         color: var(--c-accent-contrast);
@@ -97,11 +95,11 @@
         // outline-offset: -1px;
     }
 
+
     &.btn--danger {
         color: var(--c-danger);
 
-        &:hover,
-        &:focus {
+        #{$hover} {
             background: var(--c-danger);
             color: var(--c-status-contrast);
             outline-color: var(--c-danger);
@@ -111,13 +109,23 @@
     &.btn--success {
         color: var(--c-success);
 
-        &:hover,
-        &:focus {
+        #{$hover} {
             background: var(--c-success);
             color: var(--c-status-contrast);
             outline-color: var(--c-success);
         }
     }
+
+    // &.btn--c-text {
+    //     color: var(--c-text);
+
+    //     &:hover,
+    //     &:focus-visible {
+    //         background: var(--c-text);
+    //         color: var(--c-background);
+    //         outline-color: var(--c-text);
+    //     }
+    // }
 }
 
 .btn--plain {
@@ -125,37 +133,34 @@
     color: var(--c-text);
     padding-inline: 0;
 
-    &:hover,
-    &:focus {
+    #{$hover} {
         background: transparent;
         box-shadow: none;
         color: var(--c-accent);
     }
 }
 
-// .btn--outline {
-//     background: transparent;
-//     color: var(--c-text);
-//     opacity: 0.8;
-//     outline: 1px solid;
-//     outline-offset: -1px;
+.btn--outline {
+    background: transparent;
+    color: var(--c-text);
+    opacity: 0.8;
+    outline: 1px solid;
+    outline-offset: -1px;
 
-//     &:hover,
-//     &:focus {
-//         background: transparent;
-//         box-shadow: none;
-//         color: var(--c-accent);
-//         opacity: 1;
-//     }
-// }
+    #{$hover} {
+        background: transparent;
+        box-shadow: none;
+        color: var(--c-accent);
+        opacity: 1;
+    }
+}
 
 .btn--tertiary {
     background-color: var(--c-background-subtle);
     color: var(--c-text);
     opacity: 0.9;
 
-    &:hover,
-    &:focus {
+    #{$hover} {
         // background-color: hsl(var(--c-text-hue), var(--c-text-sat), 92%);
         background-color: var(--c-background-subtle-hover);
 
@@ -167,8 +172,7 @@
         background-color: var(--c-danger-light);
         color: var(--c-danger);
 
-        &:hover,
-        &:focus {
+        #{$hover} {
             background-color: var(--c-danger-light);
             color: var(--c-danger-dark);
         }
@@ -186,8 +190,7 @@
     flex: 1 1 auto;
     line-height: inherit;
 
-    &:hover,
-    &:focus {
+    #{$hover} {
         background-color: var(--c-background-subtle-hover);
         outline-color: var(--c-background-subtle-hover);
         box-shadow: none;
@@ -203,8 +206,7 @@
         border-radius: 0 var(--border-radius) var(--border-radius) 0;
         background-color: var(--c-background-subtle);
 
-        &:hover,
-        &:focus {
+        #{$hover} {
             background-color: var(--c-danger-light);
             outline-color: var(--c-danger-light);
             color: var(--c-danger);
@@ -230,7 +232,7 @@
 //     color: var(--c-accent);
 
 //     &:hover,
-//     &:focus {
+//     &:focus-visible {
 //         background: hsla(var(--c-accent-hsl), 0.1);
 //         box-shadow: none;
 //         color: var(--c-accent);
