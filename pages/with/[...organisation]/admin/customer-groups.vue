@@ -51,7 +51,6 @@
         </div>
 
         <Card v-if="selectedGroup" :cssClass="`customer-group sticky`" :title="getGroupName">
-
             <template #actions>
                 <button type="button" class="btn btn--sm" v-on:click="handleEditGroupClick()" title="Edit Customer Group">
                     <EditPencil />
@@ -84,11 +83,31 @@
 
                 <GenericForm v-if="inEditMode" :id="selectedGroup.id" :fields="selectedGroupFields" :endpoint="organisationStore.updateCustomerGroup" :callback="handleUpdateCustomerGroup" :showReset="false" />
 
-                <h4>Customers</h4>
+                <section class="customer-group--customers">
+                    <header class="section__header">
+                        <h4 class="section__header-title">Customers</h4>
+                        <button type="button" class="btn btn--sm btn--secondary" v-on:click="editGroupCustomers = !editGroupCustomers" title="Add customers to customer group">
+                            <EditPencil v-if="!editGroupCustomers" />
+                            <Xmark v-if="editGroupCustomers" />
+                            Add or Remove Customers
+                        </button>
+                        <!-- <button v-if="selectedGroup.customers" type="button" class="btn btn--secondary btn--sm" v-on:click="editGroupCustomers = 'remove'" title="Remove customers from customer group">
+                            <Minus /> Remove customers
+                        </button> -->
+                    </header>
 
-                <small>
-                    Group created {{ formatDtmShort(selectedGroup.created_dtm, `en-${organisationStore.account.country_code.toLowerCase()}`) }}
-                </small>
+                    <CustomerList v-if="editGroupCustomers" :data="organisationStore.customers"/>
+
+                </section>
+
+            </template>
+
+            <template #footer>
+                <p class="small">
+                    <small>
+                        Group created {{ formatDtmShort(selectedGroup.created_dtm, `en-${organisationStore.account.country_code.toLowerCase()}`) }}
+                    </small>
+                </p>
             </template>
         </Card>
     </section>
@@ -100,20 +119,26 @@
     import Vue3Datatable from "@bhplugin/vue3-datatable";
     import { formatDtmShort } from '@/utils/dates';
     import { useOrganisationStore } from '@/stores/organisation';
-    import { Trash, Xmark, EditPencil, ArrowRightCircle, Plus } from '@iconoir/vue';
+    import { Trash, Xmark, EditPencil, ArrowRightCircle, Plus, Minus } from '@iconoir/vue';
 
     import Header from '@/components/admin/Header.vue';
     import GenericForm from '@/components/forms/GenericForm.vue';
     import Card from '@/components/interface/Card.vue';
     import Dialog from '@/components/interface/Dialog.vue';
+    import CustomerList from '@/components/admin/CustomerList.vue';
+
+    const router = useRouter();
 
     const selectedGroup = ref(null);
     const organisationStore = useOrganisationStore();
 
     await useAsyncData(() => organisationStore.getCustomerGroupsList());
+    organisationStore.getOrganisationCustomers();
 
-    const inEditMode = ref(false);
     const showAddGroup = ref(false);
+    const inEditMode = ref(false);
+    const editGroupCustomers = ref(false);
+    const showAddCustomers = ref(false);
 
     let customerGroupDefaults = {
         name: {
@@ -134,25 +159,28 @@
     const fields = reactive({...customerGroupDefaults});
     let selectedGroupFields;
 
+    // hide: true
+
     const cols = ref([
         { field: "group_name", title: "Name", cellClass: "td-group-name" },
         { field: "description", title: "Description" },
-        { field: "created_dtm", title: "Created", cellClass: "cell-hidden", headerClass: "cell-hidden"},
+        { field: "created_dtm", title: "Created", hide: true},
         { field: 'actions', title: "", headerClass: "th-group-actions" }
     ]);
 
     const showConfirmDelete = ref(false);
     const showTable = ref(false);
 
-    // onMounted(()=>{
-    //     showTable.value = true;
-    // })
-
     function handleDialogChange(change) {
         if (change == 'closed') showConfirmDelete.value = false;
     }
 
-    function handleRowClick(group) {
+    async function handleRowClick(group) {
+        // await router.push({
+        //     query: {
+        //         id: group.group_name
+        //     },
+        // });
         selectedGroup.value = group;
         showConfirmDelete.value = false;
         inEditMode.value = false;
@@ -259,18 +287,27 @@
         tr {
             cursor: pointer;
         }
-
-        .cell-hidden {
-            max-width: 0;
-            overflow: hidden;
-            padding: 0;
-            opacity: 0;
-            pointer-events: none;
-        }
     }
 
     .customer-group {
         flex: 1;
+
+        .card__footer {
+            small {
+                letter-spacing: var(--letter-spacing-sm);
+                opacity: 0.7;
+            };
+        }
+    }
+
+    .bh-table-responsive.bh-table-responsive {
+        th {
+            vertical-align: bottom;
+
+            .bh-checkbox {
+                margin-bottom: var(--space-xs);
+            }
+        }
     }
 
     .td-group-name {
@@ -284,6 +321,17 @@
         cursor: default;
         opacity: 0;
         pointer-events: none;
+    }
+
+    .section__header {
+        display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: var(--space-sm);
+    }
+
+    .section__header-title {
+        margin-right: auto;
     }
 
 

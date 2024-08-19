@@ -28,7 +28,7 @@ export default defineNuxtConfig({
 
     snackbar: {
         bottom: true,
-        right: true,
+        center: true,
         duration: 3000,
         dense: true,
         messageClass: "snackbar-message-custom",
@@ -87,7 +87,9 @@ export default defineNuxtConfig({
         options: {
             linkActiveClass: 'active',
             linkExactActiveClass: 'active-page',
-        }
+        },
+        linkActiveClass: 'active',
+        linkExactActiveClass: 'active-page',
     },
 
     compatibilityDate: '2024-07-09'

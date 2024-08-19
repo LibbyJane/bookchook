@@ -14,6 +14,10 @@
         <div class="card__body">
             <slot name="body"></slot>
         </div>
+
+        <footer class="card__footer">
+            <slot name="footer"></slot>
+        </footer>
     </component>
 </template>
 

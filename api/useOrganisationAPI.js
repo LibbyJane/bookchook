@@ -39,11 +39,16 @@ const endpoints = {
     updateCustomerGroup: {
         uri: `private/customerGroup`,
         method: 'PATCH'
+    },
+    addCustomersToCustomerGroup: {
+        uri: `private/customerGroup`,
+        uriAddendum: `users`,
+        method: 'POST'
     }
 }
 
 export async function useOrganisationAPI({endpoint, data, id, qs, $pinia }) {
-    console.log('use organiisation api', endpoint, data, id, qs, $pinia);
+    console.log('use organisation api', endpoint, data, id, qs, $pinia);
     const userStore = useUserStore($pinia)
 
     // console.log('useOrganisationAPI config:', config);
@@ -69,7 +74,12 @@ export async function useOrganisationAPI({endpoint, data, id, qs, $pinia }) {
         }
 
         if (qs) {
+            if (config.url)
             config.url = config.url + `${endpoints[endpoint].query}${qs}`;
+        }
+
+        if (endpoints[endpoint].uriAddendum) {
+            config.url = config.url + `/${endpoints[endpoint].uriAddendum}`;
         }
 
         // console.log('final config', config);

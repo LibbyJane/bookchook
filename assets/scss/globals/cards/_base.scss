@@ -51,3 +51,13 @@
     padding: var(--content-padding-all);
     padding-top: 0;
 }
+
+.card__footer {
+    // background-color: var(--c-background);
+    // border-top: var(--border-light);
+    padding: var(--space-sm) var(--content-padding) 0;
+
+    p {
+        margin-bottom: var(--space-sm);
+    }
+}

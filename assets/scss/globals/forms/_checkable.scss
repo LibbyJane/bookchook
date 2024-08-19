@@ -1,3 +1,106 @@
+// filterable tables
+
+
+// .bh-table-responsive input[type=checkbox]:checked+div svg.check,.bh-table-responsive input[type=checkbox]:indeterminate+div svg.intermediate {
+//     --tw-text-opacity: 1;
+//     color: rgb(255 255 255/var(--tw-text-opacity));
+//     display: flex
+// }
+.bh-checkbox.bh-checkbox  {
+    cursor: pointer;
+    color: var(--c-accent-contrast);
+    position: relative;
+
+    input[type=checkbox] {
+        cursor: pointer;
+        margin: 0;
+        padding: 0;
+        opacity: 0;
+        position: absolute;
+        inset: 0;
+        z-index: 10;
+
+        &:checked,
+        &:indeterminate {
+            #{$hover} {
+                +div {
+                    opacity: 1;
+
+                    th & {
+                        .indeterminate {
+                            opacity: 0;
+                        }
+                    }
+                }
+            }
+
+            +div {
+                --tw-border-opacity: 1;
+                --tw-bg-opacity: 1;
+                background-color: var(--c-accent);
+                border-color: var(--c-accent);
+                opacity: 1;
+
+                svg {
+                    fill: var(--c-accent-contrast);
+                    opacity: 1;
+                }
+            }
+
+            &:checked{
+                +div {
+                    .intermediate {
+                        opacity: 0;
+                        height: 0;
+                        width: 0;
+                    }
+                }
+            }
+
+            &:indeterminate{
+                +div {
+                    .check {
+                        opacity: 0;
+                    }
+                }
+            }
+        }
+
+        #{$hover} {
+            +div,
+            +div .check {
+                opacity: 0.75;
+            }
+        }
+
+        +div {
+            height: 1.25rem;
+            width: 1.25rem;
+            --tw-border-opacity: 1;
+            --tw-bg-opacity: 1;
+            background-color: var(--c-accent);
+            border: var(--border-light);
+            border-radius: var(--border-radius);
+            display: grid;
+                grid-template-areas: "icon";
+            opacity: 0.5;
+            transition: opacity var(--transition-speed-fast) var(--transition-type-motionless);
+        }
+    }
+
+    svg {
+        --tw-text-opacity: 1;
+        fill: currentColor;
+        display: flex;
+        height: .75rem;
+        width: .75rem;
+        pointer-events: none;
+        opacity: 0;
+        grid-area: icon;
+        margin: auto;
+    }
+}
+
 
 input[type="checkbox"],
 input[type="radio"] {
@@ -8,61 +111,61 @@ input[type="radio"] {
 }
 
 
-.checkable,
-.checkable-list label {
-    cursor: pointer;
-    color: var(--c-text);
-    font-size: var(--p-sm);
-    font-weight: 400;
-    line-height: 1.2;
-    position: relative;
-}
+// .checkable,
+// .checkable-list label {
+//     cursor: pointer;
+//     color: var(--c-text);
+//     font-size: var(--p-sm);
+//     font-weight: 400;
+//     line-height: 1.2;
+//     position: relative;
+// }
 
-.checkable {
-    img {
-        transition: all var(--transition);
-    }
+// .checkable {
+//     img {
+//         transition: all var(--transition);
+//     }
 
-    input {
-        appearance: none;
-        cursor: pointer;
-        opacity: 0;
-        margin: 0;
-        padding: 0;
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        z-index: 10;
-    }
-}
+//     input {
+//         appearance: none;
+//         cursor: pointer;
+//         opacity: 0;
+//         margin: 0;
+//         padding: 0;
+//         position: absolute;
+//         top: 0;
+//         right: 0;
+//         bottom: 0;
+//         left: 0;
+//         z-index: 10;
+//     }
+// }
 
-.checkable-text {
-    position: relative;
-    z-index: 1;
-}
+// .checkable-text {
+//     position: relative;
+//     z-index: 1;
+// }
 
-.checkable-list {
-    display: flex;
-    list-style: none;
-    margin: 0;
-    padding: 0;
+// .checkable-list {
+//     display: flex;
+//     list-style: none;
+//     margin: 0;
+//     padding: 0;
 
-    li {
-        font-size: var(--sm);
-        margin: 0 0 var(--space-sm);
-        padding: 0;
-    }
+//     li {
+//         font-size: var(--sm);
+//         margin: 0 0 var(--space-sm);
+//         padding: 0;
+//     }
 
-    label {
-        cursor: pointer;
+//     label {
+//         cursor: pointer;
 
-        margin: 0 var(--space) var(--space-sm) 0;
-    }
+//         margin: 0 var(--space) var(--space-sm) 0;
+//     }
 
-    input {
-        margin-right: var(--space-xs);
-    }
-}
+//     input {
+//         margin-right: var(--space-xs);
+//     }
+// }
 

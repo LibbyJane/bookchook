@@ -643,6 +643,14 @@ export const useOrganisationStore = defineStore('organisationStore', {
                 return;
             }
             return response;
-        }
+        },
+        async addCustomersToCustomerGroup({id, data}) {
+            const response = await useOrganisationAPI({endpoint: `addCustomersToCustomerGroup`, id, data});
+            if (response.data?.status) {
+                this.getCustomerGroupsList();
+                return;
+            }
+            return response;
+        },
     }
 })
