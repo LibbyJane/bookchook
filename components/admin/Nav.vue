@@ -28,7 +28,7 @@
                 </li>
                 <li>
                     <nuxt-link :to="`${organisationStore.adminURL}/customer-groups`" class="admin-nav__item" title="Customer Groups">
-                        <Community   />
+                        <Community />
                         <span class="admin-nav__text">Customer Groups</span>
                     </nuxt-link>
                 </li>

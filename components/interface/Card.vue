@@ -1,10 +1,13 @@
 <template>
     <component :is="elemType" class="card" :class="cssClass">
         <header class="card__header">
-            <h2 v-if="title" class="card__header--heading" :class="titleCssClass">
-                {{ title }}
-            </h2>
-            <slot name="header"></slot>
+            <div class="card__header-title">
+                <!-- <slot name="header-icon"></slot> -->
+                <h2 v-if="title" class="card__header--heading" :class="titleCssClass">
+                    {{ title }}
+                </h2>
+                <slot name="header"></slot>
+            </div>
 
             <div class="card__header--actions">
                 <slot name="actions"></slot>

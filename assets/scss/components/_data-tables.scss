@@ -48,9 +48,10 @@
     --tw-backdrop-sepia:  }
 
 .bh-table-responsive {
+    @include scrollbars;
     border-radius: var(--border-radius);
     margin-bottom: var(--space);
-    overflow: visible;
+    overflow: auto;
     position: relative;
     width: 100%;
 
@@ -82,6 +83,7 @@
     th {
         font-weight: bold;
         vertical-align: top;
+        padding-top: 0;
     }
 
     // input[type=box] {
@@ -111,12 +113,11 @@
 }
 
 .bh-sort {
-    opacity: 0.4;
-    transition: opacity var(--transition-speed-fast) var(--transition-type-motionless);
+    transition: transform var(--transition-speed-fast) var(--transition-type-motionless);
 
     th:hover &,
     th:focus & {
-        opacity: 1;
+        transform: scale(1.2);
     }
 
     svg {
@@ -272,9 +273,19 @@
  .bh-relative {
     position: relative;
  }
- .bh-sticky {
+
+.bh-sticky {
     position: sticky;
- }
+
+    tr {
+        box-shadow: var(--box-shadow-card);
+    }
+
+    th {
+        background-color: var(--c-background-alt);
+    }
+}
+
  .bh-inset-0 {
     inset: 0;
  }

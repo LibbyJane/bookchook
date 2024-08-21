@@ -15,8 +15,6 @@
     </Card>
 
     <section class="customer-groups">
-        <!-- <div v-if="showTable" class="customer-group-listing"> -->
-
         <div class="customer-group-listing">
             <vue3-datatable
                 v-if="organisationStore.customerGroups"
@@ -39,10 +37,6 @@
                 <template #group_name="data">
                     <strong>{{ data.value.group_name }}</strong>
                 </template>
-    <!--
-                <template #created_dtm="data">
-                    {{ formatDtmShort(data.value.created_dtm, `en-${organisationStore.account.country_code.toLowerCase()}`) }}
-                </template> -->
 
                 <template #actions="data">
                     <ArrowRightCircle />
@@ -50,20 +44,25 @@
             </vue3-datatable>
         </div>
 
-        <Card v-if="selectedGroup" :cssClass="`customer-group sticky`" :title="getGroupName">
+        <Card v-if="selectedGroup" :cssClass="`customer-group sticky card--header-bk`" :title="getGroupName">
+            <template #header>
+                <p class="p-small m-top">{{ selectedGroup.description }}</p>
+            </template>
             <template #actions>
                 <button type="button" class="btn btn--sm" v-on:click="handleEditGroupClick()" title="Edit Customer Group">
                     <EditPencil />
-                    <span class="visually-hidden">edit</span>
+                    <span v-if="inEditMode" class="mobile-hide">Cancel Edit</span>
+                    <span v-if="!inEditMode" class="mobile-hide">Edit</span>
+
                 </button>
                 <button type="button" class="btn btn--sm btn--tertiary btn--danger" v-on:click="handleShowConfirmDeleteClick()" title="Delete Customer Group">
                     <Trash />
-                    <span class="visually-hidden">delete</span>
+                    <span class="mobile-hide">Delete</span>
                 </button>
             </template>
 
             <template #body>
-                <Dialog v-if="showConfirmDelete" cssClass="danger" :callback="handleDialogChange">
+                <Dialog v-if="showConfirmDelete" cssClass="danger m-bottom" :callback="handleDialogChange">
                     <template #header>
                         <p>Delete the <strong>{{ selectedGroup.group_name }}</strong> group?</p>
                     </template>
@@ -81,25 +80,47 @@
                     </template>
                 </Dialog>
 
-                <GenericForm v-if="inEditMode" :id="selectedGroup.id" :fields="selectedGroupFields" :endpoint="organisationStore.updateCustomerGroup" :callback="handleUpdateCustomerGroup" :showReset="false" />
+                <GenericForm v-if="inEditMode" title="Edit Customer Group" :id="selectedGroup.id" :fields="selectedGroupFields" :endpoint="organisationStore.updateCustomerGroup" :callback="handleUpdateCustomerGroup" :showReset="false" />
 
-                <section class="customer-group--customers">
+                <section class="section">
+                    <header class="section__header">
+                        <h4 class="section__header-title">Discounts and Offers</h4>
+                        <button type="button" class="btn btn--sm btn--secondary" v-on:click="addNewOffer = !addNewOffer" title="Add Offer">
+                            <EditPencil v-if="!editGroupCustomers" />
+                            <span v-if="!editGroupCustomers">Add or Remove Customers</span>
+
+                            <Xmark v-if="editGroupCustomers" />
+                            <span v-if="editGroupCustomers">Cancel</span>
+                        </button>
+
+                        <button v-if="editGroupCustomers" type="button" class="btn btn--sm btn--success" v-on:click="handleUpdateCustomerGroupCustomers">
+                            <FloppyDisk />
+                            Save Customers
+                        </button>
+                    </header>
+
+                    <CustomerList v-if="editGroupCustomers" :data="organisationStore.customers" :callback="handleSelectedCustomersUpdate" />
+                </section>
+
+                <section class="section">
                     <header class="section__header">
                         <h4 class="section__header-title">Customers</h4>
                         <button type="button" class="btn btn--sm btn--secondary" v-on:click="editGroupCustomers = !editGroupCustomers" title="Add customers to customer group">
                             <EditPencil v-if="!editGroupCustomers" />
+                            <span v-if="!editGroupCustomers">Add or Remove Customers</span>
+
                             <Xmark v-if="editGroupCustomers" />
-                            Add or Remove Customers
+                            <span v-if="editGroupCustomers">Cancel</span>
                         </button>
-                        <!-- <button v-if="selectedGroup.customers" type="button" class="btn btn--secondary btn--sm" v-on:click="editGroupCustomers = 'remove'" title="Remove customers from customer group">
-                            <Minus /> Remove customers
-                        </button> -->
+
+                        <button v-if="editGroupCustomers" type="button" class="btn btn--sm btn--success" v-on:click="handleUpdateCustomerGroupCustomers">
+                            <FloppyDisk />
+                            Save Customers
+                        </button>
                     </header>
 
-                    <CustomerList v-if="editGroupCustomers" :data="organisationStore.customers"/>
-
+                    <CustomerList v-if="editGroupCustomers" :data="organisationStore.customers" :callback="handleSelectedCustomersUpdate" />
                 </section>
-
             </template>
 
             <template #footer>
@@ -119,7 +140,7 @@
     import Vue3Datatable from "@bhplugin/vue3-datatable";
     import { formatDtmShort } from '@/utils/dates';
     import { useOrganisationStore } from '@/stores/organisation';
-    import { Trash, Xmark, EditPencil, ArrowRightCircle, Plus, Minus } from '@iconoir/vue';
+    import { Trash, Xmark, EditPencil, ArrowRightCircle, Plus, Minus, FloppyDisk, Community } from '@iconoir/vue';
 
     import Header from '@/components/admin/Header.vue';
     import GenericForm from '@/components/forms/GenericForm.vue';
@@ -127,7 +148,6 @@
     import Dialog from '@/components/interface/Dialog.vue';
     import CustomerList from '@/components/admin/CustomerList.vue';
 
-    const router = useRouter();
 
     const selectedGroup = ref(null);
     const organisationStore = useOrganisationStore();
@@ -135,10 +155,11 @@
     await useAsyncData(() => organisationStore.getCustomerGroupsList());
     organisationStore.getOrganisationCustomers();
 
+
     const showAddGroup = ref(false);
     const inEditMode = ref(false);
     const editGroupCustomers = ref(false);
-    const showAddCustomers = ref(false);
+    const addNewOffer = ref(false);
 
     let customerGroupDefaults = {
         name: {
@@ -159,28 +180,29 @@
     const fields = reactive({...customerGroupDefaults});
     let selectedGroupFields;
 
-    // hide: true
 
     const cols = ref([
         { field: "group_name", title: "Name", cellClass: "td-group-name" },
-        { field: "description", title: "Description" },
+        { field: "description", title: "Description"},
         { field: "created_dtm", title: "Created", hide: true},
         { field: 'actions', title: "", headerClass: "th-group-actions" }
     ]);
 
+    const hideTableDescription = computed( () => { return selectedGroup.value; })
+
+
+    onMounted( ()=>{
+        const descriptionfield = cols.value.find((element => element.field == "description"));
+        descriptionfield.hide = hideTableDescription;
+    });
+
     const showConfirmDelete = ref(false);
-    const showTable = ref(false);
 
     function handleDialogChange(change) {
         if (change == 'closed') showConfirmDelete.value = false;
     }
 
     async function handleRowClick(group) {
-        // await router.push({
-        //     query: {
-        //         id: group.group_name
-        //     },
-        // });
         selectedGroup.value = group;
         showConfirmDelete.value = false;
         inEditMode.value = false;
@@ -203,7 +225,6 @@
 
     async function handleCreateGroupUpdate(data) {
         // showTable.value = false;
-        console.log('data?', data);
         organisationStore.getCustomerGroupsList();
 
         if (data) {
@@ -219,7 +240,6 @@
     async function deleteGroup() {
         showConfirmDelete.value = false;
         const response = await useAsyncData(() => organisationStore.deleteCustomerGroup({id: selectedGroup.value.id}))
-        console.log('response', response);
         organisationStore.getCustomerGroupsList();
 
         selectedGroup.value = null;
@@ -229,6 +249,9 @@
             text: 'Customer group deleted'
         })
     }
+
+
+
 
     async function handleUpdateCustomerGroup(data) {
         snackbar.add({
@@ -257,6 +280,32 @@
 
         return name
     })
+
+    const selectedCustomers = ref('initial');
+
+    function handleSelectedCustomersUpdate(data) {
+        selectedCustomers.value = data
+    };
+
+    async function handleUpdateCustomerGroupCustomers() {
+        let data = {
+            user_ids: []
+        };
+
+        selectedCustomers.value.forEach(customer => {
+            data.user_ids.push(customer.id);
+        })
+
+        let response = organisationStore.updateCustomerGroupCustomers({id: selectedGroup.value.id, data});
+
+        if (response) {
+            snackbar.add({
+                type: 'success',
+                text: 'Customer group customers updated'
+            })
+        }
+    }
+
 
 </script>
 
@@ -300,13 +349,13 @@
         }
     }
 
+    .section__header {
+        margin-bottom: var(--space);
+    }
+
     .bh-table-responsive.bh-table-responsive {
         th {
             vertical-align: bottom;
-
-            .bh-checkbox {
-                margin-bottom: var(--space-xs);
-            }
         }
     }
 

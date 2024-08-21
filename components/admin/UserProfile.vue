@@ -1,13 +1,13 @@
 <template>
-    <div v-if="data" class="card user-profile">
-        <header class="user-profile__header">
+    <div v-if="data" class="card card--solid-header user-profile">
+        <header class="card__header">
             <h3 class="user-profile__name">
                 {{ data.first_name }} {{ data.last_name }}
             </h3>
-            <small class="user-profile__role">{{ data.role_type }}</small>
+            <small class="user-profile__role">{{ (data.role_type).replace('_', ' ') }}</small>
             <ul class="user-profile__dates">
-                <li>Joined {{ formatDtmLong(data.created_dtm) }}</li>
-                <li>Last update on {{ formatDtmLong(data.updated_dtm) }}</li>
+                <li>Joined {{ formatDtmShort(data.created_dtm) }}</li>
+                <!-- <li>Updated {{ formatDtmShort(data.updated_dtm) }}</li> -->
             </ul>
         </header>
 
@@ -36,7 +36,7 @@
 </template>
 
 <script setup>
-    import { formatDtmLong } from '@/utils/dates';
+    import { formatDtmShort } from '@/utils/dates';
     import EnvelopeIcon from '@/components/icons/envelope.vue';
     import PhoneIcon from '@/components/icons/smartphone.vue';
 
@@ -49,32 +49,30 @@
 </script>
 
 <style lang="scss">
-    // .user-profile {
-    //     background-color: var(--c-input-bg);
-    // }
-
-    .user-profile__header {
-        // background-color: var(--c-header-bg);
-        // color: var(--c-header-text);
-        // background-color: hsla(var(--c-accent-hsl), 1.05);
-        // color: hsla(var(--c-accent-contrast), 1);
-        // background-color: var(--c-background-alt);
-        // color: var(--c-text);
-        background-color: var(--c-accent-dark);
-        color: var(--c-accent-contrast);
-        display: grid;
-            grid-template-areas: 'name dates' 'role dates';
-            gap: 0 var(--space-med);
-            align-items: center;
-        line-height: var(--line-height-sm);
-        margin: 0;
-        padding: var(--content-padding);
+    .user-profile {
+        .card__header {
+            // background-color: var(--c-header-bg);
+            // color: var(--c-header-text);
+            // background-color: hsla(var(--c-accent-hsl), 1.05);
+            // color: hsla(var(--c-accent-contrast), 1);
+            // background-color: var(--c-background-alt);
+            // color: var(--c-text);
+            // background-color: var(--c-accent-dark);
+            // color: var(--c-accent-contrast);
+            display: grid;
+                grid-template-areas: 'name dates' 'role dates';
+                gap: 0 var(--space-med);
+                align-items: center;
+            line-height: var(--line-height-sm);
+            margin: 0;
+            // padding: var(--content-padding);
+        }
     }
 
     .user-profile__name {
         grid-area: name;
         line-height: inherit;
-        margin: 0;
+        margin: 0 0 var(--space-xs);
         padding: 0;
     }
 
@@ -104,6 +102,7 @@
 
         li {
             font-size: var(--sm);
+            letter-spacing: var(--letter-spacing-sm);
             margin: 0;
             padding: 0;
             opacity: 0.9;

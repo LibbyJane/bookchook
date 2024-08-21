@@ -106,7 +106,7 @@ export const useOrganisationStore = defineStore('organisationStore', {
                 enabled: true,
                 options: []
             },
-            membership: {
+            GENERAL_USERship: {
                 enabled: true,
                 options: []
             },
@@ -381,7 +381,7 @@ export const useOrganisationStore = defineStore('organisationStore', {
                                 id: 1
                             },
                             {
-                                name: "Annual Members",
+                                name: "Annual GENERAL_USERs",
                                 id: 2
                             },
                             {
@@ -395,7 +395,7 @@ export const useOrganisationStore = defineStore('organisationStore', {
                                 id: 1
                             },
                             {
-                                title: "Annual Members",
+                                title: "Annual GENERAL_USERs",
                                 id: 2
                             },
                             {
@@ -415,20 +415,20 @@ export const useOrganisationStore = defineStore('organisationStore', {
                         "phone": "07122 1234133",
                         "created_dtm": 1710057010,
                         "updated_dtm": 1720047009,
-                        "role_type": "MEMBER"
+                        "role_type": "GENERAL_USER"
                     },
                     {
                         "id": "52155d7d-ff16-430d-b51b-c73985697774",
                         "account_id": "11d1c59b-38f4-4cce-ba8b-6e8af2d2a117",
                         "first_name": "Emanuella",
-                        "last_name": "Persephone",
+                        "last_name": "Chapman",
                         "country_code": "GB",
                         "timezone": "Europe/London",
-                        "email_address": "persephone@communityttc.com",
+                        "email_address": "ella@communityttc.com",
                         "phone": "07111 1234133",
                         "created_dtm": 1620047009,
                         "updated_dtm": 1720047009,
-                        "role_type": "MEMBER"
+                        "role_type": "GENERAL_USER"
                     },
                     {
                         "id": "52155d7d-ff16-430d-b51b-c73985697775",
@@ -441,8 +441,328 @@ export const useOrganisationStore = defineStore('organisationStore', {
                         "phone": "07123 1234133",
                         "created_dtm": 1720047009,
                         "updated_dtm": 1720047009,
-                        "role_type": "MEMBER"
+                        "role_type": "GENERAL_USER"
                     },
+                    {
+                        "id": "52155d7d-ab99-430d-b51b-c73985697773",
+                        "account_id": "11d1c59b-38f4-4cce-ba8b-6e8af2d2a115",
+                        "first_name": "Andrea",
+                        "last_name": "Bauer",
+                        "country_code": "GB",
+                        "timezone": "Europe/London",
+                        "email_address": "abauer@communityttc.com",
+                        "phone": "07123 1234133",
+                        "created_dtm": 1720047009,
+                        "updated_dtm": 1720047009,
+                        "role_type": "ADMINISTRATOR",
+                        "groups": [
+                            {
+                                name: "Three Plus",
+                                id: 1
+                            },
+                            {
+                                name: "Annual GENERAL_USERs",
+                                id: 2
+                            },
+                            {
+                                name: "League Player",
+                                id: 3
+                            }
+                        ],
+                        "bookings": [
+                            {
+                                title: "Open Session",
+                                id: 1
+                            },
+                            {
+                                title: "Annual GENERAL_USERs",
+                                id: 2
+                            },
+                            {
+                                title: "League Player",
+                                id: 3
+                            }
+                        ]
+                    },
+                    {
+                        "id": "52155d7d-gh16-430d-b51b-73985697773",
+                        "account_id": "11d1c59b-38f4-4cce-ba8b-6e8af2d2a116",
+                        "first_name": "Alex",
+                        "last_name": "Montgomery-Burns",
+                        "country_code": "GB",
+                        "timezone": "Europe/London",
+                        "email_address": "al@communityttc.com",
+                        "phone": "07122 1234133",
+                        "created_dtm": 1710057010,
+                        "updated_dtm": 1720047009,
+                        "role_type": "GENERAL_USER"
+                    },
+                    {
+                        "id": "52155d7d-yc11-430d-b51b-c73985697774",
+                        "account_id": "11d1c59b-38f4-4cce-ba8b-6e8af2d2a117",
+                        "first_name": "Yasmine",
+                        "last_name": "Cunningham",
+                        "country_code": "GB",
+                        "timezone": "Europe/London",
+                        "email_address": "cunningham@communityttc.com",
+                        "phone": "07111 1234133",
+                        "created_dtm": 1620047009,
+                        "updated_dtm": 1720047009,
+                        "role_type": "GENERAL_USER"
+                    },
+                    {
+                        "id": "52155d7d-bb22-430d-b51b-c73985697775",
+                        "account_id": "11d1c59b-38f4-4cce-ba8b-6e8af2d2a118",
+                        "first_name": "Stephanie",
+                        "last_name": "Johnstone-Jones",
+                        "country_code": "GB",
+                        "timezone": "Europe/London",
+                        "email_address": "issie@communityttc.com",
+                        "phone": "07123 1234133",
+                        "created_dtm": 1720047009,
+                        "updated_dtm": 1720047009,
+                        "role_type": "GENERAL_USER"
+                    },
+                    {
+                        "id": "52155d7d-mn45-430d-b51b-c73985697772",
+                        "account_id": "11d1c59b-38f4-4cce-ba8b-6e8af2d2a115",
+                        "first_name": "Bartholemew",
+                        "last_name": "Ng",
+                        "country_code": "GB",
+                        "timezone": "Europe/London",
+                        "email_address": "bng@communityttc.com",
+                        "phone": "07123 1234133",
+                        "created_dtm": 1720047009,
+                        "updated_dtm": 1720047009,
+                        "role_type": "GENERAL_USER",
+                        "groups": [
+                            {
+                                name: "Three Plus",
+                                id: 1
+                            },
+                            {
+                                name: "Annual GENERAL_USERs",
+                                id: 2
+                            },
+                            {
+                                name: "League Player",
+                                id: 3
+                            }
+                        ],
+                        "bookings": [
+                            {
+                                title: "Open Session",
+                                id: 1
+                            },
+                            {
+                                title: "Annual GENERAL_USERs",
+                                id: 2
+                            },
+                            {
+                                title: "League Player",
+                                id: 3
+                            }
+                        ]
+                    },
+                    {
+                        "id": "52155d7d-jc12-430d-b51b-c73985697773",
+                        "account_id": "11d1c59b-38f4-4cce-ba8b-6e8af2d2a116",
+                        "first_name": "Jonah",
+                        "last_name": "Coleman",
+                        "country_code": "GB",
+                        "timezone": "Europe/London",
+                        "email_address": "jcnotthatone@communityttc.com",
+                        "phone": "07122 1234133",
+                        "created_dtm": 1710057010,
+                        "updated_dtm": 1720047009,
+                        "role_type": "GENERAL_USER"
+                    },
+                    {
+                        "id": "52155d7d-lb99-430d-b51b-c73985697774",
+                        "account_id": "11d1c59b-38f4-4cce-ba8b-6e8af2d2a117",
+                        "first_name": "Larissa",
+                        "last_name": "Barton",
+                        "country_code": "GB",
+                        "timezone": "Europe/London",
+                        "email_address": "lb1999@communityttc.com",
+                        "phone": "07111 1234133",
+                        "created_dtm": 1620047009,
+                        "updated_dtm": 1720047009,
+                        "role_type": "GENERAL_USER"
+                    },
+                    {
+                        "id": "52155d7d-dm99-430d-b51b-c73985697775",
+                        "account_id": "11d1c59b-38f4-4cce-ba8b-6e8af2d2a118",
+                        "first_name": "Dillon",
+                        "last_name": "Mcknight",
+                        "country_code": "GB",
+                        "timezone": "Europe/London",
+                        "email_address": "dmme@communityttc.com",
+                        "phone": "07123 1234133",
+                        "created_dtm": 1720047009,
+                        "updated_dtm": 1720047009,
+                        "role_type": "GENERAL_USER"
+                    },
+                    {
+                        "id": "52155d7d-gs77-430d-b51b-c73985697772",
+                        "account_id": "11d1c59b-38f4-4cce-ba8b-6e8af2d2a115",
+                        "first_name": "Gilbert",
+                        "last_name": "Sutton",
+                        "country_code": "GB",
+                        "timezone": "Europe/London",
+                        "email_address": "g_sut@communityttc.com",
+                        "phone": "07123 1234133",
+                        "created_dtm": 1720047009,
+                        "updated_dtm": 1720047009,
+                        "role_type": "GENERAL_USER",
+                        "groups": [
+                            {
+                                name: "Three Plus",
+                                id: 1
+                            },
+                            {
+                                name: "Annual GENERAL_USERs",
+                                id: 2
+                            },
+                            {
+                                name: "League Player",
+                                id: 3
+                            }
+                        ],
+                        "bookings": [
+                            {
+                                title: "Open Session",
+                                id: 1
+                            },
+                            {
+                                title: "Annual GENERAL_USERs",
+                                id: 2
+                            },
+                            {
+                                title: "League Player",
+                                id: 3
+                            }
+                        ]
+                    },
+                    {
+                        "id": "52155d7d-sz44-430d-b51b-c73985697773",
+                        "account_id": "11d1c59b-38f4-4cce-ba8b-6e8af2d2a116",
+                        "first_name": "Shane",
+                        "last_name": "Zhang",
+                        "country_code": "GB",
+                        "timezone": "Europe/London",
+                        "email_address": "szhang@communityttc.com",
+                        "phone": "07122 1234133",
+                        "created_dtm": 1710057010,
+                        "updated_dtm": 1720047009,
+                        "role_type": "GENERAL_USER"
+                    },
+                    {
+                        "id": "52155d7d-ak44-430d-b51b-c73985697774",
+                        "account_id": "11d1c59b-38f4-4cce-ba8b-6e8af2d2a117",
+                        "first_name": "Abagail",
+                        "last_name": "Kent",
+                        "country_code": "GB",
+                        "timezone": "Europe/London",
+                        "email_address": "akent@communityttc.com",
+                        "phone": "07111 1234133",
+                        "created_dtm": 1620047009,
+                        "updated_dtm": 1720047009,
+                        "role_type": "GENERAL_USER"
+                    },
+                    {
+                        "id": "52155d7d-sa33-430d-b51b-c73985697775",
+                        "account_id": "11d1c59b-38f4-4cce-ba8b-6e8af2d2a118",
+                        "first_name": "Samir",
+                        "last_name": "Archer",
+                        "country_code": "GB",
+                        "timezone": "Europe/London",
+                        "email_address": "sarcher@communityttc.com",
+                        "phone": "07123 1234133",
+                        "created_dtm": 1720047009,
+                        "updated_dtm": 1720047009,
+                        "role_type": "GENERAL_USER"
+                    },
+                    {
+                        "id": "52155d7d-eb16-430d-b51b-c73985697772",
+                        "account_id": "11d1c59b-38f4-4cce-ba8b-6e8af2d2a115",
+                        "first_name": "Eric",
+                        "last_name": "Beck",
+                        "country_code": "GB",
+                        "timezone": "Europe/London",
+                        "email_address": "ebeck@communityttc.com",
+                        "phone": "07123 1234133",
+                        "created_dtm": 1720047009,
+                        "updated_dtm": 1720047009,
+                        "role_type": "GENERAL_USER",
+                        "groups": [
+                            {
+                                name: "Three Plus",
+                                id: 1
+                            },
+                            {
+                                name: "Annual GENERAL_USERs",
+                                id: 2
+                            },
+                            {
+                                name: "League Player",
+                                id: 3
+                            }
+                        ],
+                        "bookings": [
+                            {
+                                title: "Open Session",
+                                id: 1
+                            },
+                            {
+                                title: "Annual GENERAL_USERs",
+                                id: 2
+                            },
+                            {
+                                title: "League Player",
+                                id: 3
+                            }
+                        ]
+                    },
+                    {
+                        "id": "52155d7d-bs16-430d-b51b-c73985697773",
+                        "account_id": "11d1c59b-38f4-4cce-ba8b-6e8af2d2a116",
+                        "first_name": "Bailey",
+                        "last_name": "Sullivan",
+                        "country_code": "GB",
+                        "timezone": "Europe/London",
+                        "email_address": "bsull@communityttc.com",
+                        "phone": "07122 1234133",
+                        "created_dtm": 1710057010,
+                        "updated_dtm": 1720047009,
+                        "role_type": "GENERAL_USER"
+                    },
+                    {
+                        "id": "52155d7d-gw26-430d-b51b-c73985697774",
+                        "account_id": "11d1c59b-38f4-4cce-ba8b-6e8af2d2a117",
+                        "first_name": "Griffin",
+                        "last_name": "Wagner",
+                        "country_code": "GB",
+                        "timezone": "Europe/London",
+                        "email_address": "gwagner@communityttc.com",
+                        "phone": "07111 1234133",
+                        "created_dtm": 1620047009,
+                        "updated_dtm": 1720047009,
+                        "role_type": "GENERAL_USER"
+                    },
+                    {
+                        "id": "52155d7d-fv36-430d-b51b-c73985697775",
+                        "account_id": "11d1c59b-38f4-4cce-ba8b-6e8af2d2a118",
+                        "first_name": "Raphael",
+                        "last_name": "Velazquez",
+                        "country_code": "GB",
+                        "timezone": "Europe/London",
+                        "email_address": "rapha@communityttc.com",
+                        "phone": "07123 1234133",
+                        "created_dtm": 1720047009,
+                        "updated_dtm": 1720047009,
+                        "role_type": "GENERAL_USER"
+                    }
                 ];
             }
         },
@@ -474,7 +794,7 @@ export const useOrganisationStore = defineStore('organisationStore', {
             //                     id: 1
             //                 },
             //                 {
-            //                     name: "Annual Members",
+            //                     name: "Annual GENERAL_USERs",
             //                     id: 2
             //                 },
             //                 {
@@ -488,7 +808,7 @@ export const useOrganisationStore = defineStore('organisationStore', {
             //                     id: 1
             //                 },
             //                 {
-            //                     title: "Annual Members",
+            //                     title: "Annual GENERAL_USERs",
             //                     id: 2
             //                 },
             //                 {
@@ -644,9 +964,10 @@ export const useOrganisationStore = defineStore('organisationStore', {
             }
             return response;
         },
-        async addCustomersToCustomerGroup({id, data}) {
-            const response = await useOrganisationAPI({endpoint: `addCustomersToCustomerGroup`, id, data});
-            if (response.data?.status) {
+        async updateCustomerGroupCustomers({id, data}) {
+            console.log('store, update cg customers', id, data);
+            const response = await useOrganisationAPI({endpoint: `updateCustomerGroupCustomers`, id, data});
+            if (response?.data?.status) {
                 this.getCustomerGroupsList();
                 return;
             }

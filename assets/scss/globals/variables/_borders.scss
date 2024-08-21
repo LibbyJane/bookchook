@@ -2,6 +2,7 @@
     --border-radius-sm: 0.1rem;
     --border-radius: 0.2rem;
     --border-width: 1px;
-    --border: var(--border-width) solid var(--c-border);
-    --border-light: var(--border-width) solid var(--c-border-light);
+    --border-style: solid;
+    --border: var(--border-width) var(--border-style) var(--c-border);
+    --border-light: var(--border-width) var(--border-style) var(--c-border-light);
 }

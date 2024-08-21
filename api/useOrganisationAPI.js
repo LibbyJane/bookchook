@@ -40,7 +40,7 @@ const endpoints = {
         uri: `private/customerGroup`,
         method: 'PATCH'
     },
-    addCustomersToCustomerGroup: {
+    updateCustomerGroupCustomers: {
         uri: `private/customerGroup`,
         uriAddendum: `users`,
         method: 'POST'

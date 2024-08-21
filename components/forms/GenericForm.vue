@@ -1,6 +1,7 @@
 <template>
     <form v-on:submit="handleSubmit" class="form" :class="{ 'loading': form.state == 'loading', 'form-error': form.error, cssClass } " ref="formElement">
         <fieldset>
+            <h5 v-if="title" class="m-bottom">{{ title }}</h5>
             <Field
                 v-for="(field, key) in fields"
                 id="key"
@@ -25,8 +26,7 @@
                     :id="key"
                     :type="field.type ? field.type : null"
                     :required="field.required"
-                    :placeholder="field.placeholder">
-                </textarea>
+                    :placeholder="field.placeholder"></textarea>
             </Field>
         </fieldset>
 
@@ -34,7 +34,7 @@
 
         <footer class="btn-bar">
             <button type="submit" class="btn btn--success" :disabled="form.pristine">Save</button>
-            <button v-if="showReset" type="reset" class="btn btn--plain btn--sm" :disabled="form.pristine">
+            <button v-if="showReset" type="reset" class="btn btn--plain btn--sm" :disabled="form.pristine" ref="resetButton">
                 <RefreshDouble />
                 Reset
             </button>
@@ -44,7 +44,7 @@
 
 <script setup>
 
-    import { ref, reactive } from 'vue';
+    import { ref, reactive, nextTick } from 'vue';
     import { RefreshDouble } from '@iconoir/vue';
 
     import Error from '@/components/forms/shared/Error.vue';
@@ -57,6 +57,9 @@
         },
         cssClass: {
             type: String
+        },
+        title: {
+
         },
         fields: {
             required: true
@@ -73,6 +76,7 @@
     });
 
     const formElement = ref(null);
+    const resetButton = ref(null);
 
     let form = reactive({
         pristine: true,
@@ -101,6 +105,8 @@
         form.state = 'loading';
         formElement.value.reportValidity();
 
+
+
         if (!formElement.value.checkValidity()) {
             const list = formElement.value.querySelectorAll('fieldset :invalid');
             list.forEach(elem => {
@@ -112,6 +118,7 @@
             return;
         }
 
+
         let payload = {
             id: props.id,
             data: {}
@@ -121,13 +128,7 @@
                 payload.data[key] = value.value;
         }
 
-        console.log('generic form endpoint', props.endpoint);
-        console.log('generic form payload', payload);
-
         const outcome = await props.endpoint(payload);
-
-        console.log('generic form outcome', outcome);
-
         form.state = '';
         let errorMessage;
 
@@ -138,7 +139,6 @@
                 errorMessage += `${error}`;
             }
         }
-        console.warn('error: ', errorMessage);
         if (errorMessage) {
             errorMessage = errorMessage.replaceAll('_', ' ');
             form.error = errorMessage;
@@ -146,6 +146,9 @@
         }
 
         props.callback(props.id);
+
+        await nextTick();
+        resetButton.value.click();
     };
 
     const clearError = (id) => {
@@ -153,10 +156,4 @@
         props.fields[id].error = null;
         form.error = '';
     };
-
-
 </script>
-
-<style lang="scss">
-
-</style>

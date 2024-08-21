@@ -19,6 +19,25 @@
     grid-column-start: 1;
     grid-column-end: -1;
     padding: var(--content-padding);
+    position: relative;
+    overflow: hidden;
+
+    .card--solid-header & {
+        background-color: var(--c-text);
+        color: var(--c-background);
+        margin-bottom: var(--space);
+        padding-block: var(--space);
+    }
+
+    .card--header-bk & {
+        background-color: hsla(var(--c-accent-hsl), 0.09);
+        color: var(--c-text);
+        // background-color: var(--c-text);
+        // color: var(--c-background);
+        // border-bottom: var(--border);
+        margin-bottom: var(--space);
+        padding-block: var(--space);
+    }
 
     #{$hover} {
         button {
@@ -50,6 +69,7 @@
 .card__body {
     padding: var(--content-padding-all);
     padding-top: 0;
+    position: relative;
 }
 
 .card__footer {
@@ -61,3 +81,18 @@
         margin-bottom: var(--space-sm);
     }
 }
+
+// .card__header-watermark {
+//     width: 33%;
+//     aspect-ratio: 1/1;
+//     opacity: 0.1;
+//     pointer-events: none;
+//     position: absolute;
+//         top: 0;
+//         left: 0;
+
+//     svg {
+//         height: 100%;
+//         width: 100%;
+//     }
+// }

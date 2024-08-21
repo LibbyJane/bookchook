@@ -1,76 +1,156 @@
 <template>
-    <div v-if="data" class="">
+    <div v-if="data" class="selectable-list">
+        <ul v-if="selectedUsers?.length" class="selected-customers">
+            <li>{{ selectedUsers.length }} {{ selectedUsers.length == 1 ? 'customer' : 'customers' }}: </li>
+            <li v-for="user in selectedUsers">{{ user.first_name }} {{ user.last_name }}</li>
+        </ul>
         <vue3-datatable
             :rows="data"
             :columns="cols"
             :sortable="true"
-            :columnFilter="true"
-            :pageSizeOptions="[20, 50, 100]"
-            :showPageSize="data.length > 20"
-            :pagination="data.length > 20"
+            :columnFilter="false"
+            :pageSizeOptions="[50, 100]"
+            :showPageSize="data.length > 49"
+            :pagination="data.length > 49"
+            :stickyHeader="true"
+            height="50vh"
             noDataContent="No matches found."
             :loader="true"
             skin="bh-table-hover"
             :hasCheckbox="true"
-            v-on:rowClick="handleRowClick"
+            :selectRowOnClick="true"
+            v-on:sortChange="reselectUsers"
+            v-on:rowSelect="handleRowClick"
+            ref="table"
         >
-            <!-- <template #email_address="data">
-                <a :href="`mailto:${data.value.email_address}`" class="text-primary hover:underline">{{ data.value.email_address }}</a>
-            </template> -->
         </vue3-datatable>
-
+        <!-- v-on:rowSelect="$emit('selectedCustomersChange', $event)"
+        v-on:selectedCustomersChange="handleRowClick" -->
     </div>
 </template>
 
 <script setup>
-    import { ref, onMounted } from 'vue';
+    import { ref, onMounted, onUpdated } from 'vue';
     import Vue3Datatable from "@bhplugin/vue3-datatable";
-    import { useOrganisationStore } from '@/stores/organisation';
-    import { formatDtmLong } from '@/utils/dates';
-    import EnvelopeIcon from '@/components/icons/envelope.vue';
-    import PhoneIcon from '@/components/icons/smartphone.vue';
+
+    onMounted(() => {
+        // preselect customerss
+    });
 
     const props = defineProps({
         data: {
             type: Object,
             required: true
+        },
+        callback: {
+            type: Function
         }
     });
 
     const cols = ref([
         { field: "first_name", title: "First Name" },
-        { field: "last_name", title: "Last Name" }
-        ]);
+        { field: "last_name", title: "Last Name" },
+        { field: "email_address", title: "Email" }
+    ]);
 
-    function handleRowClick(user) {
-        console.log('row click', user);
-        // selectedUser.value = user;
+    const table = ref(null);
+    const selectedUsers = ref(null);
+
+    function handleRowClick() {
+        selectedUsers.value = table.value.getSelectedRows();
+        selectedUsers.value = selectedUsers.value.sort((a, b) => {
+            const lastnameA = a.last_name.toUpperCase();
+            const lastnameB = b.last_name.toUpperCase();
+
+            if (lastnameA < lastnameB) { return -1; }
+            if (lastnameA > lastnameB) { return 1; }
+            if (lastnameA == lastnameB) {
+                const firstnameA = a.first_name.toUpperCase();
+                const firstnameB = b.first_name.toUpperCase();
+
+                if (firstnameA < firstnameB) { return -1; }
+                if (firstnameA > firstnameB) { return 1; }
+                return 0;
+            }
+        });
+    }
+
+    function reselectUsers() {
+        console.log('reselect users');
+        if (selectedUsers.value) {
+            const rows = table.value.getFilteredRows();
+            console.log('rows', rows);
+            console.log('selected users', selectedUsers.value);
+
+            rows.forEach((row,index) => {
+                console.log('loop?', index, row);
+                console.log('find?', selectedUsers.value.find(element => element == row))
+                if (selectedUsers.value.find(element => element == row)) {
+                    console.log('found');
+                    table.value.selectRow(index);
+                }
+            });
+        }
     }
 </script>
 
 <style lang="scss">
- @import url("~/assets/scss/components/_data-tables.scss");
+    @import url("~/assets/scss/components/_data-tables.scss");
     @import url("~/assets/scss/components/_user-listing.scss");
-    .user-listing .bh-table-responsive {
-        tr {
-            cursor: pointer;
+
+    .selected-customers {
+        display: flex;
+        flex-wrap: wrap;
+        list-style: none;
+        margin: 0 0 var(--space-med);
+        padding: 0;
+
+        li {
+            display: inline;
+            font-size: var(--p-sm);
+            line-height: var(--line-height-sm);
+            margin: 0;
+            padding: 0;
+
+            &:last-child,
+            &:first-child {
+                &::after {
+                    content: none;
+                }
+            }
+
+            &::after {
+                content: ', ';
+                display: inline-flex;
+            }
         }
+    }
 
-        td, th {
-            display: none;
+    .selectable-list {
+        --sb-track-color: var(--c-background);
+        --sb-thumb-color: var(--c-input-bg);
 
-            @container (min-width: 700px) {
-                display: table-cell;
+        .bh-table-responsive {
+            tr {
+                cursor: pointer;
             }
 
-            &:nth-child(1),
-            &:nth-child(2) {
-                display: table-cell;
-            }
+            td, th {
+                display: none;
 
-            &:nth-child(3) {
-                @container (min-width: 600px) {
+                @container (min-width: 700px) {
                     display: table-cell;
+                }
+
+                &:nth-child(1),
+                &:nth-child(2) {
+                    display: table-cell;
+                }
+
+                &:nth-child(3) {
+                    @container (min-width: 600px) {
+                        display: table-cell;
+                    }
                 }
             }
         }
