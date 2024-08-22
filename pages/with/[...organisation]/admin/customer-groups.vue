@@ -87,7 +87,7 @@
                         <h4 class="section__header-title">Discounts and Offers</h4>
                         <button type="button" class="btn btn--sm btn--secondary" v-on:click="addNewOffer = !addNewOffer" title="Add Offer">
                             <EditPencil v-if="!editGroupCustomers" />
-                            <span v-if="!editGroupCustomers">Add or Remove Customers</span>
+                            <span v-if="!editGroupCustomers">Add Discount or Offer</span>
 
                             <Xmark v-if="editGroupCustomers" />
                             <span v-if="editGroupCustomers">Cancel</span>
@@ -149,13 +149,12 @@
     import CustomerList from '@/components/admin/CustomerList.vue';
 
 
-    const selectedGroup = ref(null);
     const organisationStore = useOrganisationStore();
 
     await useAsyncData(() => organisationStore.getCustomerGroupsList());
     organisationStore.getOrganisationCustomers();
 
-
+    const selectedGroup = ref(null);
     const showAddGroup = ref(false);
     const inEditMode = ref(false);
     const editGroupCustomers = ref(false);
@@ -180,7 +179,6 @@
     const fields = reactive({...customerGroupDefaults});
     let selectedGroupFields;
 
-
     const cols = ref([
         { field: "group_name", title: "Name", cellClass: "td-group-name" },
         { field: "description", title: "Description"},
@@ -189,7 +187,6 @@
     ]);
 
     const hideTableDescription = computed( () => { return selectedGroup.value; })
-
 
     onMounted( ()=>{
         const descriptionfield = cols.value.find((element => element.field == "description"));
@@ -202,8 +199,13 @@
         if (change == 'closed') showConfirmDelete.value = false;
     }
 
-    async function handleRowClick(group) {
-        selectedGroup.value = group;
+    function handleRowClick(group) {
+        console.log('row click', group.id, selectedGroup.value?.id);
+        if (selectedGroup.value?.id == group.id) {
+            selectedGroup.value = null;
+        } else {
+            selectedGroup.value = group;
+        }
         showConfirmDelete.value = false;
         inEditMode.value = false;
     }
@@ -224,7 +226,6 @@
     const snackbar = useSnackbar();
 
     async function handleCreateGroupUpdate(data) {
-        // showTable.value = false;
         organisationStore.getCustomerGroupsList();
 
         if (data) {
@@ -233,8 +234,6 @@
                 text: 'Customer group updated'
             })
         }
-
-        // showTable.value = true;
     }
 
     async function deleteGroup() {

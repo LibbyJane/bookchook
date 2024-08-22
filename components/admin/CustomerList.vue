@@ -1,5 +1,9 @@
 <template>
     <div v-if="data" class="selectable-list">
+        <!-- <pre>table filtered? {{ tableIsFiltered }}</pre> -->
+        <!-- <pre>filtered rows {{ (table?.getFilteredRows())?.length }}</pre>
+        <pre>selected users {{  selectedUsers }}</pre>
+        <pre>rowClickData {{ rowClickData }}</pre> -->
         <ul v-if="selectedUsers?.length" class="selected-customers">
             <li>{{ selectedUsers.length }} {{ selectedUsers.length == 1 ? 'customer' : 'customers' }}: </li>
             <li v-for="user in selectedUsers">{{ user.first_name }} {{ user.last_name }}</li>
@@ -8,7 +12,7 @@
             :rows="data"
             :columns="cols"
             :sortable="true"
-            :columnFilter="false"
+            :columnFilter="true"
             :pageSizeOptions="[50, 100]"
             :showPageSize="data.length > 49"
             :pagination="data.length > 49"
@@ -30,12 +34,8 @@
 </template>
 
 <script setup>
-    import { ref, onMounted, onUpdated } from 'vue';
+    import { ref, onMounted, onUpdated, computed, watch } from 'vue';
     import Vue3Datatable from "@bhplugin/vue3-datatable";
-
-    onMounted(() => {
-        // preselect customerss
-    });
 
     const props = defineProps({
         data: {
@@ -55,9 +55,33 @@
 
     const table = ref(null);
     const selectedUsers = ref(null);
+    const rowClickData = ref([]);
 
-    function handleRowClick() {
-        selectedUsers.value = table.value.getSelectedRows();
+    watch(rowClickData, (newVal, oldVal) => {
+        console.log('watching', newVal, oldVal);
+        console.log('compare?', newVal.length, oldVal.length);
+        if (newVal.length > oldVal.length ) {
+            if (!selectedUsers.value) {
+                selectedUsers.value = [];
+            }
+            console.log('newval is longer, add new user', Array.from(new Set( [...selectedUsers.value, ...newVal]) ));
+            // add new user
+            selectedUsers.value = Array.from(new Set( [...selectedUsers?.value, ...newVal]) );
+        } else {
+            console.log('newval is shorter, remove user');
+            oldVal.forEach(user => {
+                console.log('checking', user);
+                console.log('was ')
+                if (!newVal.includes(user)) {
+                    let indexToRemove = selectedUsers.value.findIndex((element) => element == user);
+                    console.log('indexToremove', indexToRemove);
+                    selectedUsers.value.splice(indexToRemove, 1);
+                    return;
+                }
+            });
+        }
+
+
         selectedUsers.value = selectedUsers.value.sort((a, b) => {
             const lastnameA = a.last_name.toUpperCase();
             const lastnameB = b.last_name.toUpperCase();
@@ -73,20 +97,63 @@
                 return 0;
             }
         });
+    })
+
+    // const tableIsFiltered = ref(table?.value?.getColumnFilters());
+
+
+    onMounted(() => {
+        // preselect customers
+
+        //     tableIsFiltered.value = computed( () => {
+        //     console.log('table filtered?', table?.value.getColumnFilters());
+        //     return  table?.value?.getColumnFilters();
+        // })
+    });
+
+
+
+    function handleRowClick(data) {
+        rowClickData.value = data;
+        // console.log('row click', data, typeof data);
+        // console.log('selectedUsers.value', selectedUsers.value, typeof selectedUsers.value);
+
+        // if (!selectedUsers.value) {
+        //     selectedUsers.value = [];
+        // }
+
+        // data.forEach((row, index) => {
+        //     if (selectedUsers.value.find((user, i) => user == row)) {
+        //          console.log('already selected', row)
+        //     } else {
+        //         console.log('new selected', row);
+        //     }
+        // });
+
+        // if (data) {
+        //     selectedUsers.value = Array.from(new Set( [...selectedUsers.value, ...data]) );
+        // } else {
+        // }
+
+
+
+
+        // if (data) {
+        //     selectedUsers.value = [...selectedUsers.value];
+        // }
+
+        // selectedUsers.value = table.value.getSelectedRows();
+        // console.log('selectedUsers.value', selectedUsers.value, typeof selectedUsers.value);
+
+
     }
 
     function reselectUsers() {
-        console.log('reselect users');
         if (selectedUsers.value) {
             const rows = table.value.getFilteredRows();
-            console.log('rows', rows);
-            console.log('selected users', selectedUsers.value);
 
-            rows.forEach((row,index) => {
-                console.log('loop?', index, row);
-                console.log('find?', selectedUsers.value.find(element => element == row))
+            rows.forEach((row, index) => {
                 if (selectedUsers.value.find(element => element == row)) {
-                    console.log('found');
                     table.value.selectRow(index);
                 }
             });
