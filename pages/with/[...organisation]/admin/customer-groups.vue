@@ -99,7 +99,7 @@
                         </button>
                     </header>
 
-                    <CustomerList v-if="editGroupCustomers" :data="organisationStore.customers" :callback="handleSelectedCustomersUpdate" />
+
                 </section>
 
                 <section class="section">
@@ -191,6 +191,10 @@
     onMounted( ()=>{
         const descriptionfield = cols.value.find((element => element.field == "description"));
         descriptionfield.hide = hideTableDescription;
+
+        cols.value.forEach(col => {
+            col.condition = "start_with";
+        });
     });
 
     const showConfirmDelete = ref(false);
@@ -200,7 +204,6 @@
     }
 
     function handleRowClick(group) {
-        console.log('row click', group.id, selectedGroup.value?.id);
         if (selectedGroup.value?.id == group.id) {
             selectedGroup.value = null;
         } else {

@@ -59,6 +59,10 @@
 
     onMounted(()=>{
         tableOpacity.value = 1;
+
+        cols.value.forEach(col => {
+            col.condition = "start_with";
+        });
     })
 </script>
 

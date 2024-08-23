@@ -100,6 +100,10 @@
             // if there's only one client, preselect them
             selectedUser.value = organisationStore.customers[0];
         }
+
+        cols.value.forEach(col => {
+            col.condition = "start_with";
+        });
     })
 </script>
 

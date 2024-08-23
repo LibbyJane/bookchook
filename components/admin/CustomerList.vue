@@ -3,7 +3,11 @@
         <!-- <pre>table filtered? {{ tableIsFiltered }}</pre> -->
         <!-- <pre>filtered rows {{ (table?.getFilteredRows())?.length }}</pre>
         <pre>selected users {{  selectedUsers }}</pre>
-        <pre>rowClickData {{ rowClickData }}</pre> -->
+        <pre>rowClickData {{ rowClickData }}</pre>-->
+        <!-- <pre>Backup: {{ selectedUsersBackup }}</pre> -->
+        <pre>lastActiontype: {{ lastActiontype }}</pre>
+
+
         <ul v-if="selectedUsers?.length" class="selected-customers">
             <li>{{ selectedUsers.length }} {{ selectedUsers.length == 1 ? 'customer' : 'customers' }}: </li>
             <li v-for="user in selectedUsers">{{ user.first_name }} {{ user.last_name }}</li>
@@ -23,18 +27,22 @@
             skin="bh-table-hover"
             :hasCheckbox="true"
             :selectRowOnClick="true"
+            v-on:rowSelect="handleRowSelect"
+            v-on:rowClick="handleRowClick"
+            v-on:filterChange="handleFilterChange"
             v-on:sortChange="reselectUsers"
-            v-on:rowSelect="handleRowClick"
+
             ref="table"
         >
         </vue3-datatable>
+        <!--    v-on:rowSelect="handleRowClick" -->
         <!-- v-on:rowSelect="$emit('selectedCustomersChange', $event)"
         v-on:selectedCustomersChange="handleRowClick" -->
     </div>
 </template>
 
 <script setup>
-    import { ref, onMounted, onUpdated, computed, watch } from 'vue';
+    import { ref, onMounted, onUpdated, computed, watch, nextTick } from 'vue';
     import Vue3Datatable from "@bhplugin/vue3-datatable";
 
     const props = defineProps({
@@ -56,99 +64,91 @@
     const table = ref(null);
     const selectedUsers = ref(null);
     const rowClickData = ref([]);
+    let selectedUsersBackup = null;
 
-    watch(rowClickData, (newVal, oldVal) => {
-        console.log('watching', newVal, oldVal);
-        console.log('compare?', newVal.length, oldVal.length);
-        if (newVal.length > oldVal.length ) {
-            if (!selectedUsers.value) {
-                selectedUsers.value = [];
-            }
-            console.log('newval is longer, add new user', Array.from(new Set( [...selectedUsers.value, ...newVal]) ));
-            // add new user
-            selectedUsers.value = Array.from(new Set( [...selectedUsers?.value, ...newVal]) );
-        } else {
-            console.log('newval is shorter, remove user');
-            oldVal.forEach(user => {
-                console.log('checking', user);
-                console.log('was ')
-                if (!newVal.includes(user)) {
-                    let indexToRemove = selectedUsers.value.findIndex((element) => element == user);
-                    console.log('indexToremove', indexToRemove);
-                    selectedUsers.value.splice(indexToRemove, 1);
+    let lastActiontype = ref(null);
+
+    watch(rowClickData, async (newVal, oldVal) => {
+        // console.log('watch, last action type', lastActiontype.value);
+        if (lastActiontype.value == 'filter' || lastActiontype.value == 'watch') {
+            // console.log(`last action type is ${lastActiontype.value}, don't update selected users`);
+            selectedUsersBackup = selectedUsers.value;
+            lastActiontype.value = 'watch';
+            return;
+        }
+        // console.groupEnd();
+        // console.group();
+        // console.log('watched row click', newVal, oldVal, lastActiontype.value);
+
+        if (!selectedUsers.value) {
+            // console.log('initialise selected users');
+            selectedUsers.value = [];
+        }
+
+        // console.log('is this user already selected?', newVal);
+        let changeType;
+
+        if (newVal?.length) {
+            // console.log('updated selected users');
+            newVal.forEach(user => {
+                if (!changeType && !selectedUsers.value.includes(user)) {
+                    console.log ('add user');
+                    changeType = 'addition'
+                    selectedUsers.value = Array.from(new Set( [...selectedUsers?.value, ...newVal]) );
                     return;
                 }
             });
-        }
 
-
-        selectedUsers.value = selectedUsers.value.sort((a, b) => {
-            const lastnameA = a.last_name.toUpperCase();
-            const lastnameB = b.last_name.toUpperCase();
-
-            if (lastnameA < lastnameB) { return -1; }
-            if (lastnameA > lastnameB) { return 1; }
-            if (lastnameA == lastnameB) {
-                const firstnameA = a.first_name.toUpperCase();
-                const firstnameB = b.first_name.toUpperCase();
-
-                if (firstnameA < firstnameB) { return -1; }
-                if (firstnameA > firstnameB) { return 1; }
-                return 0;
+            if (changeType != 'addition') {
+                // console.log('remove user');
+                if (oldVal?.length) {
+                    oldVal.forEach(user => {
+                        if (!newVal.includes(user)) {
+                            let indexToRemove = selectedUsers.value.findIndex((element) => element == user);
+                            selectedUsers.value.splice(indexToRemove, 1);
+                            return;
+                        }
+                    });
+                }
             }
-        });
-    })
-
-    // const tableIsFiltered = ref(table?.value?.getColumnFilters());
-
-
-    onMounted(() => {
-        // preselect customers
-
-        //     tableIsFiltered.value = computed( () => {
-        //     console.log('table filtered?', table?.value.getColumnFilters());
-        //     return  table?.value?.getColumnFilters();
-        // })
+        } else {
+            selectedUsers.value = null;
+        }
     });
 
 
 
-    function handleRowClick(data) {
-        rowClickData.value = data;
-        // console.log('row click', data, typeof data);
-        // console.log('selectedUsers.value', selectedUsers.value, typeof selectedUsers.value);
 
-        // if (!selectedUsers.value) {
-        //     selectedUsers.value = [];
-        // }
+    async function handleFilterChange(filters) {
+        lastActiontype.value = 'filter';
+        // console.log('filter change', filters);
 
-        // data.forEach((row, index) => {
-        //     if (selectedUsers.value.find((user, i) => user == row)) {
-        //          console.log('already selected', row)
-        //     } else {
-        //         console.log('new selected', row);
-        //     }
-        // });
-
-        // if (data) {
-        //     selectedUsers.value = Array.from(new Set( [...selectedUsers.value, ...data]) );
-        // } else {
-        // }
-
-
-
-
-        // if (data) {
-        //     selectedUsers.value = [...selectedUsers.value];
-        // }
-
-        // selectedUsers.value = table.value.getSelectedRows();
-        // console.log('selectedUsers.value', selectedUsers.value, typeof selectedUsers.value);
-
-
+        selectedUsersBackup = selectedUsers.value;
+        rowClickData.value = selectedUsersBackup;
+        await nextTick();
+        reselectUsers();
     }
 
-    function reselectUsers() {
+    async function handleRowSelect(data) {
+        // console.log(`handle row select, ${lastActiontype.value}`, data);
+
+        if (lastActiontype.value == 'watch') {
+            rowClickData.value = selectedUsersBackup;
+        } else {
+            rowClickData.value = data;
+        }
+
+        lastActiontype.value = 'select';
+    }
+
+
+    async function handleRowClick(data) {
+        // console.log('handle row click', data);
+        rowClickData.value = data;
+        lastActiontype.value = 'click';
+    }
+
+    async function reselectUsers() {
         if (selectedUsers.value) {
             const rows = table.value.getFilteredRows();
 
@@ -158,7 +158,18 @@
                 }
             });
         }
+
+        rowClickData.value = selectedUsers.value;
     }
+
+
+    onMounted(() => {
+        // todo: preselect customers
+
+        cols.value.forEach(col => {
+            col.condition = "start_with";
+        })
+    });
 </script>
 
 <style lang="scss">
