@@ -1,6 +1,5 @@
 <template>
     <form v-on:submit="handleSubmit" class="form form--settings-billing" :class="{ 'loading': form.state == 'loading', 'form-error': form.error }" ref="billingFormElement">
-
         <fieldset>
             <Field
                 v-for="(field, key) in fields"

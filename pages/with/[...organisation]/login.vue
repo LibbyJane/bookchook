@@ -47,7 +47,7 @@
 
     // onMounted(()=>{
     //     if (userStore.authenticated) {
-    //         navigateTo(`${organisationStore.organisationPagePrefix}${organisationStore.account.url_slug}`);
+    //         navigateTo(`${organisationStore.organisation_page_prefix}${organisationStore.account.url_slug}`);
     //     }
     // })
 </script>

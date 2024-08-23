@@ -124,8 +124,8 @@ export const useOrganisationStore = defineStore('organisationStore', {
             // console.log('account', this.account);
             if (response.data?.status) {
                 this.account = response.data.account;
-                this.baseURL = `${this.organisationPagePrefix}${organisationID}`;
-                this.adminURL = `${this.organisationPagePrefix}${organisationID}/admin`;
+                this.base_URL = `${this.organisation_page_prefix}${organisationID}`;
+                this.admin_URL = `${this.organisation_page_prefix}${organisationID}/admin`;
                 // TODO: remove logo and theme hard wiring when properly set up
                 this.account.logo_url = '/demo/logo.svg';
             }

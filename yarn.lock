@@ -341,6 +341,10 @@
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/@ctrl/tinycolor/-/tinycolor-4.1.0.tgz#91a8f8120ffc9da2feb2a38f7862b300d5e9691a"
   integrity sha512-WyOx8cJQ+FQus4Mm4uPIZA64gbk3Wxh0so5Lcii0aJifqwoVOlfFtorjLE0Hen4OYyHZMXDWqMmaQemBhgxFRQ==
+"@cyhnkckali/vue3-color-picker@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@cyhnkckali/vue3-color-picker/-/vue3-color-picker-2.0.2.tgz#7a66643095cffad748d2354625dd53a140b4673f"
+  integrity sha512-XfmaQ3r3xmPtfWUuO8gEw+oDXW6KjMJaF9xpnRDj3ZEhUTsS9EE2yCF1n7IrYQjk3Rybatvv2TMvFOc8tzdMDg==
 
 "@esbuild/aix-ppc64@0.20.2":
   version "0.20.2"

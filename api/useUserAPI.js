@@ -1,5 +1,5 @@
 import axios from "axios"
-import { apiBaseURL } from '@/api/config';
+import { apibase_URL } from '@/api/config';
 import { useUserStore } from '@/stores/user';
 
 const endpoints = {
@@ -27,7 +27,7 @@ export async function useUserAPI(endpoint, data, id) {
     if (endpoint && endpoints[endpoint]) {
         let config = {
             headers: {},
-            baseURL: apiBaseURL,
+            base_URL: apibase_URL,
             url: `/api/user/${endpoints[endpoint].uri}`,
             method: endpoints[endpoint].method
         }

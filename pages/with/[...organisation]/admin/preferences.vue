@@ -75,6 +75,8 @@
     const organisationStore = useOrganisationStore();
 
     await useAsyncData(() => organisationStore.getOrganisationBillingSettings());
+    const inEditMode = ref('');
+
 
     const inEditMode = ref('account');
     const snackbar = useSnackbar();

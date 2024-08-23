@@ -17,7 +17,7 @@
 
     onMounted(()=>{
         if (userStore.authenticated) {
-            navigateTo(organisationStore.baseURL);
+            navigateTo(organisationStore.base_URL);
         }
     })
 </script>

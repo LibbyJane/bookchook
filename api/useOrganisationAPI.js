@@ -1,5 +1,5 @@
 import axios from "axios"
-import { apiBaseURL, config } from '@/api/config';
+import { apibase_URL, config } from '@/api/config';
 import { useUserStore } from '@/stores/user';
 
 const endpoints = {
@@ -56,7 +56,7 @@ export async function useOrganisationAPI({endpoint, data, id, qs, $pinia }) {
     // console.log('useOrganisationAPI endpoint, data, id, qs', data, id, qs);
 
     if (endpoint && endpoints[endpoint]) {
-        config.baseURL = apiBaseURL;
+        config.base_URL = apibase_URL;
         config.url =  `/api/${endpoints[endpoint].uri}`;
         config.method = endpoints[endpoint].method;
         // console.log('updated config', config);
