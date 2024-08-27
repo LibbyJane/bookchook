@@ -1,13 +1,5 @@
 <template>
     <div v-if="data" class="selectable-list">
-        <!-- <pre>table filtered? {{ tableIsFiltered }}</pre> -->
-        <!-- <pre>filtered rows {{ (table?.getFilteredRows())?.length }}</pre>
-        <pre>selected users {{  selectedUsers }}</pre>
-        <pre>rowClickData {{ rowClickData }}</pre>-->
-        <!-- <pre>Backup: {{ selectedUsersBackup }}</pre> -->
-        <pre>lastActiontype: {{ lastActiontype }}</pre>
-
-
         <ul v-if="selectedUsers?.length" class="selected-customers">
             <li>{{ selectedUsers.length }} {{ selectedUsers.length == 1 ? 'customer' : 'customers' }}: </li>
             <li v-for="user in selectedUsers">{{ user.first_name }} {{ user.last_name }}</li>
