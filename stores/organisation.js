@@ -124,8 +124,8 @@ export const useOrganisationStore = defineStore('organisationStore', {
             // console.log('account', this.account);
             if (response.data?.status) {
                 this.account = response.data.account;
-                this.baseURL = `${this.organisationPagePrefix}${organisationID}`;
-                this.adminURL = `${this.organisationPagePrefix}${organisationID}/admin`;
+                this.base_URL = `${this.organisation_page_prefix}${organisationID}`;
+                this.admin_URL = `${this.organisation_page_prefix}${organisationID}/admin`;
                 // TODO: remove logo and theme hard wiring when properly set up
                 this.account.logo_url = '/demo/logo.svg';
             }
@@ -940,21 +940,34 @@ export const useOrganisationStore = defineStore('organisationStore', {
             const response = await useOrganisationAPI({endpoint: `createCustomerGroup`, data});
             console.log('create customer group', response);
             if (response.data?.status) {
-                console.log('is this right?', {...this.customerGroups, ...response.data.customerGroup} );
-                this.customerGroups = await this.getCustomerGroupsList();
-                console.log('vs', this.customerGroups );
+                await this.getCustomerGroupsList();
+                // this.customerGroups = await this.getCustomerGroupsList();
+                // console.log('vs', this.customerGroups );
                 return;
             }
             return response;
         },
         async deleteCustomerGroup({id}) {
-            console.log('delete customer group');
-            const response = await useOrganisationAPI({endpoint: `deleteCustomerGroup`, id});
-            if (response.data?.status) {
-                this.customerGroups = await this.getCustomerGroupsList();
-                return;
+            if (id) {
+                console.log('delete customer group');
+
+                const response = await useOrganisationAPI({endpoint: `deleteCustomerGroup`, id});
+                if (response.data?.status) {
+                    await this.getCustomerGroupsList();
+
+                    // this.customerGroups = await this.getCustomerGroupsList();
+
+                    // const indexToDelete = this.customerGroups.findIndex((element => element.id == id));
+
+                    // if (indexToDelete > -1) { // only splice array when item is found
+                    //     this.customerGroups.splice(indexToDelete, 1); // 2nd parameter means remove one item only
+                    // }
+
+                    return;
+                }
+                return response;
             }
-            return response;
+
         },
         async updateCustomerGroup({id, data}) {
             const response = await useOrganisationAPI({endpoint: `updateCustomerGroup`, id, data});

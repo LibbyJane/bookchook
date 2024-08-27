@@ -104,8 +104,7 @@
         e.preventDefault();
         form.state = 'loading';
         formElement.value.reportValidity();
-
-
+        form.pristine = true;
 
         if (!formElement.value.checkValidity()) {
             const list = formElement.value.querySelectorAll('fieldset :invalid');
@@ -117,7 +116,6 @@
             form.state = '';
             return;
         }
-
 
         let payload = {
             id: props.id,
@@ -147,8 +145,10 @@
 
         props.callback(props.id);
 
-        await nextTick();
-        resetButton.value.click();
+        if (resetButton.value) {
+            await nextTick();
+            resetButton.value.click();
+        }
     };
 
     const clearError = (id) => {

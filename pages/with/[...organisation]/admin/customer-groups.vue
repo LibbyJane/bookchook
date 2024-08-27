@@ -1,34 +1,34 @@
 <template>
     <Header title="Customer Groups">
         <template #actions>
-            <button type="button" class="btn btn--secondary" v-on:click="showAddGroup = !showAddGroup">
+            <button type="button" class="btn btn--secondary" v-on:click="showCreateGroup = !showCreateGroup">
                 <Plus />
                 Create Group
             </button>
         </template>
     </Header>
 
-    <Card v-if="showAddGroup" cssClass="create-customer-group">
+    <Card v-if="showCreateGroup" cssClass="create-customer-group">
         <template #body>
             <GenericForm id="createCG" :fields="fields" :endpoint="organisationStore.createCustomerGroup" :callback="handleCreateGroupUpdate" />
         </template>
     </Card>
 
     <section class="customer-groups">
-        <div class="customer-group-listing">
+        <div class="customer-group-listing" >
             <vue3-datatable
                 v-if="organisationStore.customerGroups"
                 :rows="organisationStore.customerGroups"
                 :columns="cols"
                 :sortable="true"
-                :key="organisationStore.customerGroups.length"
-                :totalRows="organisationStore.customerGroups.length"
+                :key="organisationStore.customerGroups?.length"
+                :totalRows="organisationStore.customerGroups?.length"
                 sortColumn="created_dtm"
                 sortDirection="desc"
                 :columnFilter="false"
                 :pageSizeOptions="[20, 50, 100]"
-                :showPageSize="organisationStore.customerGroups.length > 20"
-                :pagination="organisationStore.customerGroups.length > 20"
+                :showPageSize="organisationStore.customerGroups?.length > 20"
+                :pagination="organisationStore.customerGroups?.length > 20"
                 noDataContent="You don’t have any customer groups to display."
                 :loader="true"
                 skin="bh-table-hover"
@@ -80,7 +80,7 @@
                     </template>
                 </Dialog>
 
-                <GenericForm v-if="inEditMode" title="Edit Customer Group" :id="selectedGroup.id" :fields="selectedGroupFields" :endpoint="organisationStore.updateCustomerGroup" :callback="handleUpdateCustomerGroup" :showReset="false" />
+                <GenericForm v-if="inEditMode" title="Edit Customer Group" :id="selectedGroup.id" :fields="selectedGroupFields" :endpoint="organisationStore.updateCustomerGroup" :callback="handleEditCustomerGroup" :showReset="false" />
 
                 <section class="section">
                     <header class="section__header">
@@ -93,13 +93,11 @@
                             <span v-if="editGroupCustomers">Cancel</span>
                         </button>
 
-                        <button v-if="editGroupCustomers" type="button" class="btn btn--sm btn--success" v-on:click="handleUpdateCustomerGroupCustomers">
+                        <button v-if="editGroupCustomers" type="button" class="btn btn--sm btn--success" v-on:click="handleEditCustomerGroupCustomers">
                             <FloppyDisk />
                             Save Customers
                         </button>
                     </header>
-
-
                 </section>
 
                 <section class="section">
@@ -113,7 +111,7 @@
                             <span v-if="editGroupCustomers">Cancel</span>
                         </button>
 
-                        <button v-if="editGroupCustomers" type="button" class="btn btn--sm btn--success" v-on:click="handleUpdateCustomerGroupCustomers">
+                        <button v-if="editGroupCustomers" type="button" class="btn btn--sm btn--success" v-on:click="handleEditCustomerGroupCustomers">
                             <FloppyDisk />
                             Save Customers
                         </button>
@@ -136,7 +134,7 @@
 
 
 <script setup>
-    import { ref, onMounted, computed } from 'vue';
+    import { ref, onMounted, onUpdated, computed, nextTick } from 'vue';
     import Vue3Datatable from "@bhplugin/vue3-datatable";
     import { formatDtmShort } from '@/utils/dates';
     import { useOrganisationStore } from '@/stores/organisation';
@@ -148,17 +146,62 @@
     import Dialog from '@/components/interface/Dialog.vue';
     import CustomerList from '@/components/admin/CustomerList.vue';
 
-
     const organisationStore = useOrganisationStore();
-
     await useAsyncData(() => organisationStore.getCustomerGroupsList());
     organisationStore.getOrganisationCustomers();
 
-    const selectedGroup = ref(null);
-    const showAddGroup = ref(false);
-    const inEditMode = ref(false);
+    const snackbar = useSnackbar();
+
+    const cols = ref([
+        { field: "group_name", title: "Name", cellClass: "td-group-name" },
+        { field: "description", title: "Description"},
+        { field: "created_dtm", title: "Created", hide: true},
+        { field: 'actions', title: "", headerClass: "th-group-actions" }
+    ]);
+
+    let showCgTable = ref(true);
+
+    onMounted( ()=>{
+        cols.value?.forEach(col => {
+            col.condition = "start_with";
+        });
+
+        showCgTable.value = true;
+    });
+
+    onUpdated( () => {
+         const setDescriptionVisiblity = async () => {
+            await nextTick();
+            if (selectedGroup.value) {
+                const descriptionfield = cols.value?.find((element => element.field == "description"));
+                descriptionfield.hide = hideTableDescription;
+            }
+        }
+
+    });
+
+
     const editGroupCustomers = ref(false);
     const addNewOffer = ref(false);
+
+    // Create a customer group
+    const showCreateGroup = ref(false);
+
+    async function handleCreateGroupUpdate(data) {
+        showCgTable.value = false;
+
+        if (data) {
+            snackbar.add({
+                type: 'success',
+                text: 'Customer group created'
+            });
+        }
+        showCgTable.value = true;
+    }
+
+    // Select a customer group
+    const selectedGroup = ref(null);
+    const hideTableDescription = computed( () => { return selectedGroup.value; })
 
     let customerGroupDefaults = {
         name: {
@@ -177,31 +220,8 @@
     }
 
     const fields = reactive({...customerGroupDefaults});
+
     let selectedGroupFields;
-
-    const cols = ref([
-        { field: "group_name", title: "Name", cellClass: "td-group-name" },
-        { field: "description", title: "Description"},
-        { field: "created_dtm", title: "Created", hide: true},
-        { field: 'actions', title: "", headerClass: "th-group-actions" }
-    ]);
-
-    const hideTableDescription = computed( () => { return selectedGroup.value; })
-
-    onMounted( ()=>{
-        const descriptionfield = cols.value.find((element => element.field == "description"));
-        descriptionfield.hide = hideTableDescription;
-
-        cols.value.forEach(col => {
-            col.condition = "start_with";
-        });
-    });
-
-    const showConfirmDelete = ref(false);
-
-    function handleDialogChange(change) {
-        if (change == 'closed') showConfirmDelete.value = false;
-    }
 
     function handleRowClick(group) {
         if (selectedGroup.value?.id == group.id) {
@@ -211,64 +231,6 @@
         }
         showConfirmDelete.value = false;
         inEditMode.value = false;
-    }
-
-    function handleShowConfirmDeleteClick() {
-        showConfirmDelete.value = !showConfirmDelete.value;
-        inEditMode.value = false;
-    }
-
-    function handleEditGroupClick() {
-        selectedGroupFields = {...customerGroupDefaults};
-        selectedGroupFields.name.value = selectedGroup.value.group_name;
-        selectedGroupFields.description.value = selectedGroup.value.description;
-        inEditMode.value = !inEditMode.value;
-        showConfirmDelete.value = false;
-    }
-
-    const snackbar = useSnackbar();
-
-    async function handleCreateGroupUpdate(data) {
-        organisationStore.getCustomerGroupsList();
-
-        if (data) {
-            snackbar.add({
-                type: 'success',
-                text: 'Customer group updated'
-            })
-        }
-    }
-
-    async function deleteGroup() {
-        showConfirmDelete.value = false;
-        const response = await useAsyncData(() => organisationStore.deleteCustomerGroup({id: selectedGroup.value.id}))
-        organisationStore.getCustomerGroupsList();
-
-        selectedGroup.value = null;
-
-        snackbar.add({
-            type: 'success',
-            text: 'Customer group deleted'
-        })
-    }
-
-
-
-
-    async function handleUpdateCustomerGroup(data) {
-        snackbar.add({
-            type: 'success',
-            text: 'Customer group updated'
-        })
-        // selectedGroupFields.name.value = selectedGroup.value.group_name;
-        // selectedGroupFields.description.value = selectedGroup.value.description;
-
-
-        // selectedGroupFields.name.value = fields.value.group_name;
-        // selectedGroupFields.description.value = fields.value.description;
-
-
-        organisationStore.getCustomerGroupsList();
     }
 
     const getGroupName = computed( () => {
@@ -283,6 +245,57 @@
         return name
     })
 
+    // Edit a customer group
+    const inEditMode = ref(false);
+
+    function handleEditGroupClick() {
+        selectedGroupFields = {...customerGroupDefaults};
+        selectedGroupFields.name.value = selectedGroup.value.group_name;
+        selectedGroupFields.description.value = selectedGroup.value.description;
+        inEditMode.value = !inEditMode.value;
+        showConfirmDelete.value = false;
+    }
+
+    async function handleEditCustomerGroup(groupID) {
+        console.log('group updated', groupID);
+        snackbar.add({
+            type: 'success',
+            text: 'Customer group updated'
+        });
+        await organisationStore.getCustomerGroupsList();
+
+        const newData = organisationStore.customerGroups.find((element => element.id == groupID));
+
+        selectedGroup.value.group_name = newData.group_name;
+        selectedGroup.value.description = newData.description;
+    }
+
+
+    // Delete a customer group
+    const showConfirmDelete = ref(false);
+
+    function handleShowConfirmDeleteClick() {
+        showConfirmDelete.value = !showConfirmDelete.value;
+        inEditMode.value = false;
+    }
+
+    function handleDialogChange(change) {
+        if (change == 'closed') showConfirmDelete.value = false;
+    }
+
+    async function deleteGroup() {
+        showConfirmDelete.value = false;
+        const response = await useAsyncData(() => organisationStore.deleteCustomerGroup({id: selectedGroup.value.id}));
+        console.log('delete group', response);
+        selectedGroup.value = null;
+
+        snackbar.add({
+            type: 'success',
+            text: 'Customer group deleted'
+        })
+    }
+
+    // Modify a customer groups customers
     const selectedCustomers = ref('initial');
 
     function handleSelectedCustomersUpdate(data) {
@@ -308,8 +321,8 @@
         }
     }
 
-
 </script>
+
 
 <style lang="scss">
     @import url("~/assets/scss/components/_data-tables.scss");

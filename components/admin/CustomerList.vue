@@ -23,7 +23,6 @@
             v-on:rowClick="handleRowClick"
             v-on:filterChange="handleFilterChange"
             v-on:sortChange="reselectUsers"
-
             ref="table"
         >
         </vue3-datatable>
