@@ -12,6 +12,11 @@ const endpoints = {
         method: 'GET',
         query: `?search=`
     },
+    getOrganisationCustomers: {
+        uri: `private/user/list`,
+        method: 'GET',
+        query: `?search=&role_type=general_user`
+    },
     getOrganisationBillingSettings: {
         uri: `private/account/billing_settings`,
         method: 'GET'
@@ -28,6 +33,11 @@ const endpoints = {
         uri: `private/customerGroup`,
         method: 'GET'
     },
+    getCustomerGroupCustomers: {
+        uri: `private/customerGroup`,
+        method: 'GET',
+        uriAddendum: `users`,
+    },
     createCustomerGroup: {
         uri: `private/customerGroup`,
         method: 'POST'
@@ -43,12 +53,12 @@ const endpoints = {
     updateCustomerGroupCustomers: {
         uri: `private/customerGroup`,
         uriAddendum: `users`,
-        method: 'POST'
+        method: 'PUT'
     }
 }
 
 export async function useOrganisationAPI({endpoint, data, id, qs, $pinia }) {
-    console.log('use organisation api', endpoint, data, id, qs, $pinia);
+    // console.log('use organisation api', endpoint, data, id, qs, $pinia);
     const userStore = useUserStore($pinia)
 
     // console.log('useOrganisationAPI config:', config);

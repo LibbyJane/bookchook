@@ -14,7 +14,7 @@
         </template>
     </Card>
 
-    <section class="customer-groups">
+    <section class="customer-groups" :class="selectedGroup ? 'customer-groups--group-selected' : null">
         <div class="customer-group-listing" >
             <vue3-datatable
                 v-if="organisationStore.customerGroups"
@@ -53,7 +53,6 @@
                     <EditPencil />
                     <span v-if="inEditMode" class="mobile-hide">Cancel Edit</span>
                     <span v-if="!inEditMode" class="mobile-hide">Edit</span>
-
                 </button>
                 <button type="button" class="btn btn--sm btn--tertiary btn--danger" v-on:click="handleShowConfirmDeleteClick()" title="Delete Customer Group">
                     <Trash />
@@ -82,7 +81,7 @@
 
                 <GenericForm v-if="inEditMode" title="Edit Customer Group" :id="selectedGroup.id" :fields="selectedGroupFields" :endpoint="organisationStore.updateCustomerGroup" :callback="handleEditCustomerGroup" :showReset="false" />
 
-                <section class="section">
+                <!-- <section class="section">
                     <header class="section__header">
                         <h4 class="section__header-title">Discounts and Offers</h4>
                         <button type="button" class="btn btn--sm btn--secondary" v-on:click="addNewOffer = !addNewOffer" title="Add Offer">
@@ -98,14 +97,15 @@
                             Save Customers
                         </button>
                     </header>
-                </section>
+                </section> -->
 
                 <section class="section">
                     <header class="section__header">
                         <h4 class="section__header-title">Customers</h4>
-                        <button type="button" class="btn btn--sm btn--secondary" v-on:click="editGroupCustomers = !editGroupCustomers" title="Add customers to customer group">
+
+                        <button type="button" class="btn btn--sm btn--secondary" v-on:click="toggleEditGroupCustomersVisibility" title="Add customers to customer group">
                             <EditPencil v-if="!editGroupCustomers" />
-                            <span v-if="!editGroupCustomers">Add or Remove Customers</span>
+                            <span v-if="!editGroupCustomers">Edit Customers</span>
 
                             <Xmark v-if="editGroupCustomers" />
                             <span v-if="editGroupCustomers">Cancel</span>
@@ -117,7 +117,20 @@
                         </button>
                     </header>
 
-                    <CustomerList v-if="editGroupCustomers" :data="organisationStore.customers" :callback="handleSelectedCustomersUpdate" />
+                    <ul v-if="!editGroupCustomers" class="selected-customers">
+                        <li v-if="!selectedGroup.customers?.length">
+                            No customers in this group.
+                        </li>
+                        <li v-if="selectedGroup.customers?.length">{{ selectedGroup.customers.length }} {{ selectedGroup.customers.length == 1 ? 'customer' : 'customers' }}: </li>
+                        <li v-for="customer in selectedGroup.customers">{{ customer.first_name }} {{ customer.last_name }}</li>
+                    </ul>
+                    <!-- <pre>selected: {{ selectedCustomers }}</pre> -->
+                    <ul v-if="editGroupCustomers" class="selected-customers">
+                        <li v-if="selectedCustomers?.length">{{ selectedCustomers?.length }} {{ selectedCustomers.length == 1 ? 'customer' : 'customers' }}: </li>
+                        <li v-for="customer in selectedCustomers">{{ customer.first_name }} {{ customer.last_name }}</li>
+                    </ul>
+
+                    <CustomerList v-if="editGroupCustomers" :data="organisationStore.customers" :initialSelection="selectedGroup.customers" :callback="handleSelectedCustomersUpdate" />
                 </section>
             </template>
 
@@ -154,54 +167,22 @@
 
     const cols = ref([
         { field: "group_name", title: "Name", cellClass: "td-group-name" },
-        { field: "description", title: "Description"},
+        { field: "description", title: "Description", cellClass: "td-group-description", headerClass: "th-group-description" },
         { field: "created_dtm", title: "Created", hide: true},
         { field: 'actions', title: "", headerClass: "th-group-actions" }
     ]);
 
-    let showCgTable = ref(true);
-
-    onMounted( ()=>{
+    function initCols() {
         cols.value?.forEach(col => {
             col.condition = "start_with";
         });
-
-        showCgTable.value = true;
-    });
-
-    onUpdated( () => {
-         const setDescriptionVisiblity = async () => {
-            await nextTick();
-            if (selectedGroup.value) {
-                const descriptionfield = cols.value?.find((element => element.field == "description"));
-                descriptionfield.hide = hideTableDescription;
-            }
-        }
-
-    });
-
-
-    const editGroupCustomers = ref(false);
-    const addNewOffer = ref(false);
-
-    // Create a customer group
-    const showCreateGroup = ref(false);
-
-    async function handleCreateGroupUpdate(data) {
-        showCgTable.value = false;
-
-        if (data) {
-            snackbar.add({
-                type: 'success',
-                text: 'Customer group created'
-            });
-        }
-        showCgTable.value = true;
     }
 
-    // Select a customer group
-    const selectedGroup = ref(null);
-    const hideTableDescription = computed( () => { return selectedGroup.value; })
+    onMounted( ()=>{
+        initCols();
+    });
+
+    const addNewOffer = ref(false);
 
     let customerGroupDefaults = {
         name: {
@@ -221,16 +202,37 @@
 
     const fields = reactive({...customerGroupDefaults});
 
+    // Create a customer group
+    const showCreateGroup = ref(false);
+
+    async function handleCreateGroupUpdate(data) {
+        if (data) {
+            fields.name.value = "";
+            fields.description.value = "";
+
+            snackbar.add({
+                type: 'success',
+                text: 'Customer group created'
+            });
+        }
+    }
+
+    // Select a customer group
+    const selectedGroup = ref(null);
+
     let selectedGroupFields;
 
-    function handleRowClick(group) {
+    async function handleRowClick(group) {
         if (selectedGroup.value?.id == group.id) {
             selectedGroup.value = null;
         } else {
             selectedGroup.value = group;
+            resetSelectedGroup();
+
+            if (!selectedGroup.value?.customers) {
+                selectedGroup.value.customers = await organisationStore.getCustomerGroupCustomers({id: selectedGroup.value.id});
+            }
         }
-        showConfirmDelete.value = false;
-        inEditMode.value = false;
     }
 
     const getGroupName = computed( () => {
@@ -245,6 +247,18 @@
         return name
     })
 
+
+    function resetSelectedGroup() {
+        selectedGroupFields = {...customerGroupDefaults};
+        selectedCustomers.value = null;
+        // selectedGroupFields.name.value = selectedGroup.value.group_name;
+        // selectedGroupFields.description.value = selectedGroup.value.description;
+        inEditMode.value = false;
+        showConfirmDelete.value = false;
+        editGroupCustomers.value = false;
+    }
+
+
     // Edit a customer group
     const inEditMode = ref(false);
 
@@ -257,7 +271,6 @@
     }
 
     async function handleEditCustomerGroup(groupID) {
-        console.log('group updated', groupID);
         snackbar.add({
             type: 'success',
             text: 'Customer group updated'
@@ -268,6 +281,7 @@
 
         selectedGroup.value.group_name = newData.group_name;
         selectedGroup.value.description = newData.description;
+        inEditMode.value = false;
     }
 
 
@@ -286,7 +300,6 @@
     async function deleteGroup() {
         showConfirmDelete.value = false;
         const response = await useAsyncData(() => organisationStore.deleteCustomerGroup({id: selectedGroup.value.id}));
-        console.log('delete group', response);
         selectedGroup.value = null;
 
         snackbar.add({
@@ -295,29 +308,38 @@
         })
     }
 
+    const editGroupCustomers = ref(false);
+
     // Modify a customer groups customers
     const selectedCustomers = ref('initial');
 
-    function handleSelectedCustomersUpdate(data) {
-        selectedCustomers.value = data
+    async function toggleEditGroupCustomersVisibility() {
+        editGroupCustomers.value = !editGroupCustomers.value;
+    }
+
+    async function handleSelectedCustomersUpdate(data) {
+        selectedCustomers.value = data;
     };
 
-    async function handleUpdateCustomerGroupCustomers() {
+    async function handleEditCustomerGroupCustomers() {
         let data = {
             user_ids: []
         };
 
-        selectedCustomers.value.forEach(customer => {
+        selectedCustomers.value?.forEach(customer => {
             data.user_ids.push(customer.id);
         })
 
-        let response = organisationStore.updateCustomerGroupCustomers({id: selectedGroup.value.id, data});
+        let response = await organisationStore.updateCustomerGroupCustomers({id: selectedGroup.value.id, data});
 
         if (response) {
             snackbar.add({
                 type: 'success',
                 text: 'Customer group customers updated'
-            })
+            });
+
+            selectedGroup.value.customers = selectedCustomers.value;
+            editGroupCustomers.value = false;
         }
     }
 
@@ -381,10 +403,16 @@
     }
 
     .th-group-actions {
-        background-color: orange;
         cursor: default;
         opacity: 0;
         pointer-events: none;
+    }
+
+    .customer-groups--group-selected {
+        .th-group-description,
+        .td-group-description {
+            display: none;
+        }
     }
 
     .section__header {
@@ -396,6 +424,34 @@
 
     .section__header-title {
         margin-right: auto;
+    }
+
+    .selected-customers {
+        display: flex;
+        flex-wrap: wrap;
+        list-style: none;
+        margin: 0 0 var(--space-med);
+        padding: 0;
+
+        li {
+            display: inline;
+            font-size: var(--p-sm);
+            line-height: var(--line-height-sm);
+            margin: 0;
+            padding: 0;
+
+            &:last-child,
+            &:first-child {
+                &::after {
+                    content: none;
+                }
+            }
+
+            &::after {
+                content: ', ';
+                display: inline-flex;
+            }
+        }
     }
 
 

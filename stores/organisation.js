@@ -355,9 +355,8 @@ export const useOrganisationStore = defineStore('organisationStore', {
         },
         async getOrganisationCustomers() {
             // TODO: remove test data when endpoint complete
-            // const response = await useOrganisationAPI({endpoint: `getOrganisationUsers`});
-            const response = {};
-
+            const response = await useOrganisationAPI({endpoint: `getOrganisationCustomers`});
+            // const response = {};
             if (response.data?.users) {
             //if (response.usethistogettestdata?.users) {
                 this.customers = response.data.users;
@@ -926,9 +925,9 @@ export const useOrganisationStore = defineStore('organisationStore', {
             return response;
         },
         async getCustomerGroupsList() {
-            console.log('get customer groups');
+            // console.log('get customer groups');
             const response = await useOrganisationAPI({endpoint: `getCustomerGroupsList`});
-            console.log('get customer groups response', response);
+            // console.log('get customer groups response', response);
             if (response.data?.status) {
                 this.customerGroups = response.data.customer_groups;
                 return;
@@ -936,7 +935,7 @@ export const useOrganisationStore = defineStore('organisationStore', {
             return response;
         },
         async createCustomerGroup({data}) {
-            console.log('create customer group');
+            // console.log('create customer group');
             const response = await useOrganisationAPI({endpoint: `createCustomerGroup`, data});
             console.log('create customer group', response);
             if (response.data?.status) {
@@ -977,12 +976,34 @@ export const useOrganisationStore = defineStore('organisationStore', {
             }
             return response;
         },
+        async getCustomerGroupCustomers({id}) {
+            const response = await useOrganisationAPI({endpoint: `getCustomerGroupCustomers`, id});
+
+            if (response.data?.status) {
+                const index = this.customerGroups.findIndex((group => group.id == id));
+                this.customerGroups[index].customers = response.data.users;
+                return response.data.users;
+
+                // if (response.data.users?.length) {
+                //     let ids = [];
+
+                //     response.data.users?.forEach(user => {
+                //         ids.push(user.id)
+                //     });
+
+                //     this.customerGroups[index].customerIDs = ids;
+                // }
+            }
+        },
         async updateCustomerGroupCustomers({id, data}) {
-            console.log('store, update cg customers', id, data);
             const response = await useOrganisationAPI({endpoint: `updateCustomerGroupCustomers`, id, data});
             if (response?.data?.status) {
-                this.getCustomerGroupsList();
-                return;
+                const index = this.customerGroups.findIndex((group => group.id == id));
+                this.customerGroups[index].customers = response.data.users;
+                // return response.data.users;
+                // this.getCustomerGroupsList();
+
+                return true;
             }
             return response;
         },

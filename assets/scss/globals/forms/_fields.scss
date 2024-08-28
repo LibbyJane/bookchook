@@ -67,6 +67,7 @@ select  {
 }
 
 textarea {
+    @include scrollbars();
     min-height: 160px;
 }
 
