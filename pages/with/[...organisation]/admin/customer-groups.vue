@@ -212,6 +212,11 @@
         fields.name.value = "";
         fields.description.value = "";
         showCreateGroup.value = !showCreateGroup.value;
+
+        if (showCreateGroup.value) {
+            selectedGroup.value = null;
+            resetSelectedGroup();
+        }
     }
 
     function handleCreateGroupUpdate(data) {
@@ -352,7 +357,6 @@
             editGroupCustomers.value = false;
         }
     }
-
 </script>
 
 

@@ -124,9 +124,8 @@
             props.initialSelection.forEach(user => {
                 table.value.selectRow(rows.findIndex(element => element.id == user.id));
             });
-
-            props.callback(props.initialSelection); // initialises the  selected customers display
         }
+        props.callback(props.initialSelection ? props.initialSelection : []); // initialises the  selected customers display in the parent component
     });
 </script>
 

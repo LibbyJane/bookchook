@@ -121,7 +121,6 @@ export const useOrganisationStore = defineStore('organisationStore', {
         async getOrganisationData(organisationID) {
             //await this.updateThemeConfig(defaultColors);
             const response = await useOrganisationAPI({endpoint: `getAccountBySlug`,  id: organisationID});
-            // console.log('account', this.account);
             if (response.data?.status) {
                 this.account = response.data.account;
                 this.base_URL = `${this.organisation_page_prefix}${organisationID}`;
@@ -945,20 +944,9 @@ export const useOrganisationStore = defineStore('organisationStore', {
         },
         async deleteCustomerGroup({id}) {
             if (id) {
-                console.log('delete customer group');
-
                 const response = await useOrganisationAPI({endpoint: `deleteCustomerGroup`, id});
                 if (response.data?.status) {
                     await this.getCustomerGroupsList();
-
-                    // this.customerGroups = await this.getCustomerGroupsList();
-
-                    // const indexToDelete = this.customerGroups.findIndex((element => element.id == id));
-
-                    // if (indexToDelete > -1) { // only splice array when item is found
-                    //     this.customerGroups.splice(indexToDelete, 1); // 2nd parameter means remove one item only
-                    // }
-
                     return true;
                 }
                 return response;
@@ -980,16 +968,6 @@ export const useOrganisationStore = defineStore('organisationStore', {
                 const index = this.customerGroups.findIndex((group => group.id == id));
                 this.customerGroups[index].customers = response.data.users;
                 return response.data.users;
-
-                // if (response.data.users?.length) {
-                //     let ids = [];
-
-                //     response.data.users?.forEach(user => {
-                //         ids.push(user.id)
-                //     });
-
-                //     this.customerGroups[index].customerIDs = ids;
-                // }
             }
         },
         async updateCustomerGroupCustomers({id, data}) {
