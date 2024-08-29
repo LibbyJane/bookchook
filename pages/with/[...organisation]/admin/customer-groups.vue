@@ -1,7 +1,7 @@
 <template>
     <Header title="Customer Groups">
         <template #actions>
-            <button type="button" class="btn btn--secondary" v-on:click="showCreateGroup = !showCreateGroup">
+            <button type="button" class="btn btn--secondary" v-on:click="toggleCreateGroupVisibility">
                 <Plus />
                 Create Group
             </button>
@@ -26,6 +26,7 @@
                 sortColumn="created_dtm"
                 sortDirection="desc"
                 :columnFilter="false"
+                pageSize="20"
                 :pageSizeOptions="[20, 50, 100]"
                 :showPageSize="organisationStore.customerGroups?.length > 20"
                 :pagination="organisationStore.customerGroups?.length > 20"
@@ -204,11 +205,21 @@
 
     // Create a customer group
     const showCreateGroup = ref(false);
+    const selectedGroup = ref(null);
 
-    async function handleCreateGroupUpdate(data) {
-        if (data) {
+
+    function toggleCreateGroupVisibility() {
+        fields.name.value = "";
+        fields.description.value = "";
+        showCreateGroup.value = !showCreateGroup.value;
+    }
+
+    function handleCreateGroupUpdate(data) {
+        if (data?.status) {
             fields.name.value = "";
             fields.description.value = "";
+            showCreateGroup.value = false;
+            selectedGroup.value = data.customerGroup;
 
             snackbar.add({
                 type: 'success',
@@ -218,7 +229,6 @@
     }
 
     // Select a customer group
-    const selectedGroup = ref(null);
 
     let selectedGroupFields;
 

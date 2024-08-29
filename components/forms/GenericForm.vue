@@ -127,6 +127,8 @@
         }
 
         const outcome = await props.endpoint(payload);
+        console.log('outcome', outcome);
+
         form.state = '';
         let errorMessage;
 
@@ -143,9 +145,9 @@
             return;
         }
 
-        props.callback(props.id);
+        props.callback(outcome.data);
 
-        if (resetButton.value) {
+        if (resetButton?.value?.click()) {
             await nextTick();
             resetButton.value.click();
         }

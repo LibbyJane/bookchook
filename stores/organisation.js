@@ -940,9 +940,6 @@ export const useOrganisationStore = defineStore('organisationStore', {
             console.log('create customer group', response);
             if (response.data?.status) {
                 await this.getCustomerGroupsList();
-                // this.customerGroups = await this.getCustomerGroupsList();
-                // console.log('vs', this.customerGroups );
-                return;
             }
             return response;
         },
@@ -962,7 +959,7 @@ export const useOrganisationStore = defineStore('organisationStore', {
                     //     this.customerGroups.splice(indexToDelete, 1); // 2nd parameter means remove one item only
                     // }
 
-                    return;
+                    return true;
                 }
                 return response;
             }

@@ -50,69 +50,55 @@
 
     const table = ref(null);
     const selectedUsers = ref(null);
-    const rowClickData = ref([]);
-    let selectedUsersBackup = null;
 
     let lastActiontype = ref(null);
+    let filtersApplied = false;
 
-    watch(rowClickData, async (newVal, oldVal) => {
-        if (lastActiontype.value == 'filter' || lastActiontype.value == 'watch') {
-            selectedUsersBackup = selectedUsers.value;
-            lastActiontype.value = 'watch';
-            return;
-        }
 
-        if (!selectedUsers.value) {
-            selectedUsers.value = [];
-        }
-
-        let changeType;
-
-        if (newVal?.length) {
-            newVal.forEach(user => {
-                if (!changeType && !selectedUsers.value.includes(user)) {
-                    changeType = 'addition'
-                    selectedUsers.value = Array.from(new Set( [...selectedUsers?.value, ...newVal]) );
-                    return;
-                }
-            });
-
-            if (changeType != 'addition') {
-                if (oldVal?.length) {
-                    oldVal.forEach(user => {
-                        if (!newVal.includes(user)) {
-                            let indexToRemove = selectedUsers.value.findIndex((element) => element == user);
-                            selectedUsers.value.splice(indexToRemove, 1);
-                            return;
-                        }
-                    });
-                }
-            }
-        } else {
-            selectedUsers.value = null;
-        }
-
-        await nextTick();
-        props.callback(selectedUsers.value);
-    });
-
-    async function handleFilterChange(_filters) {
+    async function handleFilterChange(filters) {
         lastActiontype.value = 'filter';
-
-        selectedUsersBackup = selectedUsers.value;
-        rowClickData.value = selectedUsersBackup;
-        await nextTick();
-        reselectUsers();
+        filtersApplied = filters.some((element) => element.value?.length);
     }
 
     async function handleRowSelect(data) {
-        if (lastActiontype.value == 'watch') {
-            rowClickData.value = selectedUsersBackup;
-        } else {
-            rowClickData.value = data;
+        if (lastActiontype.value == 'filter') {
+
+            const visibleRows = table.value.getFilteredRows();
+                visibleRows.forEach((row, index) => {
+                    selectedUsers.value.forEach(user => {
+                        if (user.id == row.id) {
+                            table.value.selectRow(index);
+                        }
+                    });
+                });
+
+        } else if (filtersApplied) {
+            const visibleRows = table.value.getFilteredRows();
+
+            visibleRows.forEach((row, index) => {
+                const rowIsSelected = table.value.isRowSelected(index);
+                const alreadyInSelectedUsersArray =  selectedUsers.value.findIndex(element => element.id == row.id) < 0 ? false : true;
+
+                if (rowIsSelected && !alreadyInSelectedUsersArray) {
+                    // console.log('selected a new user, add to selected users' );
+                    selectedUsers.value.push(row);
+                }
+
+                if (!rowIsSelected && alreadyInSelectedUsersArray) {
+                    // console.log('deselected a user, remove');
+
+                    let indexToRemove = selectedUsers.value.findIndex((user) => user.id == row.id);
+                    selectedUsers.value.splice(indexToRemove, 1);
+                }
+            });
+        }
+
+        else {
+            selectedUsers.value = data;
         }
 
         lastActiontype.value = 'select';
+        props.callback(selectedUsers.value);
     }
 
     async function reselectUsers() {
@@ -120,13 +106,11 @@
             const rows = table.value.getFilteredRows();
 
             rows.forEach((row, index) => {
-                if (selectedUsers.value.find(element => element == row)) {
+                if (selectedUsers.value.find(element => element.id == row.id)) {
                     table.value.selectRow(index);
                 }
             });
         }
-
-        rowClickData.value = selectedUsers.value;
     }
 
     onMounted(() => {
@@ -139,7 +123,7 @@
 
             props.initialSelection.forEach(user => {
                 table.value.selectRow(rows.findIndex(element => element.id == user.id));
-            })
+            });
 
             props.callback(props.initialSelection); // initialises the  selected customers display
         }
