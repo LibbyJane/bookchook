@@ -33,7 +33,7 @@ export default defineNuxtConfig({
         dense: true,
         messageClass: "snackbar-message-custom",
         success: "var(--c-success)",
-        error: "var(--c-error)",
+        danger: "var(--c-error)",
         warning: "var(--c-warning)",
         info: "var(--c-info)"
     },

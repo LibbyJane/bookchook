@@ -118,7 +118,7 @@
             col.condition = "start_with";
         })
 
-        if (props.initialSelection) {
+        if (props.initialSelection?.length) {
             const rows = table.value.getFilteredRows();
 
             props.initialSelection.forEach(user => {
@@ -150,15 +150,21 @@
                 }
 
                 &:nth-child(1),
-                &:nth-child(2) {
+                &:nth-child(2),
+                &:nth-child(3),
+                {
                     display: table-cell;
                 }
 
-                &:nth-child(3) {
+                &:nth-child(4) {
                     @container (min-width: 600px) {
                         display: table-cell;
                     }
                 }
+            }
+
+            .bh-select-none {
+                min-width: 150px;
             }
         }
     }

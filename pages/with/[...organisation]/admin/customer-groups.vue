@@ -2,8 +2,14 @@
     <Header title="Customer Groups">
         <template #actions>
             <button type="button" class="btn btn--secondary" v-on:click="toggleCreateGroupVisibility">
-                <Plus />
-                Create Group
+                <template v-if="!showCreateGroup">
+                    <Plus />
+                    Create Group
+                </template>
+                <template v-if="showCreateGroup">
+                    <Xmark />
+                    Cancel
+                </template>
             </button>
         </template>
     </Header>
@@ -14,7 +20,7 @@
         </template>
     </Card>
 
-    <section class="customer-groups" :class="selectedGroup ? 'customer-groups--group-selected' : null">
+    <section class="customer-groups" :class="selectedGroup ? 'customer-groups--group-selected' : null" >
         <div class="customer-group-listing" >
             <vue3-datatable
                 v-if="organisationStore.customerGroups"
@@ -44,8 +50,8 @@
                 </template>
             </vue3-datatable>
         </div>
-
-        <Card v-if="selectedGroup" :cssClass="`customer-group sticky card--header-bk`" :title="getGroupName">
+        <div ref="selectedCustomerGroupElem" aria-hidden="true"></div>
+        <Card v-if="selectedGroup" :id="selectedGroup.id" :cssClass="`customer-group sticky card--header-bk`" :title="getGroupName">
             <template #header>
                 <p class="p-small m-top">{{ selectedGroup.description }}</p>
             </template>
@@ -106,15 +112,16 @@
 
                         <button type="button" class="btn btn--sm btn--secondary" v-on:click="toggleEditGroupCustomersVisibility" title="Add customers to customer group">
                             <EditPencil v-if="!editGroupCustomers" />
-                            <span v-if="!editGroupCustomers">Edit Customers</span>
+                            <span v-if="!editGroupCustomers">Edit <span class="mobile-hide">Customers</span>
+                        </span>
 
                             <Xmark v-if="editGroupCustomers" />
-                            <span v-if="editGroupCustomers">Cancel</span>
+                            <span v-if="editGroupCustomers" class="mobile-hide">Cancel</span>
                         </button>
 
-                        <button v-if="editGroupCustomers" type="button" class="btn btn--sm btn--success" v-on:click="handleEditCustomerGroupCustomers">
+                        <button v-if="editGroupCustomers" type="button" class="btn btn--sm btn--success" v-on:click="handleEditCustomerGroupCustomers" title="Save Customer Group Customers">
                             <FloppyDisk />
-                            Save Customers
+                            <span class="mobile-hide">Save Customers</span>
                         </button>
                     </header>
 
@@ -146,9 +153,8 @@
     </section>
 </template>
 
-
 <script setup>
-    import { ref, onMounted, onUpdated, computed, nextTick } from 'vue';
+    import { ref, onMounted, computed, nextTick } from 'vue';
     import Vue3Datatable from "@bhplugin/vue3-datatable";
     import { formatDtmShort } from '@/utils/dates';
     import { useOrganisationStore } from '@/stores/organisation';
@@ -165,6 +171,7 @@
     organisationStore.getOrganisationCustomers();
 
     const snackbar = useSnackbar();
+    const route = useRoute();
 
     const cols = ref([
         { field: "group_name", title: "Name", cellClass: "td-group-name" },
@@ -181,6 +188,11 @@
 
     onMounted( ()=>{
         initCols();
+
+        if (route.hash) {
+            const selectedGroupID = route.hash.replace('#', '');
+            selectedGroup.value = organisationStore.customerGroups.find( cg => cg.id == selectedGroupID );
+        }
     });
 
     const addNewOffer = ref(false);
@@ -236,18 +248,32 @@
     // Select a customer group
 
     let selectedGroupFields;
+    const selectedCustomerGroupElem = ref(null);
 
     async function handleRowClick(group) {
         if (selectedGroup.value?.id == group.id) {
             selectedGroup.value = null;
-        } else {
-            selectedGroup.value = group;
-            resetSelectedGroup();
-
-            if (!selectedGroup.value?.customers) {
-                selectedGroup.value.customers = await organisationStore.getCustomerGroupCustomers({id: selectedGroup.value.id});
-            }
+            history.pushState({}, null, route.path)
+            return;
         }
+
+        selectedGroup.value = group;
+        resetSelectedGroup();
+
+        if (!selectedGroup.value?.customers) {
+            const response = await organisationStore.getCustomerGroupCustomers({id: group.id});
+
+            if (response.error) {
+                snackbar.add({
+                    type: 'danger',
+                    text: 'Customers could not be loaded. Please try again later.'
+                });
+            }
+            selectedGroup.value.customers = await organisationStore.getCustomerGroupCustomers({id: group.id});
+        }
+
+        history.pushState({}, "", route.path + '#' + group.id);
+        selectedCustomerGroupElem.value.scrollIntoView();
     }
 
     const getGroupName = computed( () => {
@@ -261,7 +287,6 @@
 
         return name
     })
-
 
     function resetSelectedGroup() {
         selectedGroupFields = {...customerGroupDefaults};
@@ -359,22 +384,22 @@
     }
 </script>
 
-
 <style lang="scss">
     @import url("~/assets/scss/components/_data-tables.scss");
     @import url("~/assets/scss/components/_user-listing.scss");
 
     .create-customer-group {
-
         textarea {
             min-height: 4rem;
         }
     }
 
     .customer-groups {
-        display: flex;
-        justify-content: space-between;
-        gap: var(--space-med);
+        @include breakpoint(med) {
+            display: flex;
+            justify-content: space-between;
+            gap: var(--space-med);
+        }
 
         textarea {
             min-height: 5rem;
@@ -425,7 +450,9 @@
     .customer-groups--group-selected {
         .th-group-description,
         .td-group-description {
-            display: none;
+            @include breakpoint(med) {
+                display: none;
+            }
         }
     }
 
@@ -469,125 +496,68 @@
     }
 
 
-    .clickable-list {
-        list-style: none;
-        margin: 0;
-        padding: 0 0 var(--space);
+    // .clickable-list {
+    //     list-style: none;
+    //     margin: 0;
+    //     padding: 0 0 var(--space);
 
-        small {
-            display: block;
-            font-size: var(--sm);
-            font-weight: normal;
-            opacity: 0.8;
-            text-transform: lowercase;
+    //     small {
+    //         display: block;
+    //         font-size: var(--sm);
+    //         font-weight: normal;
+    //         opacity: 0.8;
+    //         text-transform: lowercase;
 
-            &::first-letter {
-                text-transform: capitalize;
-            }
-        }
+    //         &::first-letter {
+    //             text-transform: capitalize;
+    //         }
+    //     }
 
-        a {
-            border: 0 none;
-            display: block;
-            font-size: inherit;
-            text-decoration: none;
-        }
-    }
+    //     a {
+    //         border: 0 none;
+    //         display: block;
+    //         font-size: inherit;
+    //         text-decoration: none;
+    //     }
+    // }
 
-    .clickable-list__item {
-        border-style: solid;
-        border-color: var(--c-border-light);
-        border-width: var(--border-width) 0;
-        cursor: pointer;
-        display: grid;
-            gap: var(--space);
-            grid-template-columns: 1fr auto max-content;
-            align-items: center;
-        font-size: var(--p-sm);
-        height: 100%;
-        line-height: var(--line-height-sm);
-        margin: 0;
-        padding: var(--space-sm) 0;
+    // .clickable-list__item {
+    //     border-style: solid;
+    //     border-color: var(--c-border-light);
+    //     border-width: var(--border-width) 0;
+    //     cursor: pointer;
+    //     display: grid;
+    //         gap: var(--space);
+    //         grid-template-columns: 1fr auto max-content;
+    //         align-items: center;
+    //     font-size: var(--p-sm);
+    //     height: 100%;
+    //     line-height: var(--line-height-sm);
+    //     margin: 0;
+    //     padding: var(--space-sm) 0;
 
-        #{$hover} {
-        color:  hsla(var(--c-accent-hsl), 0.8);
-    }
+    //     #{$hover} {
+    //     color:  hsla(var(--c-accent-hsl), 0.8);
+    // }
 
-    &.active {
-        color: var(--c-accent);
-    }
+    // &.active {
+    //     color: var(--c-accent);
+    // }
 
-        h6 {
-            line-height: inherit;
-            margin: 0;
-            padding: 0;
-        }
+    //     h6 {
+    //         line-height: inherit;
+    //         margin: 0;
+    //         padding: 0;
+    //     }
 
-        p {
-            line-height: inherit;
-            margin: 0;
-            padding: 0;
-        }
+    //     p {
+    //         line-height: inherit;
+    //         margin: 0;
+    //         padding: 0;
+    //     }
 
-        a {
-            line-height: inherit;
-        }
-    }
-
-//     /*   Open state of the dialog  */
-// dialog[open] {
-//   opacity: 1;
-//   transform: scaleY(1);
-//   outline:20px solid red
-// }
-
-// /*   Closed state of the dialog   */
-// dialog {
-//   opacity: 0.5;
-//   transform: scaleY(0.5);
-//   transition:
-//     opacity 0.7s ease-out,
-//     transform 0.7s ease-out,
-//     overlay 0.7s ease-out allow-discrete,
-//     display 0.7s ease-out allow-discrete;
-//     outline:20px solid lime;
-
-//   /* Equivalent to
-//   transition: all 0.7s allow-discrete; */
-// }
-
-// /*   Before-open state  */
-// /* Needs to be after the previous dialog[open] rule to take effect,
-//     as the specificity is the same */
-// @starting-style {
-//   dialog[open] {
-//     opacity: 0;
-//     transform: scaleY(0);
-//   }
-// }
-
-// /* Transition the :backdrop when the dialog modal is promoted to the top layer */
-// dialog::backdrop {
-//   background-color: rgb(0 0 0 / 0%);
-//   transition:
-//     display 0.7s allow-discrete,
-//     overlay 0.7s allow-discrete,
-//     background-color 0.7s;
-//   /* Equivalent to
-//   transition: all 0.7s allow-discrete; */
-// }
-
-// dialog[open]::backdrop {
-//   background-color: rgb(0 0 0 / 25%);
-// }
-
-// /* This starting-style rule cannot be nested inside the above selector
-// because the nesting selector cannot represent pseudo-elements. */
-
-// @starting-style {
-//   dialog[open]::backdrop {
-//     background-color: rgb(0 0 0 / 0%);
-//   }
-// }
-
+    //     a {
+    //         line-height: inherit;
+    //     }
+    // }
 </style>

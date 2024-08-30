@@ -1,5 +1,5 @@
 <template>
-    <component :is="elemType" class="card" :class="cssClass">
+    <component :is="elemType" :id="id" class="card" :class="cssClass">
         <header class="card__header">
             <div class="card__header-title">
                 <!-- <slot name="header-icon"></slot> -->
@@ -28,6 +28,9 @@
     const props = defineProps({
         elemType: {
             default: "div"
+        },
+        id: {
+
         },
         cssClass: {
             type: String,

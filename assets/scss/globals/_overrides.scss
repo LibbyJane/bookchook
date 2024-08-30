@@ -1,4 +1,9 @@
 .snackbar-message-custom.snackbar-message-custom {
+    &.danger {
+        color: var(--c-status-contrast);
+        background-color: var(--c-danger);
+    }
+
     .vue3-snackbar-message-title {
         font-weight: normal;
         font-size: var(--p-sm);

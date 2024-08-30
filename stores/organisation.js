@@ -951,7 +951,7 @@ export const useOrganisationStore = defineStore('organisationStore', {
                 }
                 return response;
             }
-
+            return response;
         },
         async updateCustomerGroup({id, data}) {
             const response = await useOrganisationAPI({endpoint: `updateCustomerGroup`, id, data});
@@ -969,6 +969,8 @@ export const useOrganisationStore = defineStore('organisationStore', {
                 this.customerGroups[index].customers = response.data.users;
                 return response.data.users;
             }
+
+            return response;
         },
         async updateCustomerGroupCustomers({id, data}) {
             const response = await useOrganisationAPI({endpoint: `updateCustomerGroupCustomers`, id, data});

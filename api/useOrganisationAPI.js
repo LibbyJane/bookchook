@@ -95,28 +95,25 @@ export async function useOrganisationAPI({endpoint, data, id, qs, $pinia }) {
         // console.log('final config', config);
 
         try {
-            const response = await axios(config)
+            const response = await axios(config);
             return response;
         } catch (error) {
             // console.log('error', error)
-            // console.log('error.response', error.response)
-            // console.log('error.response.data', error.response.data)
+            if (error.message) {
+                console.warn(error.message);
+            }
 
-            // console.log("There was a problem.", error)
             if (error.response.status === 403 || error.response.status === 401) {
                 console.warn('bad token, logout');
                 userStore.$state.authenticated = false;
+                return error;
             }
 
-            else if (error.response && error.response.data) {
+            if (error.response && error.response.data) {
                 // console.log('return error', error.response.data);
                 return error.response.data
             }
         }
-
-        // return () => {
-        //     ourRequest.cancel()
-        // }
     }
 }
 
