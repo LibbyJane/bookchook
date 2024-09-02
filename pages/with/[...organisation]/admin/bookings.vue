@@ -3,6 +3,6 @@
 </template>
 
 <script setup>
-    import Header from '@/components/admin/Header.vue';
+    import Header from '@/components/admin/PageHeader.vue';
 
 </script>

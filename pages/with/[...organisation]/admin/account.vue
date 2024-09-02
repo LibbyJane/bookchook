@@ -64,7 +64,7 @@
 <script setup>
     import { ref, reactive } from 'vue';
     import { useOrganisationStore } from '@/stores/organisation';
-    import Header from '@/components/admin/Header.vue';
+    import Header from '@/components/admin/PageHeader.vue';
     import Card from '@/components/interface/Card.vue';
     import ThemeSettings from '@/components/forms/ThemeSettings.vue';
     import BillingSettings from '@/components/forms/BillingSettings.vue';

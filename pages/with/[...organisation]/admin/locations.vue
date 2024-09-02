@@ -75,7 +75,7 @@
 <script setup>
     import { ref } from 'vue';
 
-    import Header from '@/components/admin/Header.vue';
+    import Header from '@/components/admin/PageHeader.vue';
     import Card from '@/components/interface/Card.vue';
     import PlusIcon from '@/components/icons/plus.vue';
     import PencilIcon from '@/components/icons/pencil.vue';

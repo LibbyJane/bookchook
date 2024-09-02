@@ -119,6 +119,10 @@ export const useOrganisationStore = defineStore('organisationStore', {
     }),
     actions: {
         async getOrganisationData(organisationID) {
+            if (!organisationID) {
+                console.warn('no organisation ID received');
+                return;
+            }
             //await this.updateThemeConfig(defaultColors);
             const response = await useOrganisationAPI({endpoint: `getAccountBySlug`,  id: organisationID});
             if (response.data?.status) {

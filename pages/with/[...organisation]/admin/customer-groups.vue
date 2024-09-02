@@ -160,7 +160,7 @@
     import { useOrganisationStore } from '@/stores/organisation';
     import { Trash, Xmark, EditPencil, ArrowRightCircle, Plus, Minus, FloppyDisk, Community } from '@iconoir/vue';
 
-    import Header from '@/components/admin/Header.vue';
+    import Header from '@/components/admin/PageHeader.vue';
     import GenericForm from '@/components/forms/GenericForm.vue';
     import Card from '@/components/interface/Card.vue';
     import Dialog from '@/components/interface/Dialog.vue';
