@@ -23,7 +23,8 @@ export default defineNuxtConfig({
         "@nuxt/image",
         "@nuxtjs/leaflet",
         "nuxt-tiptap-editor",
-        "nuxt-snackbar"
+        "nuxt-snackbar",
+        "nuxt-echarts"
     ],
 
     snackbar: {
