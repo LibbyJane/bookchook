@@ -89,12 +89,12 @@
 <style lang="scss">
     .main-header__brand {
         svg {
+            height: auto;
+            width: auto;
             max-width: 11rem;
             max-height: 4rem;
         }
     }
-
-
 
     .main-header__cta {
         grid-area: cta;

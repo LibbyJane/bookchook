@@ -158,7 +158,7 @@ export const useOrganisationStore = defineStore('organisationStore', {
                     },
                 ]
             };
-            const date = new Date('2024-07-05T09:00:00.000Z');
+            const date = new Date('2024-09-06T09:00:00.000Z');
 
             let counter = pageSize * pageNumber + 20;
             try {
@@ -363,6 +363,7 @@ export const useOrganisationStore = defineStore('organisationStore', {
             if (response.data?.users) {
             //if (response.usethistogettestdata?.users) {
                 this.customers = response.data.users;
+                return true;
             } else {
                 this.customers = [
                     {
@@ -766,7 +767,10 @@ export const useOrganisationStore = defineStore('organisationStore', {
                         "role_type": "GENERAL_USER"
                     }
                 ];
+                return true;
             }
+
+            return response;
         },
         async getOrganisationUsers() {
             // TODO: remove test data when client details page complete
@@ -775,7 +779,10 @@ export const useOrganisationStore = defineStore('organisationStore', {
 
             if (response.data?.status) {
                 this.users = response.data.users;
+                return true;
             }
+
+            return response;
             // else {
             //     this.users = [
             //         {
@@ -889,6 +896,8 @@ export const useOrganisationStore = defineStore('organisationStore', {
             if (response.data?.locations) {
                 this.locations = response.data.locations;
             };
+
+            return true;
         },
         async getOrganisationBillingSettings() {
             // TODO: remove test data when client details page complete
@@ -898,7 +907,7 @@ export const useOrganisationStore = defineStore('organisationStore', {
 
             if (response.data?.billing_settings) {
                 this.settings.billing = response.data.billing_settings;
-                return;
+                return true;
             }
 
             return response;
@@ -933,7 +942,7 @@ export const useOrganisationStore = defineStore('organisationStore', {
             // console.log('get customer groups response', response);
             if (response.data?.status) {
                 this.customerGroups = response.data.customer_groups;
-                return;
+                return true;
             }
             return response;
         },
@@ -953,7 +962,6 @@ export const useOrganisationStore = defineStore('organisationStore', {
                     await this.getCustomerGroupsList();
                     return true;
                 }
-                return response;
             }
             return response;
         },
@@ -961,7 +969,7 @@ export const useOrganisationStore = defineStore('organisationStore', {
             const response = await useOrganisationAPI({endpoint: `updateCustomerGroup`, id, data});
             if (response.data?.status) {
                 this.getCustomerGroupsList();
-                return;
+                return true;
             }
             return response;
         },

@@ -1,7 +1,7 @@
 <template>
     <article class="app-schedule">
         <aside class="app-schedule__filters container">
-            <h1>Filters {{ selectedEventID }}</h1>
+            <h1>Filters</h1>
         </aside>
         <section class="container">
             <h1>Schedule</h1>
@@ -20,7 +20,6 @@
                             {{ event.date.weekday }}
                         </td>
                     </tr>
-
                     <tr :class="`schedule__item availability-${event.availabilty} ${getSelectedClass(event.id)}`"  v-on:click="showDetail(event.id)" :data-booking-status="getBookingStatus(event.id, event.availabilty)">
                         <td class="schedule__item--time">
                             {{ event.date.time }}
@@ -207,8 +206,8 @@
         margin: 0;
         padding: var(--space-sm) 0 ;
         text-align: start;
-        transition: color var(--transition-speed) var(--transition-type-motionless);
-        transition-delay: 200ms;
+        transition: color var(--transition-speed-fast) var(--transition-type-motionless);
+        transition-delay: 100ms;
 
         &:has(~.schedule__item:hover, ~.schedule__item:focus) {
             &:not(&:has(~.schedule__item~.schedule__subheader~.schedule__item:hover, ~.schedule__item~.schedule__subheader~.schedule__item:focus)) {

@@ -1,6 +1,10 @@
 .admin-header {
     display: flex;
-        gap: var(--space-med);
+        gap: var(--space);
         justify-content: space-between;
     margin: 0 0 var(--space);
+
+    @include breakpoint(lg) {
+        gap: var(--space-med);
+    }
 }

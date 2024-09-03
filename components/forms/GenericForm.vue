@@ -127,7 +127,7 @@
         }
 
         const outcome = await props.endpoint(payload);
-        console.log('outcome', outcome);
+        // console.log('outcome', outcome);
 
         form.state = '';
         let errorMessage;

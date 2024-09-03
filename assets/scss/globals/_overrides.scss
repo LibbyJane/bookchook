@@ -1,5 +1,5 @@
 .snackbar-message-custom.snackbar-message-custom {
-    &.danger {
+    &.error {
         color: var(--c-status-contrast);
         background-color: var(--c-danger);
     }

@@ -57,8 +57,10 @@
             </template>
             <template #actions>
                 <button type="button" class="btn btn--sm" v-on:click="handleEditGroupClick()" title="Edit Customer Group">
-                    <EditPencil />
+                    <Xmark v-if="inEditMode" />
                     <span v-if="inEditMode" class="mobile-hide">Cancel Edit</span>
+
+                    <EditPencil v-if="!inEditMode" />
                     <span v-if="!inEditMode" class="mobile-hide">Edit</span>
                 </button>
                 <button type="button" class="btn btn--sm btn--tertiary btn--danger" v-on:click="handleShowConfirmDeleteClick()" title="Delete Customer Group">
@@ -340,6 +342,18 @@
     async function deleteGroup() {
         showConfirmDelete.value = false;
         const response = await useAsyncData(() => organisationStore.deleteCustomerGroup({id: selectedGroup.value.id}));
+        console.log('delte response', response);
+
+
+        if (response.error?.value) {
+            snackbar.add({
+                type: 'error',
+                text: 'There was a problem deleting the customer group. Please try again later.'
+            })
+
+            return;
+        }
+
         selectedGroup.value = null;
 
         snackbar.add({

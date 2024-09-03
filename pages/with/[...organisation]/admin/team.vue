@@ -36,7 +36,7 @@
     import { ref, onMounted } from 'vue';
     import Vue3Datatable from "@bhplugin/vue3-datatable";
     import { useOrganisationStore } from '@/stores/organisation';
-    import Header from '@/components/admin/Header.vue';
+    import Header from '@/components/admin/PageHeader.vue';
     import UserProfile from '@/components/admin/UserProfile.vue';
 
     const selectedUser = ref(null);

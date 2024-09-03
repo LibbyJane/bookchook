@@ -3,9 +3,9 @@
         <nav class="admin-nav sidebar sticky">
             <ul class="admin-nav__list">
                 <li>
-                    <nuxt-link :to="`${organisationStore.adminURL}`" class="admin-nav__item" title="Admin dashboard">
+                    <nuxt-link :to="`${organisationStore.adminURL}dashboard`" class="admin-nav__item" title="Admin dashboard">
                         <Home />
-                        <span class="admin-nav__text">Dashboard</span>
+                        <span class="admin-nav__text">Dashboard {{ organisationStore.adminURL }} sdfsdfs</span>
                     </nuxt-link>
                 </li>
                 <li>
@@ -120,7 +120,6 @@
             &,
             &:focus {
                color: var(--c-accent);
-
             }
         }
     }

@@ -4,5 +4,4 @@
 
 <script setup>
     import Header from '@/components/admin/PageHeader.vue';
-
 </script>

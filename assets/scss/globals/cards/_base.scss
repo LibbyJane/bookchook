@@ -20,7 +20,7 @@
     grid-column-end: -1;
     padding: var(--content-padding);
     position: relative;
-    overflow: hidden;
+    // overflow: hidden; breaks when session titles are long on the schedule page
 
     .card--solid-header & {
         background-color: var(--c-text);

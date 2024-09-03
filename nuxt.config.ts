@@ -28,12 +28,11 @@ export default defineNuxtConfig({
 
     snackbar: {
         bottom: true,
-        center: true,
-        duration: 3000,
+        duration: 4000,
         dense: true,
         messageClass: "snackbar-message-custom",
         success: "var(--c-success)",
-        danger: "var(--c-error)",
+        error: "var(--c-danger)",
         warning: "var(--c-warning)",
         info: "var(--c-info)"
     },
