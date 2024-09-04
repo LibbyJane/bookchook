@@ -11,7 +11,9 @@
     --sm: 0.8rem;
     --xs: 0.7rem;
     --font-body: 'lexend', sans-serif;
-    --font-heading: 'Passion One', sans-serif;
+    --font-heading: 'lexend', sans-serif;
+    // font is also set on the graph vue pages
+    // todo: move to config variable?
     --line-height-sm: 1.2;
 
     @include breakpoint(lg) {

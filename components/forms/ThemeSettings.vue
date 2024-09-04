@@ -40,6 +40,8 @@
         <div class="btn-bar">
             <button type="submit" class="btn btn--success" :disabled="form.pristine">Save</button>
             <button type="button" class="btn btn--plain btn--sm" v-on:click="resetAllToDefault()">Reset to default colours</button>
+            <button type="button" class="btn btn--plain btn--sm" v-on:click="resetAllToDefault('dark')">Reset to default dark colours</button>
+
         </div>
     </form>
 </template>
@@ -50,7 +52,7 @@
     import ColorPicker from '@/components/interface/ColorPicker.vue';
     import Field from '@/components/forms/shared/Field.vue';
     import Error from '@/components/forms/shared/Error.vue';
-    import { useOrganisationStore, defaultColors } from '@/stores/organisation.js';
+    import { useOrganisationStore, defaultColors, defaultDarkColors } from '@/stores/organisation.js';
     import { RefreshDouble } from '@iconoir/vue';
 
     const props = defineProps({
@@ -62,6 +64,8 @@
     const selectedKey = ref(null);
     const organisationStore = useOrganisationStore();
     const themeFormElement = ref(null);
+
+    const snackbar = useSnackbar();
 
     let form = reactive({
         pristine: computed( () => {
@@ -213,7 +217,6 @@
     });
 
     function handleColorPickerChange(eventData) {
-        console.log('handleColorPickerChange', eventData);
         let comparisonColorKey;
 
         switch (selectedKey.value) {
@@ -249,8 +252,6 @@
             hex: (eventData.colors.hex).slice(0, -2)
         };
 
-        console.log('comparisonColorKey?', comparisonColorKey);
-
         if (!comparisonColorKey) return;
 
         if ( isReadable(fields[selectedKey.value].value.hex, fields[comparisonColorKey].value.hex, { level: "AA", size: "large"} )) {
@@ -285,8 +286,8 @@
         clearError(id);
     };
 
-    function resetAllToDefault() {
-        updateConfig(defaultColors);
+    function resetAllToDefault(themeStyle = 'light') {
+        updateConfig(themeStyle == 'dark' ? defaultDarkColors : defaultColors);
     }
 
     function handleSubmit(e) {

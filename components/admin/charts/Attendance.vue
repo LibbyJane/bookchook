@@ -1,90 +1,119 @@
 <template>
-        <Card
-            title="Attendance Chart"
-            titleCssClass="h3"
-            elemType="div"
-        >
-        <template #body>
-            <div class="chart">
-                <ClientOnly>
-                    <VChart :option="option" />
-                </ClientOnly>
-            </div>
-        </template>
-
-    </Card>
+    <div class="chart">
+        <ClientOnly>
+            <VChart :option="option" />
+        </ClientOnly>
+    </div>
 </template>
 
 <script setup>
-    import { ref,  shallowRef, onMounted } from 'vue';
-    import Card from '@/components/interface/Card.vue';
+    import { ref } from 'vue';
 
     import * as echarts from 'echarts/core';
     import { LineChart } from 'echarts/charts';
     import { TooltipComponent, GridComponent, DatasetComponent, ToolboxComponent, LegendComponent } from 'echarts/components';
     import { LabelLayout, UniversalTransition } from 'echarts/features';
+    // import { getDaysArray } from '@/utils/charts';
+    import * as chartsConfig from '@/utils/charts';
+
     echarts.use([ LineChart, TooltipComponent, GridComponent, DatasetComponent, LabelLayout, UniversalTransition, ToolboxComponent, LegendComponent ]);
 
-    const chart = ref(null);
-    const colors = ['#5470C6', '#EE6666'];
-    let option = {
+    const labelOption = {
+  show: true,
+  align: 'left',
+  verticalAlign: 'middle',
+  position: 'insideBottom',
+  distance: 15,
+  rotate: 90,
+  formatter: '{c}  {name|{a}}',
+  fontSize: 16,
+  rich: {
+    name: {}
+  }
+};
+    let defaultOption = chartsConfig.getDefaultOption({numColors: 5});
+
+    let additionalOption = {
         legend: {
-            data: ['Attendees', 'Revenue']
+            data: []
         },
         tooltip: {
             trigger: 'axis'
         },
         xAxis: {
             type: 'category',
-            data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+            data: ['Week 1', 'Week 2', 'Week 3', 'Week 4']
         },
         yAxis: [
             {
-                name: 'Attendees',
-                nameLocation: 'end',
-                // nameTextStyle: {
-                //     fontStyle: 'oblique',
-                // },
-                type: 'value',
-                axisLine: {
-                    onZero: false,
-                    // lineStyle: {
-                    //     color: colors[0]
-                    // }
-                },
-            },
-            {
-                name: 'Revenue (£)',
-                nameLocation: 'end',
-                type: 'value',
-                axisLine: {
-                    onZero: false,
-                    alignTicks: false,
-                    // lineStyle: {
-                    //     color: colors[1]
-                    // }
-                },
-            },
+                name: 'Capacity (%)',
+                type: 'value'
+            }
         ],
         series: [
-            {
-                name: 'Attendees',
-                type: 'line',
-                data: [196, 180, 201, 220, 190, 198, 210, 184, 208, 215, 192, 200],
-
-            },
-            {
-                name: 'Revenue',
-                type: 'line',
-                data: [980, 900, 1005, 1100, 950, 990, 1050, 920, 1040, 1075, 960, 1000 ],
-            }
-        ]
-    };
-</script>
-
-<style lang="scss">
-    .chart {
-        height: 70vh;
-        width: 100%;
+    {
+      name: 'Open Session',
+      type: 'bar',
+      barGap: 0,
+      label: labelOption,
+      emphasis: {
+        focus: 'series'
+      },
+      data: [22, 20, 18, 20]
+    },
+    {
+      name: 'Thursday Late Night Session',
+      type: 'bar',
+      label: labelOption,
+      emphasis: {
+        focus: 'series'
+      },
+      data: [22, 20, 18, 20]
+    },
+    {
+      name: 'Sat Open Session 1',
+      type: 'bar',
+      label: labelOption,
+      emphasis: {
+        focus: 'series'
+      },
+      data: [22, 20, 18, 20]
+    },
+    {
+        name: 'Sat Open Session 2',
+        type: 'bar',
+      label: labelOption,
+      emphasis: {
+        focus: 'series'
+      },
+      data: [22, 20, 18, 20]
+    },
+    {
+        name: 'Sunday Session',
+        type: 'bar',
+      label: labelOption,
+      emphasis: {
+        focus: 'series'
+      },
+      data: [8, 10, 8, 12]
     }
-</style>
+  ]
+        // series: [
+        //     {
+        //         name: 'Revenue',
+        //         type: 'bar',
+        //         stack: 'Total',
+        //         // data: ['Open Session', 'Thursday Late Night Session', 'Open Session', 'Open Session', 'Sunday Sessions - League Players']
+        //         data: [
+        //         {
+        //         value: 100,
+        //             itemStyle: {
+        //                 color: defaultOption.colors[1]
+        //             }
+        //         }, 80, 90, 95, 100],
+        //     }
+        // ]
+    };
+
+    const option = {...defaultOption, ...additionalOption};
+</script>

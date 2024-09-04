@@ -1,43 +1,41 @@
 <template>
-        <Card
-            title="Combined Chart"
-            titleCssClass="h3"
-            elemType="div"
-        >
-        <template #body>
-            <div class="chart">
-                <ClientOnly>
-                    <VChart :option="option" />
-                </ClientOnly>
-            </div>
-        </template>
-
-    </Card>
+    <div class="chart">
+        <ClientOnly>
+            <VChart :option="option" />
+        </ClientOnly>
+    </div>
 </template>
 
 <script setup>
     import { useOrganisationStore } from '@/stores/organisation';
-
-    import { ref,  shallowRef, onMounted } from 'vue';
-    import Card from '@/components/interface/Card.vue';
-
     import * as echarts from 'echarts/core';
     import { LineChart, BarChart } from 'echarts/charts';
     import { TooltipComponent, GridComponent, DatasetComponent, ToolboxComponent, LegendComponent } from 'echarts/components';
     import { LabelLayout, UniversalTransition } from 'echarts/features';
+
     echarts.use([ LineChart, BarChart, TooltipComponent, GridComponent, DatasetComponent, LabelLayout, UniversalTransition, ToolboxComponent, LegendComponent ]);
     const organisationStore = useOrganisationStore();
 
-    const colors = [`${organisationStore.account.theme_config.colors.accent.hex}`,  `hsl(${ organisationStore.account.theme_config.colors.accent.hsl.h > 180 ? organisationStore.account.theme_config.colors.accent.hsl.h - 180 : organisationStore.account.theme_config.colors.accent.hsl.h + 180}, ${ organisationStore.account.theme_config.colors.accent.hsl.s < 70 ? organisationStore.account.theme_config.colors.accent.hsl.s : 70}%, ${ organisationStore.account.theme_config.theme_type == 'light' ? 33 : 75}%)`];
+    // const colors = [`${organisationStore.account.theme_config.colors.accent.hex}`,  `hsl(${ organisationStore.account.theme_config.colors.accent.hsl.h > 180 ? organisationStore.account.theme_config.colors.accent.hsl.h - 60 : organisationStore.account.theme_config.colors.accent.hsl.h + 60}, ${ organisationStore.account.theme_config.colors.accent.hsl.s < 70 ? organisationStore.account.theme_config.colors.accent.hsl.s : 70}%, ${ organisationStore.account.theme_config.theme_type == 'light' ? 33 : 75}%)`];
+
+    const colors = [`${organisationStore.account.theme_config.colors.accent.hex}`,  `hsl(${ organisationStore.account.theme_config.colors.accent.hsl.h > 180 ? organisationStore.account.theme_config.colors.accent.hsl.h - 180 : organisationStore.account.theme_config.colors.accent.hsl.h + 180}, ${ organisationStore.account.theme_config.colors.accent.hsl.s - 10}%, ${ organisationStore.account.theme_config.theme_type == 'light' ? 43 : 75}%)`];
     const option = {
         color: colors,
+        textStyle: {
+            fontFamily: "lexend"
+        },
         tooltip: {
             trigger: 'axis',
             axisPointer: {
                 type: 'cross'
-            }
+            },
+            backgroundColor: "var(--c-background-alt)",
+            borderColor: "hsla(var(--c-text-hsl), 0.2)",
+            textStyle: {
+                color: "var(--c-text)"
+            },
             // ,formatter: `<span style="color: ${colors[0]}">◼</span> {a0}: <b>{c0}</b><br><span style="color: ${colors[0]}; opacity: 0.4">◼</span> {a1}: <b>{c1}</b><br><span style="color: ${colors[1]}">◼</span> {a2}: <b>£{c2}</b>`
-             ,formatter: `<span style="color: ${colors[0]}">◼</span> {a0}: <b>{c0}</b><br><span style="color: ${colors[1]}">◼</span> {a1}: <b>£{c1}</b>`
+            formatter: `<span style="color: ${colors[0]}">◼ </span> {a0}: <b>{c0}</b><br><span style="color: ${colors[1]}">⬤ </span> {a1}: <b>£{c1}</b>`
         },
 
         // grid: {
@@ -50,11 +48,20 @@
             }
         },
         legend: {
-            data: [{name: 'Attendees', icon: 'square'},{name: 'Revenue'}]
+            data: [{name: 'Attendees', icon: "square"},{name: 'Revenue', icon: "circle"}],
+            itemGap: 30,
+            textStyle: {
+                color: "var(--c-text)"
+            },
         },
         xAxis: [
             {
                 type: 'category',
+                axisLabel: {
+                    textStyle: {
+                        color: `${organisationStore.account.theme_config.colors.text.hex}`
+                    }
+                },
                 axisTick: {
                     alignWithLabel: true
                 },
@@ -65,6 +72,9 @@
             {
                 type: 'value',
                 name: 'Attendees',
+                nameTextStyle: {
+                    color: `${organisationStore.account.theme_config.colors.text.hex}`
+                },
                 position: 'left',
                 alignTicks: true,
                 axisLine: {
@@ -125,10 +135,3 @@
         ]
     };
 </script>
-
-<style lang="scss">
-    .chart {
-        height: 70vh;
-        width: 100%;
-    }
-</style>
