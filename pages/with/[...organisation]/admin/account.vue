@@ -2,8 +2,8 @@
     <Header title="Account"></Header>
 
     <Card
-        title="Account"
-        titleCssClass="h3"
+        title="Colour Scheme"
+        titleCssClass="h4"
         elemType="section"
     >
         <template #actions>
@@ -19,7 +19,7 @@
             </button>
         </template>
         <template #body>
-            <dl v-if="inEditMode != 'colors'" class="settings-list" >
+            <dl v-if="inEditMode != 'colors'" class="settings-list" v-on:click="inEditMode = 'colors'">
                 <div v-for="setting, key in organisationStore.account.theme_config.colors" class="settings-list__item swatch">
                     <dd class="swatch__color" :style="`background-color: hsl(${setting.hsl.hsl});`"></dd>
                     <dt class="swatch__label" style="text-transform: capitalize;">{{ getLabelText(key) }}</dt>
@@ -32,9 +32,8 @@
 
     <Card
         title="Billing"
-        titleCssClass="h3"
+        titleCssClass="h4"
         elemType="section"
-        v-on:billingSettingsUpdated="console.log('handleSettingsUpdated() ')"
     >
         <template #actions>
             <button type="button" class="btn btn--sm btn--tertiary" v-on:click="inEditMode == 'billing' ? inEditMode = '' : inEditMode = 'billing'">
@@ -49,7 +48,7 @@
             </button>
         </template>
         <template #body>
-            <dl v-if="inEditMode != 'billing'" class="settings-list" >
+            <dl v-if="inEditMode != 'billing'" class="settings-list" v-on:click="inEditMode = 'billing'">
                 <div class="settings-list__item" v-for="setting, key in organisationStore.settings.billing">
                     <dt style="text-transform: capitalize;">{{ getLabelText(key) }}</dt>
                     <dd>{{ setting }}</dd>

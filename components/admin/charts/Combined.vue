@@ -12,59 +12,31 @@
     import { LineChart, BarChart } from 'echarts/charts';
     import { TooltipComponent, GridComponent, DatasetComponent, ToolboxComponent, LegendComponent } from 'echarts/components';
     import { LabelLayout, UniversalTransition } from 'echarts/features';
+    import * as chartsConfig from '@/utils/charts';
 
     echarts.use([ LineChart, BarChart, TooltipComponent, GridComponent, DatasetComponent, LabelLayout, UniversalTransition, ToolboxComponent, LegendComponent ]);
     const organisationStore = useOrganisationStore();
 
-    // const colors = [`${organisationStore.account.theme_config.colors.accent.hex}`,  `hsl(${ organisationStore.account.theme_config.colors.accent.hsl.h > 180 ? organisationStore.account.theme_config.colors.accent.hsl.h - 60 : organisationStore.account.theme_config.colors.accent.hsl.h + 60}, ${ organisationStore.account.theme_config.colors.accent.hsl.s < 70 ? organisationStore.account.theme_config.colors.accent.hsl.s : 70}%, ${ organisationStore.account.theme_config.theme_type == 'light' ? 33 : 75}%)`];
+    // const colors = [`${organisationStore.account.theme_config.colors.accent.hex}`,  `hsl(${ organisationStore.account.theme_config.colors.accent.hsl.h > 180 ? organisationStore.account.theme_config.colors.accent.hsl.h - 60 : organisationStore.account.theme_config.colors.accent.hsl.h + 60}, ${ organisationStore.account.theme_config.colors.accent.hsl.s < 70 ? organisationStore.account.theme_config.colors.accent.hsl.s : 70}%, ${ organisatioStore.account.theme_config.theme_type == 'light' ? 33 : 75}%)`];
 
-    const colors = [`${organisationStore.account.theme_config.colors.accent.hex}`,  `hsl(${ organisationStore.account.theme_config.colors.accent.hsl.h > 180 ? organisationStore.account.theme_config.colors.accent.hsl.h - 180 : organisationStore.account.theme_config.colors.accent.hsl.h + 180}, ${ organisationStore.account.theme_config.colors.accent.hsl.s - 10}%, ${ organisationStore.account.theme_config.theme_type == 'light' ? 43 : 75}%)`];
-    const option = {
-        color: colors,
-        textStyle: {
-            fontFamily: "lexend"
-        },
-        tooltip: {
-            trigger: 'axis',
-            axisPointer: {
-                type: 'cross'
-            },
-            backgroundColor: "var(--c-background-alt)",
-            borderColor: "hsla(var(--c-text-hsl), 0.2)",
-            textStyle: {
-                color: "var(--c-text)"
-            },
-            // ,formatter: `<span style="color: ${colors[0]}">◼</span> {a0}: <b>{c0}</b><br><span style="color: ${colors[0]}; opacity: 0.4">◼</span> {a1}: <b>{c1}</b><br><span style="color: ${colors[1]}">◼</span> {a2}: <b>£{c2}</b>`
-            formatter: `<span style="color: ${colors[0]}">◼ </span> {a0}: <b>{c0}</b><br><span style="color: ${colors[1]}">⬤ </span> {a1}: <b>£{c1}</b>`
-        },
+    let defaultOption = chartsConfig.getDefaultOption({numColors: 6});
 
-        // grid: {
-        //     right: '0%'
-        // },
-        toolbox: {
-            feature: {
-                dataView: { show: true, readOnly: false },
-                saveAsImage: { show: true }
-            }
-        },
-        legend: {
-            data: [{name: 'Attendees', icon: "square"},{name: 'Revenue', icon: "circle"}],
-            itemGap: 30,
-            textStyle: {
-                color: "var(--c-text)"
-            },
-        },
+    defaultOption.tooltip.formatter =  function (params, _ticket, _callback) {
+        let returnVal = '';
+        params.forEach(param => {
+            returnVal += `<div>${param.marker} ${param.seriesName}: ${param.seriesName == 'Revenue' ? '£' : ''}${param.value}</div>`;
+        });
+
+        return returnVal;
+    }
+
+    defaultOption.legend.data = [{name: 'Attendees', icon: "square"},{name: 'Revenue', icon: "circle"}];
+
+
+    let additionalOption =  {
         xAxis: [
             {
                 type: 'category',
-                axisLabel: {
-                    textStyle: {
-                        color: `${organisationStore.account.theme_config.colors.text.hex}`
-                    }
-                },
-                axisTick: {
-                    alignWithLabel: true
-                },
                 data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
             }
         ],
@@ -72,17 +44,6 @@
             {
                 type: 'value',
                 name: 'Attendees',
-                nameTextStyle: {
-                    color: `${organisationStore.account.theme_config.colors.text.hex}`
-                },
-                position: 'left',
-                alignTicks: true,
-                axisLine: {
-                    show: true,
-                        // lineStyle: {
-                        //     color: colors[0]
-                        // }
-                },
                 axisLabel: {
                     formatter: '{value}'
                 }
@@ -96,7 +57,7 @@
                 axisLine: {
                     show: true,
                     lineStyle: {
-                        color: colors[1]
+                        color: defaultOption.colors[0]
                     }
                 },
                 axisLabel: {
@@ -110,8 +71,18 @@
                 type: 'bar',
                 data: [196, 180, 201, 220, 190, 198, 210, 184, 208, 215, 192, 200],
                 itemStyle: {
-                    opacity: 0.6
-                }
+                    opacity: 0.5,
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                    {
+                        offset: 0.5,
+                        color: defaultOption.colors[0]
+                    },
+                    {
+                        offset: 1,
+                        color: defaultOption.colors[1]
+                    }
+                    ])
+                },
             },
             // {
             //     name: 'Attendees 2023',
@@ -129,9 +100,11 @@
                 yAxisIndex: 1,
                 data: [980, 900, 1005, 1100, 950, 990, 1050, 920, 1040, 1075, 960, 1000 ],
                 itemStyle: {
-                    color: colors[1]
+                    color: defaultOption.colors[3]
                 }
             }
         ]
     };
+    const option = {...defaultOption, ...additionalOption};
+
 </script>

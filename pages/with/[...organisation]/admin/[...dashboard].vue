@@ -12,7 +12,7 @@
             </template>
         </Card>
         <Card
-                title="Attendance"
+                title="Upcoming Session Availability"
                 titleCssClass="h4"
                 elemType="div"
             >
@@ -52,10 +52,11 @@
     .dashboard-graphs {
         display: grid;
             gap: var(--space);
-        grid-template-areas: "a a  b" "a a  c";
+        grid-template-areas: "a a a b b" "a a a c c";
 
         .card {
             margin: 0;
+            overflow: visible;
 
             .chart {
                 width: 100%;

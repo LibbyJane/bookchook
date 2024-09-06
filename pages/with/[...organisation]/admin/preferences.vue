@@ -34,7 +34,6 @@
         title="Billing"
         titleCssClass="h3"
         elemType="section"
-        v-on:billingSettingsUpdated="console.log('handleSettingsUpdated() ')"
     >
         <template #actions>
             <button type="button" class="btn btn--sm btn--tertiary" v-on:click="inEditMode == 'billing' ? inEditMode = '' : inEditMode = 'billing'">

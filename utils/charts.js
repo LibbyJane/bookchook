@@ -4,7 +4,6 @@ export function getColors(n = 2, $pinia) {
     const organisationStore = useOrganisationStore($pinia);
 
     const fraction = 360 / n;
-    console.log('f', fraction);
     let colors = [ `${organisationStore.account.theme_config.colors.accent.hex}`];
 
     for (let i = 1; i < n; i++) {
@@ -12,7 +11,6 @@ export function getColors(n = 2, $pinia) {
     }
 
     colors.push(`hsl(0, ${ organisationStore.account.theme_config.colors.accent.hsl.s - 30}%,  ${ organisationStore.account.theme_config.theme_type == 'light' ? 43 : 75}%)`);
-    console.log('colors', colors);
     return colors;
 }
 
@@ -24,12 +22,27 @@ export function getYearsArray() {
 //     return ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'];
 // }
 
+export function getDefaultYAxisItem() {
+    return [
+        {
+            nameTextStyle: {
+                color: "var(--c-text)"
+            },
+            position: 'left',
+            alignTicks: true,
+            axisLine: {
+                show: true,
+            }
+        }
+    ];
+}
+
 export function getDefaultOption({numColors}) {
     const option = {
         colors: getColors(numColors),
         color: getColors(numColors),
         textStyle: {
-            fontFamily: "lexend"
+            fontFamily: "lexend",
         },
         tooltip: {
             trigger: 'axis',
@@ -46,7 +59,8 @@ export function getDefaultOption({numColors}) {
             feature: {
                 dataView: { show: true, readOnly: false },
                 saveAsImage: { show: true }
-            }
+            },
+            bottom: 0
         },
         legend: {
             itemGap: 30,
@@ -66,18 +80,7 @@ export function getDefaultOption({numColors}) {
                 }
             }
         ],
-        yAxis: [
-            {
-                nameTextStyle: {
-                    color: "var(--c-text)"
-                },
-                position: 'left',
-                alignTicks: true,
-                axisLine: {
-                    show: true,
-                }
-            }
-        ]
+        yAxis: [getDefaultYAxisItem()]
     };
     return option;
 }

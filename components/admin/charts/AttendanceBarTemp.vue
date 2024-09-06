@@ -19,44 +19,47 @@
     echarts.use([ LineChart, TooltipComponent, GridComponent, DatasetComponent, LabelLayout, UniversalTransition, ToolboxComponent, LegendComponent ]);
 
     const labelOption = {
-  show: true,
-  align: 'left',
-  verticalAlign: 'middle',
-  position: 'insideBottom',
-  distance: 15,
-  rotate: 90,
-  formatter: '{c}  {name|{a}}',
-  fontSize: 16,
-  rich: {
-    name: {}
-  }
+//   show: true,
+//   align: 'left',
+//   verticalAlign: 'middle',
+//   position: 'insideBottom',
+//   distance: 15,
+//   rotate: 90,
+//   formatter: '{c}  {name|{a}}',
+//   fontSize: 16,
+//   rich: {
+//     name: {}
+//   }
 };
-    let defaultOption = chartsConfig.getDefaultOption({numColors: 5});
+    let defaultOption = chartsConfig.getDefaultOption({numColors: 6});
 
     let additionalOption = {
         legend: {
-            data: []
+            // type: 'scroll',
+            data: ['Open Session', 'Thursday Late Night Session', 'Sat Open Session 1']
         },
         tooltip: {
-            trigger: 'axis'
+            // formatter: function (params, ticket, callback) {
+            //     console.log('tooltip', params, ticket, callback)
+            // }
+
         },
         xAxis: {
             type: 'category',
-            // name: 'w/c',
-            // nameLocation: 'start',
-            formatter: 'w/c {value}',
-            data: ['Aug 5', 'Aug 12', '19/8/24', '26/8/24']
+            name: 'w/c',
+            nameLocation: 'start',
+            data: ['Aug 5', 'Aug 12', 'Aug 19', 'Aug 26']
         },
         yAxis: [
             {
-                name: 'Capacity (%)',
+                name: 'Attendees',
                 type: 'value'
             }
         ],
         series: [
     {
       name: 'Open Session',
-      type: 'bar',
+      type: 'line',
       barGap: 0,
       label: labelOption,
       emphasis: {
@@ -66,34 +69,34 @@
     },
     {
       name: 'Thursday Late Night Session',
-      type: 'bar',
+      type: 'line',
       label: labelOption,
       emphasis: {
         focus: 'series'
       },
-      data: [22, 20, 18, 20]
+      data: [20, 19, 18, 21]
     },
     {
       name: 'Sat Open Session 1',
-      type: 'bar',
+      type: 'line',
       label: labelOption,
       emphasis: {
         focus: 'series'
       },
-      data: [22, 20, 18, 20]
+      data: [21, 20, 21, 20]
     },
     {
         name: 'Sat Open Session 2',
-        type: 'bar',
+        type: 'line',
       label: labelOption,
       emphasis: {
         focus: 'series'
       },
-      data: [22, 20, 18, 20]
+      data: [22, 23, 24, 21]
     },
     {
         name: 'Sunday Session',
-        type: 'bar',
+        type: 'line',
       label: labelOption,
       emphasis: {
         focus: 'series'

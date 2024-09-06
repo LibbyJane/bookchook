@@ -46,7 +46,7 @@
             </template>
 
             <template #body>
-                <Location v-if="key == inEditMode" :id="key" />
+                <Location v-if="key == inEditMode" :id="key" v-on:click="inEditMode = key" />
 
                 <template v-if="key != inEditMode">
                     <div class="location__info">

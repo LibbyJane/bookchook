@@ -39,8 +39,8 @@
         <Error v-if="form.error" :message="form.error"></Error>
         <div class="btn-bar">
             <button type="submit" class="btn btn--success" :disabled="form.pristine">Save</button>
-            <button type="button" class="btn btn--plain btn--sm" v-on:click="resetAllToDefault()">Reset to default colours</button>
-            <button type="button" class="btn btn--plain btn--sm" v-on:click="resetAllToDefault('dark')">Reset to default dark colours</button>
+            <button type="button" class="btn btn--plain btn--sm" v-on:click="resetAllToDefault()">Use default colours</button>
+            <button type="button" class="btn btn--plain btn--sm" v-on:click="resetAllToDefault('dark')">Use default dark colours</button>
 
         </div>
     </form>
