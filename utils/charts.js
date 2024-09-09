@@ -23,6 +23,7 @@ export function getYearsArray() {
 // }
 
 export function getDefaultYAxisItem() {
+
     return [
         {
             nameTextStyle: {
@@ -37,10 +38,16 @@ export function getDefaultYAxisItem() {
     ];
 }
 
-export function getDefaultOption({numColors}) {
+export function getDefaultOption({numColors}, $pinia) {
+    const organisationStore = useOrganisationStore($pinia);
+    console.log('c', organisationStore.account.theme_config.colors);
+
     const option = {
-        colors: getColors(numColors),
         color: getColors(numColors),
+        colorDefaults: {
+            text: organisationStore.account.theme_config.colors.text.hex,
+            accentContrast: organisationStore.account.theme_config.colors.accent_contrast.hex,
+        },
         textStyle: {
             fontFamily: "lexend",
         },

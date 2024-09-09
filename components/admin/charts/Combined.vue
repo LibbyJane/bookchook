@@ -57,7 +57,7 @@
                 axisLine: {
                     show: true,
                     lineStyle: {
-                        color: defaultOption.colors[0]
+                        color: defaultOption.color[0]
                     }
                 },
                 axisLabel: {
@@ -75,11 +75,11 @@
                     color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
                     {
                         offset: 0.5,
-                        color: defaultOption.colors[0]
+                        color: defaultOption.color[0]
                     },
                     {
                         offset: 1,
-                        color: defaultOption.colors[1]
+                        color: defaultOption.color[1]
                     }
                     ])
                 },
@@ -100,7 +100,7 @@
                 yAxisIndex: 1,
                 data: [980, 900, 1005, 1100, 950, 990, 1050, 920, 1040, 1075, 960, 1000 ],
                 itemStyle: {
-                    color: defaultOption.colors[3]
+                    color: defaultOption.color[3]
                 }
             }
         ]

@@ -15,72 +15,176 @@
     import { LabelLayout, UniversalTransition } from 'echarts/features';
     // import { getDaysArray } from '@/utils/charts';
     import * as chartsConfig from '@/utils/charts';
-import { def } from '@vue/shared';
+import { inheritInnerComments } from '@babel/types';
 
     echarts.use([ LineChart, TooltipComponent, GridComponent, DatasetComponent, LabelLayout, UniversalTransition, ToolboxComponent, LegendComponent ]);
 
-    const labelOption = {
-  show: true,
-  align: 'left',
-  verticalAlign: 'middle',
-  position: 'insideBottom',
-  distance: 15,
-  rotate: 90,
-  formatter: '{c}  {name|{a}}',
-  fontSize: 16,
-  rich: {
-    name: {}
-  }
-};
     let defaultOption = chartsConfig.getDefaultOption({numColors: 10});
 
     defaultOption.tooltip.formatter = function (params, _ticket, _callback) {
         let returnVal = '';
-        console.log('tt', params, _ticket, _callback);
+        let currentWeekday = '';
         params.forEach(param => {
             if (param.data == '-') return;
-
+            if (currentWeekday != param.axisValueLabel) {
+                returnVal += `<h6 class="m-bottom-0">${param.axisValueLabel}</h6>`;
+                currentWeekday = param.axisValueLabel;
+            }
             returnVal += `<div>${param.marker} ${param.seriesName} ${param.value}% full</div>`;
         });
 
         return returnVal;
     };
 
-    function getItemStyle(percent) {
-        let color1 = defaultOption.colors[1];
-        let color2 = defaultOption.colors[0];
+    function getColors(percent) {
+        let color1 = defaultOption.color[1];
+        let color2 = defaultOption.color[0];
 
-        if (percent >= 90 ) {
-            color1 = defaultOption.colors[5];
-            color2 = defaultOption.colors[4];
+        if (percent >= 80 ) {
+            color1 = defaultOption.color[5];
+            color2 = defaultOption.color[4];
         }
-        else if (percent >= 60 ) {
-            color1 = defaultOption.colors[3];
-            color2 = defaultOption.colors[2];
+        else if (percent >= 50 ) {
+            color1 = defaultOption.color[3];
+            color2 = defaultOption.color[2];
         }
+        return [color1, color2];
+    }
+
+    function getItemStyle(percent) {
+        let colors = getColors(percent);
 
         return {
             color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
                 {
                     offset: 0,
-                    color: color1
+                    color: colors[0]
                 },
                 {
                     offset: 1,
-                    color: color2
+                    color: colors[1]
                 }
             ])
         }
     }
 
+    function getLabelOption(percent) {
+        return {
+            show: true,
+            align: 'left',
+            verticalAlign: 'middle',
+            position: 'insideBottom',
+            distance: 10,
+            rotate: 90,
+            formatter: '{name|{a}}',
+            color: defaultOption.colorDefaults.accentContrast,
+            textBorderColor: getColors(percent)[0],
+            textBorderWidth: 3,
+            overflow: 'truncate',
+            rich: {
+                name: {
+                    fontSize: 10,
+                },
+            }
+        }
+    }
+
+    const rawData = [
+        {
+            name: 'Open Session',
+            weekday: 'Tues',
+            booked: 22,
+            capacity: 24
+        },
+        {
+            name: 'Open Session',
+            weekday: 'Thurs',
+            booked: 21,
+            capacity: 24
+        },
+        {
+            name: 'Late Session',
+            weekday: 'Thurs',
+            booked: 12,
+            capacity: 24
+        },
+        {
+            name: 'Open Session',
+            weekday: 'Sat',
+            booked: 14,
+            capacity: 24
+        },
+        {
+            name: 'Open Session',
+            weekday: 'Sat',
+            booked: 6,
+            capacity: 24
+        },
+        {
+            name: 'League Session',
+            weekday: 'Sun',
+            booked: 8,
+            capacity: 24
+        }
+    ];
+
+    const getXAxisData = function(rawData) {
+        const data = [];
+
+        rawData.forEach(session => {
+            data.push(session.weekday);
+        });
+
+        return Array.from(new Set(data));
+    }
+
+    const xAxisData = getXAxisData(rawData);
+
+    function getSeries() {
+        let series = [];
+        let currentWeekday = '';
+        let stack = 0;
+
+        rawData.forEach(session => {
+            console.log('session', session, currentWeekday === session.weekday);
+            currentWeekday == session.weekday ? stack++ : stack = 0;
+            currentWeekday = session.weekday;
+
+            const percent = (session.booked / session.capacity * 100).toFixed(0);
+
+            let data = [];
+
+            xAxisData.forEach(item => {
+                data.push(item === session.weekday ? percent : '-' );
+            })
+
+            let sessionData = {
+                data,
+                showBackground: true,
+                type: 'bar',
+                label: getLabelOption(percent),
+                stack: `${stack}`,
+                stackStrategy: 'samesign',
+                barMaxWidth:  0,
+                itemStyle: getItemStyle(percent),
+                name: session.name
+            }
+
+            series.push(sessionData);
+        });
+
+        return series;
+    }
+
 
     let additionalOption = {
+
         legend: {
             data: []
         },
         yAxis: {
             type: 'value',
-            name: 'Booked Up',
+            name: '% Booked',
             nameTextStyle: {
                 fontWeight: 'bolder'
             },
@@ -94,124 +198,9 @@ import { def } from '@vue/shared';
             axisLabel: {
                 rotate: 45
             },
-            data: ['Tue 3/9', 'Thu 5/9', 'Sat 7/9', 'Sun 8/9', 'Tue 10/9', 'Thu 12/9', 'Sat 14/9', 'Sun 15/9']
+            data: xAxisData
         },
-        series: [
-            {
-                //  [Tues Thurs Sat Sun Tues Thurs Sat Sun]
-                data: [ 100, '-', '-', '-', '-', '-', '-', '-'],
-                showBackground: true,
-                type: 'bar',
-                itemStyle: getItemStyle(100),
-                stack: 'a',
-                name: 'Open Session',
-                capacity: 24
-            },
-            {
-                //  [Tues Thurs Sat Sun Tues Thurs Sat Sun]
-                data: [ '-', '-', '-', '-', 88, '-', '-', '-'],
-                showBackground: true,
-                type: 'bar',
-                itemStyle: getItemStyle(88),
-                stack: 'a',
-                name: 'Open Session',
-                capacity: 24
-            },
-
-
-            {
-                data: [ '-', 85, '-', '-', '-', '-', '-', '-'],
-                showBackground: true,
-                type: 'bar',
-                itemStyle: getItemStyle(85),
-                stack: 'a',
-                name: 'Open Session',
-                capacity: 24
-            },
-            {
-                data: [ '-', '-', '-', '-', '-', 70, '-', '-'],
-                showBackground: true,
-                type: 'bar',
-                itemStyle: getItemStyle(70),
-                stack: 'a',
-                name: 'Open Session',
-                capacity: 24
-            },
-
-            {
-                data: [ '-', 60, '-', '-', '-', '-', '-', '-'],
-                showBackground: true,
-                type: 'bar',
-                itemStyle: getItemStyle(60),
-
-                stack: 'b',
-                name: 'Late Session',
-                capacity: 24
-            },
-            {
-                data: [ '-', '-', '-', '-', '-', 55, '-', '-'],
-                showBackground: true,
-                type: 'bar',
-                itemStyle: getItemStyle(55),
-                stack: 'b',
-                name: 'Late Session',
-                capacity: 24
-            },
-            {
-                data: [ '-', '-', 82, '-', '-', '-', '-', '-'],
-                showBackground: true,
-                type: 'bar',
-                itemStyle: getItemStyle(82),
-                stack: 'a',
-                name: 'Open Session',
-                capacity: 24
-            },
-            {
-                data: [ '-', '-', '-', '-', '-', '-', 77, '-'],
-                showBackground: true,
-                type: 'bar',
-                itemStyle: getItemStyle(77),
-                stack: 'a',
-                name: 'Open Session',
-                capacity: 24
-            },
-            {
-                data: [ '-', '-', 90, '-', '-', '-', '-', '-'],
-                showBackground: true,
-                type: 'bar',
-                stack: 'b',
-                itemStyle: getItemStyle(90),
-                name: 'Open Session',
-                capacity: 24
-            },
-            {
-                data: [ '-', '-', '-', '-', '-', '-', 84, '-'],
-                showBackground: true,
-                type: 'bar',
-                stack: 'b',
-                itemStyle: getItemStyle(84),
-                name: 'Open Session',
-                capacity: 24
-            },
-            {
-                data: [ '-', '-', '-', 33, '-', '-', '-', '-'],
-                showBackground: true,
-                type: 'bar',
-                stack: 'a',
-                itemStyle: getItemStyle(33),
-                name: 'League Session',
-                capacity: 24
-            },
-            {
-                data: [ '-', '-', '-', '-', '-', '-', '-', 20],
-                showBackground: true,
-                type: 'bar',
-                stack: 'a',
-                itemStyle: getItemStyle(20),
-                name: 'League Session',
-                capacity: 24
-            }
-        ]
+        series: getSeries()
     };
 
     const option = {...defaultOption, ...additionalOption};
