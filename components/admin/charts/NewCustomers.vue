@@ -7,8 +7,6 @@
 </template>
 
 <script setup>
-    import { ref } from 'vue';
-
     import * as echarts from 'echarts/core';
     import { LineChart } from 'echarts/charts';
     import { TooltipComponent, GridComponent, DatasetComponent, ToolboxComponent, LegendComponent } from 'echarts/components';
@@ -33,76 +31,63 @@
 };
     let defaultOption = chartsConfig.getDefaultOption({numColors: 6});
 
+    // defaultOption.tooltip.formatter = function (params, _ticket, _callback) {
+    //     console.log('tooltip', params);
+    //     let returnVal = '';
+    //     params.forEach(param => {
+    //         if (param.data == '-') return;
+
+    //         returnVal += `<div>${param.marker} ${param.seriesName} ${param.value}% full</div>`;
+    //     });
+
+    //     return returnVal;
+    // };
+
     let additionalOption = {
         legend: {
             // type: 'scroll',
-            data: ['Open Session', 'Thursday Late Night Session', 'Sat Open Session 1']
+            data: ['2024', '2023']
         },
-        tooltip: {
-            // formatter: function (params, ticket, callback) {
-            //     console.log('tooltip', params, ticket, callback)
-            // }
+        // tooltip: {
+        //     formatter: function (params, ticket, callback) {
+        //         console.log('tooltip', params, ticket, callback)
+        //     }
 
-        },
+        // },
         xAxis: {
             type: 'category',
-            name: 'w/c',
-            nameLocation: 'start',
-            data: ['Aug 5', 'Aug 12', 'Aug 19', 'Aug 26']
+            // name: 'w/c',
+            // nameLocation: 'start',
+            data: chartsConfig.getYearsArray()
         },
         yAxis: [
             {
-                name: 'Attendees',
+                name: '# Signups',
                 type: 'value'
             }
         ],
         series: [
-    {
-      name: 'Open Session',
-      type: 'line',
-      barGap: 0,
-      label: labelOption,
-      emphasis: {
-        focus: 'series'
-      },
-      data: [22, 20, 18, 20]
-    },
-    {
-      name: 'Thursday Late Night Session',
-      type: 'line',
-      label: labelOption,
-      emphasis: {
-        focus: 'series'
-      },
-      data: [20, 19, 18, 21]
-    },
-    {
-      name: 'Sat Open Session 1',
-      type: 'line',
-      label: labelOption,
-      emphasis: {
-        focus: 'series'
-      },
-      data: [21, 20, 21, 20]
-    },
-    {
-        name: 'Sat Open Session 2',
-        type: 'line',
-      label: labelOption,
-      emphasis: {
-        focus: 'series'
-      },
-      data: [22, 23, 24, 21]
-    },
-    {
-        name: 'Sunday Session',
-        type: 'line',
-      label: labelOption,
-      emphasis: {
-        focus: 'series'
-      },
-      data: [8, 10, 8, 12]
-    }
+            {
+                name: '2024',
+                type: 'line',
+                label: labelOption,
+                emphasis: {
+                    focus: 'series'
+                },
+                // smooth: true,
+                data: [8, 2, 4, 4, 5, 9, 4, 8, 5, '-','-', '-'],
+                z: 1
+            },
+            {
+                name: '2023',
+                type: 'line',
+                label: labelOption,
+                emphasis: {
+                    focus: 'series'
+                },
+                data: [1, 1, 1, 0, 1, 3, 2, 2, 3, 3, 4, 3],
+                z: 0
+            },
   ]
         // series: [
         //     {

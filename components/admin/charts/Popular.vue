@@ -10,13 +10,15 @@
     import { ref } from 'vue';
 
     import * as echarts from 'echarts/core';
-    import { LineChart } from 'echarts/charts';
+    import { LineChart, GaugeChart } from 'echarts/charts';
     import { TooltipComponent, GridComponent, DatasetComponent, ToolboxComponent, LegendComponent } from 'echarts/components';
     import { LabelLayout, UniversalTransition } from 'echarts/features';
     // import { getDaysArray } from '@/utils/charts';
     import * as chartsConfig from '@/utils/charts';
 
-    echarts.use([ LineChart, TooltipComponent, GridComponent, DatasetComponent, LabelLayout, UniversalTransition, ToolboxComponent, LegendComponent ]);
+    echarts.use([ LineChart, GaugeChart, TooltipComponent, GridComponent, DatasetComponent, LabelLayout, UniversalTransition, ToolboxComponent, LegendComponent ]);
+
+
 
     const labelOption = {
   show: true,
@@ -34,6 +36,33 @@
     let defaultOption = chartsConfig.getDefaultOption({numColors: 5});
 
     let additionalOption = {
+  tooltip: {
+    formatter: '{a} <br/>{b} : {c}%'
+  },
+  series: [
+    {
+      type: 'gauge',
+
+      progress: {
+        show: true
+      },
+      detail: {
+        valueAnimation: true,
+        formatter: '{value}',
+        color: defaultOption.color[0],
+        // fontSize: 24
+      },
+      data: [
+        {
+          value: 83,
+          name: '',
+        }
+      ]
+    }
+  ]
+};
+
+    let additionalOption2 = {
         legend: {
             data: []
         },

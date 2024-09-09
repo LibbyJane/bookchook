@@ -27,7 +27,7 @@ import { inheritInnerComments } from '@babel/types';
         params.forEach(param => {
             if (param.data == '-') return;
             if (currentWeekday != param.axisValueLabel) {
-                returnVal += `<h6 class="m-bottom-0">${param.axisValueLabel}</h6>`;
+                returnVal += `<div class="m-bottom-0">${param.axisValueLabel}</div>`;
                 currentWeekday = param.axisValueLabel;
             }
             returnVal += `<div>${param.marker} ${param.seriesName} ${param.value}% full</div>`;
@@ -74,16 +74,18 @@ import { inheritInnerComments } from '@babel/types';
             align: 'left',
             verticalAlign: 'middle',
             position: 'insideBottom',
-            distance: 10,
+            distance: 7,
             rotate: 90,
             formatter: '{name|{a}}',
             color: defaultOption.colorDefaults.accentContrast,
             textBorderColor: getColors(percent)[0],
-            textBorderWidth: 3,
-            overflow: 'truncate',
+            textBorderWidth: 2,
+
             rich: {
                 name: {
                     fontSize: 10,
+                    textShadowColor: getColors(percent)[1],
+                    textShadowBlur: 3,
                 },
             }
         }
@@ -92,38 +94,38 @@ import { inheritInnerComments } from '@babel/types';
     const rawData = [
         {
             name: 'Open Session',
-            weekday: 'Tues',
-            booked: 22,
+            weekday: 'Tue',
+            booked: 24,
             capacity: 24
         },
         {
             name: 'Open Session',
-            weekday: 'Thurs',
-            booked: 21,
+            weekday: 'Thu',
+            booked: 18,
             capacity: 24
         },
         {
             name: 'Late Session',
-            weekday: 'Thurs',
-            booked: 12,
+            weekday: 'Thu',
+            booked: 24,
             capacity: 24
         },
         {
             name: 'Open Session',
             weekday: 'Sat',
-            booked: 14,
+            booked: 18,
             capacity: 24
         },
         {
             name: 'Open Session',
             weekday: 'Sat',
-            booked: 6,
+            booked: 11,
             capacity: 24
         },
         {
             name: 'League Session',
             weekday: 'Sun',
-            booked: 8,
+            booked: 7,
             capacity: 24
         }
     ];
@@ -134,7 +136,7 @@ import { inheritInnerComments } from '@babel/types';
         rawData.forEach(session => {
             data.push(session.weekday);
         });
-
+        // return data;
         return Array.from(new Set(data));
     }
 
@@ -146,7 +148,6 @@ import { inheritInnerComments } from '@babel/types';
         let stack = 0;
 
         rawData.forEach(session => {
-            console.log('session', session, currentWeekday === session.weekday);
             currentWeekday == session.weekday ? stack++ : stack = 0;
             currentWeekday = session.weekday;
 
@@ -162,10 +163,10 @@ import { inheritInnerComments } from '@babel/types';
                 data,
                 showBackground: true,
                 type: 'bar',
+                barMinWidth: 0,
                 label: getLabelOption(percent),
                 stack: `${stack}`,
-                stackStrategy: 'samesign',
-                barMaxWidth:  0,
+                // stackStrategy: 'samesign',
                 itemStyle: getItemStyle(percent),
                 name: session.name
             }
@@ -175,6 +176,17 @@ import { inheritInnerComments } from '@babel/types';
 
         return series;
     }
+
+    // function getInterval(index, value) {
+    //     console.log('get interval', index, value);
+    //     if (value == 'Thu' || value == 'Sat') {
+    //         console.log('return 2');
+    //         return 2;
+    //     };
+    //     console.log('return 1');
+    //     return 1;
+    // }
+
 
 
     let additionalOption = {
@@ -195,10 +207,14 @@ import { inheritInnerComments } from '@babel/types';
 
         xAxis: {
             type: 'category',
-            axisLabel: {
-                rotate: 45
-            },
-            data: xAxisData
+            // data: ['Tue', 'Thu', 'Thu', 'Sat', 'Sat', 'Sun'],
+            data: xAxisData,
+
+            // axisLabel: {
+            //     // rotate: 45,
+            //     interval: getInterval
+            // },
+
         },
         series: getSeries()
     };

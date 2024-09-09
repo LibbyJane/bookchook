@@ -3,32 +3,41 @@
 
     <section class="dashboard-graphs">
         <Card
-                title="Monthly Attendance and Revenue"
-                titleCssClass="h4"
-                elemType="div"
-            >
+            title="Monthly Attendance and Revenue"
+            titleCssClass="h4"
+            elemType="div"
+        >
             <template #body>
                 <Combined />
             </template>
         </Card>
         <Card
-                title="Upcoming Session Availability"
-                titleCssClass="h4"
-                elemType="div"
-            >
+            title="Upcoming Session Availability"
+            titleCssClass="h4"
+            elemType="div"
+        >
             <template #body>
                 <Attendance />
             </template>
         </Card>
         <Card
-                title="Popular Sessions"
+            title="Customer Signup"
+            titleCssClass="h4"
+            elemType="div"
+        >
+            <template #body>
+                <NewCustomers />
+            </template>
+        </Card>
+        <!-- <Card
+                title="Average Session Capacity Reached"
                 titleCssClass="h4"
                 elemType="div"
             >
             <template #body>
-                <Popular />
+                <Guage />
             </template>
-        </Card>
+        </Card> -->
 
 
 
@@ -43,7 +52,8 @@
     import Header from '@/components/admin/PageHeader.vue';
     import Attendance from '@/components/admin/charts/Attendance.vue';
     import Revenue from '@/components/admin/charts/Revenue.vue';
-    import Popular from '@/components/admin/charts/Popular.vue';
+    import Guage from '@/components/admin/charts/Guage.vue';
+    import NewCustomers from '@/components/admin/charts/NewCustomers.vue';
 
 
 </script>
@@ -60,7 +70,7 @@
 
             .chart {
                 width: 100%;
-                height: 33vh;
+                height: 30vh;
                 position: relative;
             }
             &:nth-child(1) {
