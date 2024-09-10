@@ -63,7 +63,10 @@
         yAxis: [
             {
                 name: '# Signups',
-                type: 'value'
+                type: 'value',
+                axisLine: {
+                    show: true,
+                }
             }
         ],
         series: [

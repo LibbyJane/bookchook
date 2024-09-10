@@ -174,6 +174,18 @@ import { inheritInnerComments } from '@babel/types';
             series.push(sessionData);
         });
 
+        // series.push( {
+        //     name: 'Average',
+        //     type: 'line',
+        //     // areaStyle: {},
+        //     yAxisIndex: 1,
+        //     data: [97,80,90,95,82,60],
+        //     stack: '0',
+        //     z: 0,
+        //     itemStyle: {
+        //         color: 'var(--c-text)'
+        //     }
+        // });
         return series;
     }
 
@@ -187,23 +199,37 @@ import { inheritInnerComments } from '@babel/types';
     //     return 1;
     // }
 
-
-
     let additionalOption = {
 
         legend: {
             data: []
         },
-        yAxis: {
+        yAxis: [{
             type: 'value',
             name: '% Booked',
             nameTextStyle: {
                 fontWeight: 'bolder'
             },
+            axisLine: {
+                show: true
+            },
             axisLabel: {
                 formatter: '{value}%'
             }
-        },
+        }
+        // ,{
+        //         type: 'value',
+        //         name: 'Average',
+        //         position: 'right',
+        //         alignTicks: true,
+        //         axisLine: {
+        //             show: true,
+        //             lineStyle: {
+        //                 color: "var(--c-text)"
+        //             }
+        //         }
+        //     }
+        ],
 
         xAxis: {
             type: 'category',

@@ -30,10 +30,14 @@
         return returnVal;
     }
 
-    defaultOption.legend.data = [{name: 'Attendees', icon: "square"},{name: 'Revenue', icon: "circle"}];
-
 
     let additionalOption =  {
+        legend: {
+            data: [{name: 'Attendees', icon: "square"},{name: 'Revenue'}],
+            itemStyle: {
+                color: 'inherit'
+            }
+        },
         xAxis: [
             {
                 type: 'category',
@@ -44,6 +48,12 @@
             {
                 type: 'value',
                 name: 'Attendees',
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: defaultOption.color[0]
+                    }
+                },
                 axisLabel: {
                     formatter: '{value}'
                 }
@@ -57,7 +67,7 @@
                 axisLine: {
                     show: true,
                     lineStyle: {
-                        color: defaultOption.color[0]
+                        color: defaultOption.color[3]
                     }
                 },
                 axisLabel: {

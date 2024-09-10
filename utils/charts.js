@@ -40,7 +40,6 @@ export function getDefaultYAxisItem() {
 
 export function getDefaultOption({numColors}, $pinia) {
     const organisationStore = useOrganisationStore($pinia);
-    console.log('c', organisationStore.account.theme_config.colors);
 
     const option = {
         color: getColors(numColors),

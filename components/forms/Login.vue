@@ -70,9 +70,6 @@
             password: fields.password.value,
         });
 
-        console.log('outcome', outcome);
-console.log('route?', route);
-
         if (outcome && outcome.error) {
             formError.value = outcome.error;
             return;
@@ -85,8 +82,6 @@ console.log('route?', route);
             return;
         }
 
-        // console.log('redirected?', route.redirectedFrom);
-        console.log('go to: ', route.path.split('/login')[0]);
         navigateTo(route.path.split('/login')[0]);
     };
 </script>

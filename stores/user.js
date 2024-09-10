@@ -31,7 +31,6 @@ export const useUserStore = defineStore({
         async performLogin(data) {
             console.log('do login', data);
             const response = await useUserAPI(`login`, data);
-console.log('resp', response);
             if (response && response.tokenInfo) {
                 this.initUserData(response);
                 // router.replace('/');

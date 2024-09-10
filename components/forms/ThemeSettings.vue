@@ -338,9 +338,6 @@
         data.colors.background_alt.hsl.s = data.colors.background_alt.hsl.s * 100;
         data.colors.background_alt.hsl.l = data.colors.background_alt.hsl.l * 100;
 
-        console.log('getLuminance', background_tc.getLuminance());
-
-
         let background_alt2_tc =
             background_lum > 0.93 ? background_tc.clone().darken(1.5) :
             background_lum < 0.1 ? background_tc.clone().lighten(5) :

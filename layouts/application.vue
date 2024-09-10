@@ -47,7 +47,6 @@
     const organisationStore = useOrganisationStore();
     const route = useRoute();
     const splitPath = route.path.split('/');
-    console.log('?', route, splitPath);
     const headerHeight = ref('3rem');
 
     onMounted(()=>{
