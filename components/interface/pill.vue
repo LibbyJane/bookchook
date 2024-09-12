@@ -20,8 +20,9 @@
         background-color: var(--c-neutral-95);
         color: var(--c-neutral-30);
         display: flex;
-            gap: var(--space-sm);
+            gap: var(--space-xs);
             justify-content: center;
+            align-items: center;
         font-size: var(--xs);
         border-radius: 99em;
         line-height: 1;
