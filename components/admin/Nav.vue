@@ -5,7 +5,7 @@
                 <li>
                     <nuxt-link :to="`${organisationStore.adminURL}dashboard`" class="admin-nav__item" title="Admin dashboard">
                         <Home />
-                        <span class="admin-nav__text">Dashboard {{ organisationStore.adminURL }} sdfsdfs</span>
+                        <span class="admin-nav__text">Dashboard {{ organisationStore.adminURL }}</span>
                     </nuxt-link>
                 </li>
                 <li>

@@ -87,6 +87,93 @@ export let defaultColors = {
     }
 }
 
+export let defaultDarkColors = {
+    theme_type: 'dark',
+    colors: {
+        background: {
+            hsl: {
+                h: 223,
+                s: 14,
+                l: 15,
+                hsl: '223, 14%, 15%'
+            },
+            hex: '#21242c'
+        },
+        background_alt: {
+            hsl: {
+                h: 223,
+                s: 14,
+                l: 10,
+                hsl: '223, 14%, 10%'
+            },
+            hex: '#16181d'
+        },
+        background_alt2: {
+            hsl: {
+                h: 223,
+                s: 14,
+                l: 5,
+                hsl: '223, 14%, 5%'
+            },
+            hex: '#0b0c0f'
+        },
+        text: {
+            hsl: {
+                h: 220,
+                s: 100,
+                l: 98,
+                hsl: '220, 100%, 98%'
+            },
+            hex: '#f6f9ff'
+        },
+        accent: {
+            hsl: {
+                h: 207,
+                s: 100,
+                l: 69,
+                hsl: '207, 100%, 69%'
+            },
+            hex: '#61b8ff'
+        },
+        accent_contrast: {
+            hsl: {
+                h: 0,
+                s: 0,
+                l: 100,
+                hsl: '0, 0%, 100%'
+            },
+            hex: '#ffffff'
+        },
+        header_background: {
+            hsl: {
+                h: 223,
+                s: 32,
+                l: 52,
+                hsl: '223, 32%, 52%'
+            },
+            hex: '#5d74ac'
+        },
+        header_text: {
+            hsl: {
+                h: 0,
+                s: 0,
+                l: 100,
+                hsl: '0, 0%, 100%'
+            },
+            hex: '#ffffff'
+        },
+        header_accent: {
+            hsl: {
+                h: 39,
+                s: 49,
+                l: 59,
+                hsl: '39, 49%, 59%'
+            },
+            hex: '#caa663'
+        }
+    }
+}
+
 export const useOrganisationStore = defineStore('organisationStore', {
     state: () => ({
         account: {

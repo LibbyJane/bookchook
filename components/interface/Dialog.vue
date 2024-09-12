@@ -1,7 +1,7 @@
 <template>
 
     <dialog :class="[`dialog dialog--${variant}`, cssClass]" ref="dialogRef" open>
-        <header class="dialog__header" v-on:keyup="console.log('keyup', $event)">
+        <header class="dialog__header">
             <slot name="header">
                 <button autofocus type="button" v-on:click="closeDialog()">
                     <Xmark />

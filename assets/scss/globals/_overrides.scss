@@ -1,4 +1,10 @@
 .snackbar-message-custom.snackbar-message-custom {
+    &.is-dense {
+        .vue3-snackbar-message-wrapper {
+            padding: var(--space-xs) var(--space-sm);
+        }
+    }
+
     &.error {
         color: var(--c-status-contrast);
         background-color: var(--c-danger);
@@ -7,6 +13,10 @@
     .vue3-snackbar-message-title {
         font-weight: normal;
         font-size: var(--p-sm);
+
+        &::first-letter {
+            text-transform: capitalize;
+        }
     }
 
     .vue3-snackbar-message-close {
@@ -28,9 +38,4 @@
         margin-right: var(--space-sm);
     }
 
-    &.is-dense {
-        .vue3-snackbar-message-wrapper {
-            padding: var(--space-xs) var(--space-sm);
-        }
-    }
 }

@@ -29,7 +29,7 @@
                         </td>
                         <td class="schedule__item--status">
                             <Pill v-if="getBookingStatus(event.id) === 'booked'" cssClass="success">
-                                <CheckIcon cssClass="icon--sm" />
+                                <CheckIcon cssClass="icon--xs" />
                                 Booked
                             </Pill>
 
@@ -307,7 +307,6 @@
 
     .schedule__item--time {
         grid-area: time;
-        align-self: start;
     }
 
     .schedule__item--title {

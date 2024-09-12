@@ -82,15 +82,9 @@
         }
     });
 
-    console.log('event ID?', props.eventID);
-    console.log('schedule?', organisationStore.schedule);
-
-
     const eventData = computed(() => {
         return organisationStore.schedule.filter(event => event.id == props.eventID)[0];
     })
-
-    console.log('data?', eventData);
 
     const eventActive = ref();
 

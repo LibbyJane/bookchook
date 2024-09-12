@@ -55,13 +55,10 @@
             error: "Test error"
         };
 
-        console.log('outcome', outcome);
-
         if (outcome && outcome.error) {
             formError.value = outcome.error;
         } else if (outcome && outcome.errors) {
             for (let error of outcome.errors) {
-                console.log('error', error);
                 formError.value += `${error}`;
             }
         }

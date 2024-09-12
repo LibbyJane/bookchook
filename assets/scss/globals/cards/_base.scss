@@ -9,6 +9,13 @@
     margin-bottom: var(--space);
     overflow: hidden;
     // padding: var(--content-padding-all);
+
+
+    #{$hover} {
+        .card__header button {
+            opacity: 1;
+        }
+    }
 }
 
 .card__header {
@@ -39,14 +46,8 @@
         padding-block: var(--space);
     }
 
-    #{$hover} {
-        button {
-            opacity: 1;
-        }
-    }
-
     button {
-        opacity: 0.4;
+        opacity: 0.6;
 
         .editing & {
             opacity: 1;
