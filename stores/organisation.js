@@ -186,20 +186,14 @@ export const useOrganisationStore = defineStore('organisationStore', {
         adminURL: '',
         baseURL: '',
         customers: [],
+        customerGroups: [],
         schedule: [],
         locations: {},
         purchaseTypes: {
-            pass: {
-                enabled: true,
-                options: []
-            },
-            GENERAL_USERship: {
-                enabled: true,
-                options: []
-            },
-
+            passes: [],
+            memberships: []
         },
-        customerGroups: [],
+
         settings: {
             billing: {}
         }
@@ -1083,5 +1077,13 @@ export const useOrganisationStore = defineStore('organisationStore', {
             }
             return response;
         },
+        async getOrganisationMemberships() {
+            const response = await useOrganisationAPI({endpoint: `getAllMemberships`});
+            if (response.data?.status) {
+                this.purchaseTypes.memberships = response.data.memberships;
+                return true;
+            }
+            return response;
+        }
     }
 })

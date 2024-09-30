@@ -71,6 +71,10 @@ textarea {
     min-height: 160px;
 }
 
+// tiptap textarea
+.rte-editor__editor {
+    --max-text-width: 100%;
+}
 
 .multiselect-themed.multiselect-themed {
     padding-inline: 0;

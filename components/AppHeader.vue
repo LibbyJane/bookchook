@@ -13,13 +13,13 @@
                         What&rsquo;s on
                     </a>
                 </li>
-                <!-- <li v-if="userStore.authenticated && organisationStore.purchaseTypes.passes">
+                <li v-if="userStore.authenticated && organisationStore.purchaseTypes.passes">
                     <a class="main-menu__item" :href="`${organisationStore.organisationPagePrefix}${organisationStore.account.url_slug}/passes`">
                         <TicketIcon />
                         Passes
                     </a>
                 </li>
-                <li v-if="userStore.authenticated && organisationStore.purchaseTypes.membership">
+                <!-- <li v-if="userStore.authenticated && organisationStore.purchaseTypes.membership">
                     <a class="main-menu__item" :href="`${organisationStore.organisationPagePrefix}${organisationStore.account.url_slug}/membership`">
                         <MembershipIcon />
                         Membership

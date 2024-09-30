@@ -27,6 +27,12 @@
                     </nuxt-link>
                 </li>
                 <li>
+                    <nuxt-link :to="`${organisationStore.adminURL}payments`" class="admin-nav__item" title="Payments">
+                        <AppleWallet />
+                        <span class="admin-nav__text">Payment Methods</span>
+                    </nuxt-link>
+                </li>
+                <li>
                     <nuxt-link :to="`${organisationStore.adminURL}customer-groups`" class="admin-nav__item" title="Customer Groups">
                         <Community />
                         <span class="admin-nav__text">Customer Groups</span>
@@ -39,9 +45,9 @@
                     </nuxt-link>
                 </li>
                 <li>
-                    <nuxt-link :to="`${organisationStore.adminURL}team`" class="admin-nav__item" title="Team">
-                        <UserScan />
-                        <span class="admin-nav__text">Team</span>
+                    <nuxt-link :to="`${organisationStore.adminURL}financials`" class="admin-nav__item" title="Financials">
+                        <Coins />
+                        <span class="admin-nav__text">Financials</span>
                     </nuxt-link>
                 </li>
                 <li>
@@ -57,7 +63,7 @@
 
 <script setup>
     import { useOrganisationStore } from '@/stores/organisation';
-    import { Home, Community, Settings, MapPin, Group, Calendar, UserScan, HandCard} from '@iconoir/vue';
+    import { Home, Community, Settings, MapPin, Group, Calendar, Coins, HandCard, AppleWallet} from '@iconoir/vue';
 
     const organisationStore = useOrganisationStore();
     await useAsyncData(() => organisationStore.getOrganisationData(useRoute().params?.organisation[0]));

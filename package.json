@@ -16,6 +16,9 @@
     "@nuxt/image": "^1.7.0",
     "@nuxtjs/leaflet": "^1.0.14",
     "@pinia/nuxt": "^0.5.1",
+    "@popperjs/core": "^2.11.8",
+    "@tiptap/core": "^2.5.5",
+    "@tiptap/extension-code-block": "^2.5.4",
     "@tiptap/extension-link": "^2.5.5",
     "@tiptap/extension-text-align": "^2.5.5",
     "axios": "^1.7.2",
@@ -30,6 +33,7 @@
   },
   "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610",
   "devDependencies": {
+    "@samk-dev/nuxt-vcalendar": "^1.0.4",
     "sass": "^1.77.4"
   }
 }

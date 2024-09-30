@@ -58,12 +58,37 @@
             <BillingSettings v-if="inEditMode == 'billing'" :callback="handleSettingsUpdated"  />
         </template>
     </Card>
+
+    <Card
+        title="Team"
+        titleCssClass="h2"
+        elemType="section"
+    >
+        <!-- <template #actions>
+            <button type="button" class="btn btn--sm btn--tertiary" v-on:click="inEditMode == 'billing' ? inEditMode = '' : inEditMode = 'billing'">
+                <template v-if="inEditMode != 'billing'">
+                    <PencilIcon css-class="icon--xs" />
+                    Edit
+                </template>
+                <template v-if="inEditMode == 'billing'">
+                    <CrossIcon css-class="icon--xs" />
+                    Cancel
+                </template>
+            </button>
+        </template> -->
+        <template #body v-if="inEditMode != 'team'">
+            <Team />
+        </template>
+    </Card>
+
+
 </template>
 
 <script setup>
-    import { ref, reactive } from 'vue';
+    import { ref } from 'vue';
     import { useOrganisationStore } from '@/stores/organisation';
     import Header from '@/components/admin/PageHeader.vue';
+    import Team from '@/components/admin/Team.vue';
     import Card from '@/components/interface/Card.vue';
     import ThemeSettings from '@/components/forms/ThemeSettings.vue';
     import BillingSettings from '@/components/forms/BillingSettings.vue';
@@ -74,6 +99,8 @@
     const organisationStore = useOrganisationStore();
 
     await useAsyncData(() => organisationStore.getOrganisationBillingSettings());
+    await useAsyncData(() => organisationStore.getOrganisationUsers());
+
 
     const inEditMode = ref('account');
     const snackbar = useSnackbar();

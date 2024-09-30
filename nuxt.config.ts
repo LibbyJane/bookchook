@@ -12,34 +12,35 @@ export default defineNuxtConfig({
         css: {
             preprocessorOptions: {
                 scss: {
-                    additionalData: '@use "~/assets/scss/helpers.scss" as *;'
+                    additionalData: "@use '~/assets/scss/helpers.scss' as *;"
                 }
             }
         }
     },
 
     modules: [
-        "@pinia/nuxt",
-        "@nuxt/image",
-        "@nuxtjs/leaflet",
-        "nuxt-tiptap-editor",
-        "nuxt-snackbar",
-        "nuxt-echarts"
+        '@pinia/nuxt',
+        '@nuxt/image',
+        '@nuxtjs/leaflet',
+        'nuxt-tiptap-editor',
+        'nuxt-snackbar',
+        'nuxt-echarts',
+        '@samk-dev/nuxt-vcalendar'
     ],
 
     snackbar: {
         bottom: true,
         duration: 4000,
         dense: true,
-        messageClass: "snackbar-message-custom",
-        success: "var(--c-success)",
-        error: "var(--c-danger)",
-        warning: "var(--c-warning)",
-        info: "var(--c-info)"
+        messageClass: 'snackbar-message-custom',
+        success: 'var(--c-success)',
+        error: 'var(--c-danger)',
+        warning: 'var(--c-warning)',
+        info: 'var(--c-info)'
     },
 
     tiptap: {
-        prefix: "Tiptap", //prefix for Tiptap components
+        prefix: 'Tiptap', //prefix for Tiptap components
     },
     server: {
         https: {

@@ -55,6 +55,39 @@ const endpoints = {
         uriAddendum: `users`,
         method: 'PUT'
     }
+    , addMembership: {
+        uri: `private/membership`,
+        method: 'POST'
+    }
+    , addUserToMembership: {
+        uri: `private/membership`,
+        method: 'POST'
+    }
+    , getAllMemberships: {
+        uri: `private/membership`,
+        method: 'GET'
+    }
+    , getAllUsersForMembership: {
+        uri: `private/membership`,
+        uriAddendum: `users`,
+        method: 'GET'
+    }
+    , getMembership: {
+        uri: `private/membership`,
+        method: 'GET'
+    }
+    , updateMembership: {
+        uri: `private/membership`,
+        method: 'PATCH'
+    }
+    , deleteMembership: {
+        uri: `private/membership`,
+        method: 'DELETE'
+    }
+    , removeUserFromMembership: {
+        uri: `private/membership`,
+        method: 'DELETE'
+    }
 }
 
 export async function useOrganisationAPI({endpoint, data, id, qs, $pinia }) {
