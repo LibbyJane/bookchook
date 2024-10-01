@@ -5,9 +5,10 @@
             <Field
                 v-for="(field, key) in fields"
                 id="key"
-                :labelText="getLabelText(key)"
+                :labelText="field.label ? field.label : getLabelText(key)"
                 :required="field.required"
                 :error="field.error"
+                :hidden="field.type && field.type == 'hidden'"
             >
                 <input v-if="displayAsInput(field)"
                     v-model="fields[key].value"
@@ -90,7 +91,12 @@
     };
 
     function displayAsInput(field) {
-        if (!field.type || field.type == 'input') {
+        if (!field.type) return true;
+
+        const fieldType = field.type.toLowerCase();
+
+
+        if (fieldType == 'text' || fieldType == 'number' || fieldType == 'password' || fieldType == 'input' || fieldType == 'hidden') {
             return true;
         }
     }

@@ -1084,6 +1084,14 @@ export const useOrganisationStore = defineStore('organisationStore', {
                 return true;
             }
             return response;
+        },
+        async addMembership() {
+            const response = await useOrganisationAPI({endpoint: `addMembership`});
+            if (response.data?.status) {
+                this.purchaseTypes.memberships.push(response.data.membership);
+                return true;
+            }
+            return response;
         }
     }
 })

@@ -61,7 +61,7 @@
 
     <Card
         title="Team"
-        titleCssClass="h2"
+        titleCssClass="h4"
         elemType="section"
     >
         <!-- <template #actions>

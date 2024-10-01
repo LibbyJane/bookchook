@@ -1,6 +1,6 @@
 <template>
-    <header class="admin-header">
-        <h1 v-if="title" :class="titleCssClass">{{ title}}</h1>
+    <header class="admin-header" :class="cssClass">
+        <component v-if="title" :is="elemType" class="m-bottom-0" :class="titleCssClass" >{{ title}}</component>
 
         <slot name="actions"></slot>
     </header>
@@ -8,11 +8,18 @@
 
 <script setup>
     const props = defineProps({
+        elemType: {
+            default: "h1"
+        },
+        cssClass: {
+            type: String,
+            default: "margin-bottom"
+        },
         title: {
             type: String
         },
         titleCssClass:  {
-            type: String
+            type: String,
         },
     });
 </script>

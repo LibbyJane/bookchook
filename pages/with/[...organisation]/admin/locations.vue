@@ -98,7 +98,8 @@
     .locations-list {
         display: flex;
             flex-direction: column;
-            gap: var(--space-med);
+            // gap: var(--space-med);
+            gap: 0;
         list-style: none;
         margin: 0;
         padding: 0;

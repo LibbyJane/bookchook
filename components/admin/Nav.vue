@@ -27,27 +27,27 @@
                     </nuxt-link>
                 </li>
                 <li>
-                    <nuxt-link :to="`${organisationStore.adminURL}payments`" class="admin-nav__item" title="Payments">
-                        <AppleWallet />
-                        <span class="admin-nav__text">Payment Options</span>
-                    </nuxt-link>
-                </li>
-                <li>
                     <nuxt-link :to="`${organisationStore.adminURL}customer-groups`" class="admin-nav__item" title="Customer Groups">
                         <Community />
                         <span class="admin-nav__text">Customer Groups</span>
                     </nuxt-link>
                 </li>
                 <li>
-                    <nuxt-link :to="`${organisationStore.adminURL}locations`" class="admin-nav__item" title="Locations">
-                        <MapPin />
-                        <span class="admin-nav__text">Locations</span>
+                    <nuxt-link :to="`${organisationStore.adminURL}payments`" class="admin-nav__item" title="Payments">
+                        <AppleWallet />
+                        <span class="admin-nav__text">Payment Options</span>
                     </nuxt-link>
                 </li>
                 <li>
                     <nuxt-link :to="`${organisationStore.adminURL}financials`" class="admin-nav__item" title="Financials">
                         <Coins />
                         <span class="admin-nav__text">Financials</span>
+                    </nuxt-link>
+                </li>
+                <li>
+                    <nuxt-link :to="`${organisationStore.adminURL}locations`" class="admin-nav__item" title="Locations">
+                        <MapPin />
+                        <span class="admin-nav__text">Locations</span>
                     </nuxt-link>
                 </li>
                 <li>
@@ -100,16 +100,16 @@
                 justify-content: start;
                 align-items: center;
             text-decoration: none;
-            transition: color var(--transition-fast) var(--transition-type-motionless);
+            transition: color var(--transition-speed-fast) var(--transition-type-motionless);
 
             #{$hover} {
                 border: none;
-                color: currentColor;
+                color: var(--c-accent);
                 text-decoration: none;
 
                 .icon,
                 svg {
-                    color: var(--c-accent);
+                    color: currentColor;
                 }
             }
 
@@ -118,14 +118,21 @@
                 max-height: var(--icon-size-med);
                 max-width: var(--icon-size-med);
                 margin: auto;
+            }
+
+            .icon,
+            svg,
+            path {
                 transition: inherit;
+                transition-delay: initial;
             }
         }
 
         .active {
             &,
             &:focus {
-               color: var(--c-accent);
+                color: var(--c-accent);
+                font-weight: 500;
             }
         }
     }
