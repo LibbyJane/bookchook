@@ -29,7 +29,7 @@
                 <li>
                     <nuxt-link :to="`${organisationStore.adminURL}payments`" class="admin-nav__item" title="Payments">
                         <AppleWallet />
-                        <span class="admin-nav__text">Payment Methods</span>
+                        <span class="admin-nav__text">Payment Options</span>
                     </nuxt-link>
                 </li>
                 <li>

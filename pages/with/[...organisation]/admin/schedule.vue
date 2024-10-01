@@ -103,17 +103,55 @@
         }
 
         div[class^='weekday-'], div[class*=' weekday-']{
-            font-size: var(--p-sm);
-            font-weight: 500;
-            position: relative;
-            text-align: center;
+
         }
 
         .vc-day {
             background-color: var(--c-background-alt);
             border: var(--border-light);
-            font-size: var(--sm);
+            display: flex;
+                flex-direction: column;
+
             padding: var(--space-xs);
+
+            font-size: var(--p-sm);
+            font-weight: 500;
+            line-height: 1;
+            position: relative;
+            text-align: center;
+        }
+
+        .vc-day-layer {
+            top: var(--space-xxs);
+        }
+
+        .is-today {
+            .is-today {
+                color: var(--c-accent-contrast);
+                font-weight: initial;
+                position: relative;
+
+                &::before {
+                    background-color: var(--c-accent);
+                    content: '';
+                    border-radius: 99em;
+                    border: 8px solid var(--c-accent);
+                    height: 100%;
+                    aspect-ratio: 1 / 1;
+                    position: absolute;
+                    inset: 0;
+                    margin: auto;
+                    z-index: -1;
+                    opacity: 0.85;
+                }
+            }
+
+
+            .vc-highlight {
+                height: 0;
+                // align-self: start;
+                // line-height: 1;
+            }
         }
 
         a {
@@ -122,6 +160,7 @@
             border-radius: var(--border-radius);
             display: block;
             font-size: var(--xs);
+            line-height: var(--line-height-sm);
             margin-top: var(--space-xs);
             padding: var(--space-xs);
             max-width: 10rem;
