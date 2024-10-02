@@ -1,0 +1,6 @@
+.card--condensed {
+    --card-padding: calc(var(--space) * 1);
+    p {
+        margin-bottom: var(--space-sm);
+    }
+}

@@ -22,7 +22,9 @@
 
         <Card v-if="showAddPaymentOption && showAddPaymentOption == key" cssClass="create-customer-group" title="Add new membership type" titleCssClass="h4">
             <template #body>
-                <GenericForm v-if="key == 'memberships'" id="addMembershipForm" :fields="membershipFields" :endpoint="organisationStore.addMembership" :callback="handleAddPaymentOption" />
+                <GenericForm v-if="key == 'memberships'" id="addMembershipForm" :fields="membershipFields" :endpoint="organisationStore.addMembership" :callback="handleAddPaymentOption" :showReset="false" />
+
+
             </template>
         </Card>
 
@@ -69,7 +71,7 @@
 
     const organisationStore = useOrganisationStore();
     const inEditMode = ref(null);
-    const showAddPaymentOption = ref(false);
+    const showAddPaymentOption = ref(null);
     const snackbar = useSnackbar();
 
     const membershipFields = reactive({
@@ -102,7 +104,7 @@
             placeholder: ""
         },
         duration: {
-            label: `Duration in months`,
+            label: "Duration in months",
             type: "number",
             value: 3,
             required: true,
@@ -110,10 +112,12 @@
             placeholder: ""
         },
         is_public: {
-            label: `Is available to all customers?`,
-            type: 'radio',
+            type: "toggle",
+            label: "Publically available?",
+            offLabel: "No, invitation only",
+            onLabel: "Yes, available to all",
             value: true,
-            required: true,
+            required: false,
             error: null,
             placeholder: ""
         }
@@ -137,6 +141,7 @@
 
     function handleAddPaymentOption() {
         console.log('do something');
+        showAddPaymentOption.value = null;
 
         snackbar.add({
             type: 'success',

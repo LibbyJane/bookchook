@@ -1,12 +1,14 @@
 <template>
     <p class="help">
-        <HelpIcon cssClass="icon--sm" />
+        <HelpCircle class="icon--sm" />
         {{ message }}
         <slot />
     </p>
 </template>
 
 <script setup>
+    import { HelpCircle } from '@iconoir/vue';
+
     import HelpIcon from '@/components/icons/question-mark-circle.vue'
 
     const props = defineProps({
@@ -21,14 +23,14 @@
         // background: var(--c-danger-light);
         display: flex;
             gap: var(--space-xs);
-            align-items: start;
-        font-size: var(--p-sm);
+            align-items: center;
+        font-size: var(--sm);
         line-height: var(--line-height-sm);
         margin: 0;
         opacity: 0.85;
         padding: var(--space-xs) 0;
 
-        .icon {
+        svg {
             opacity: 0.8;
         }
     }

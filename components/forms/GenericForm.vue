@@ -7,8 +7,10 @@
                 id="key"
                 :labelText="field.label ? field.label : getLabelText(key)"
                 :required="field.required"
+                :showValidationStatus="field.type != 'toggle'"
                 :error="field.error"
                 :hidden="field.type && field.type == 'hidden'"
+                :help="field.help"
             >
                 <input v-if="displayAsInput(field)"
                     v-model="fields[key].value"
@@ -20,7 +22,7 @@
                     :placeholder="field.placeholder"
                 />
 
-                <textarea v-if="field.type == 'textarea'"
+                <textarea v-else-if="field.type == 'textarea'"
                     v-model="fields[key].value"
                     v-on:keyup="handleChange(key)"
                     v-on:change="handleChange(key)"
@@ -28,6 +30,20 @@
                     :type="field.type ? field.type : null"
                     :required="field.required"
                     :placeholder="field.placeholder"></textarea>
+
+                <div class="toggle-switch" v-else-if="field.type == 'toggle'">
+                    <span v-if="field.offLabel" class="toggle-switch__off-label">{{ field.offLabel }}</span>
+                    <span class="toggle-switch__input">
+                        <input
+                            v-model="fields[key].value"
+                            v-on:keyup="handleChange(key)"
+                            v-on:change="handleChange(key)"
+                            :id="key"
+                            type="checkbox"
+                        >
+                    </span>
+                    <span v-if="field.onLabel" class="toggle-switch__on-label">{{ field.onLabel }}</span>
+                </div>
             </Field>
         </fieldset>
 
@@ -131,9 +147,11 @@
         for (let [key, value] of Object.entries(props.fields)) {
                 payload.data[key] = value.value;
         }
+        console.log('gf endpoint', props.endpoint);
 
+        console.log('gf payload', payload);
         const outcome = await props.endpoint(payload);
-        // console.log('outcome', outcome);
+        console.log('gf outcome', outcome);
 
         form.state = '';
         let errorMessage;

@@ -1,4 +1,5 @@
 .card {
+    --card-padding: var(--content-padding);
     // background: var(--c-white);
     background: var(--c-background-alt);
     border-radius: var(--space-sm);
@@ -8,7 +9,7 @@
         flex-direction: column;
     margin-bottom: var(--space);
     overflow: hidden;
-    // padding: var(--content-padding-all);
+    // padding: var(--card-padding-all);
 
 
     #{$hover} {
@@ -25,25 +26,22 @@
         align-items: center;
     grid-column-start: 1;
     grid-column-end: -1;
-    padding: var(--content-padding);
+    padding: var(--card-padding);
     position: relative;
     // overflow: hidden; breaks when session titles are long on the schedule page
 
     .card--solid-header & {
         background-color: var(--c-text);
         color: var(--c-background);
-        margin-bottom: var(--space);
-        padding-block: var(--space);
+        margin-bottom: var(--card-padding);
+        padding-block: var(--card-padding);
     }
 
     .card--header-bk & {
         background-color: hsla(var(--c-accent-hsl), 0.09);
         color: var(--c-text);
-        // background-color: var(--c-text);
-        // color: var(--c-background);
-        // border-bottom: var(--border);
-        margin-bottom: var(--space);
-        padding-block: var(--space);
+        margin-bottom: var(--card-padding);
+        padding-block: var(--card-padding);
     }
 
     button {
@@ -68,7 +66,8 @@
 }
 
 .card__body {
-    padding: var(--content-padding-all);
+    padding: var(--card-padding);
+    padding-bottom: calc(var(--card-padding) - var(--space));
     padding-top: 0;
     position: relative;
 }
@@ -76,7 +75,7 @@
 .card__footer {
     // background-color: var(--c-background);
     // border-top: var(--border-light);
-    padding: var(--space-sm) var(--content-padding) 0;
+    padding: var(--space-sm) var(--card-padding) 0;
 
     p {
         margin-bottom: var(--space-sm);

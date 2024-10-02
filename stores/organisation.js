@@ -1085,8 +1085,9 @@ export const useOrganisationStore = defineStore('organisationStore', {
             }
             return response;
         },
-        async addMembership() {
-            const response = await useOrganisationAPI({endpoint: `addMembership`});
+        async addMembership({data}) {
+            console.log('organisation store / add membership', data);
+            const response = await useOrganisationAPI({endpoint: `addMembership`, data});
             if (response.data?.status) {
                 this.purchaseTypes.memberships.push(response.data.membership);
                 return true;

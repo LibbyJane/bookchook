@@ -91,7 +91,7 @@ const endpoints = {
 }
 
 export async function useOrganisationAPI({endpoint, data, id, qs, $pinia }) {
-    // console.log('use organisation api', endpoint, data, id, qs, $pinia);
+    console.log('use organisation api', endpoint, data, id, qs, $pinia);
     const userStore = useUserStore($pinia)
 
     // console.log('useOrganisationAPI config:', config);
@@ -125,10 +125,11 @@ export async function useOrganisationAPI({endpoint, data, id, qs, $pinia }) {
             config.url = config.url + `/${endpoints[endpoint].uriAddendum}`;
         }
 
-        // console.log('final config', config);
+        console.log('final config', config);
 
         try {
             const response = await axios(config);
+            console.log('response', response);
             return response;
         } catch (error) {
             // console.log('error', error)

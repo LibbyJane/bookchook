@@ -1,6 +1,6 @@
 <template>
     <div class="field-wrapper" :class="cssClass">
-        <Label :labelFor="id" :text="labelText" :required="required" />
+        <Label :labelFor="id" :text="labelText" :required="required" :showValidationStatus="showValidationStatus" />
         <Help v-if="help" :message="help" />
         <slot />
         <Error v-if="error" :message="error" />
@@ -24,6 +24,9 @@
             type: [String, Boolean],
             default: false
         },
+        showValidationStatus: {
+            default: true
+        },
         error: {
             type: String
         },
@@ -35,17 +38,6 @@
 
 
 <style lang="scss">
-    label {
-        font-size: var(--p-sm);
-        font-weight: 500;
-        display: flex;
-            gap: var(--space-xxs);
-        //margin: 0 0 var(--space-sm) 0;
-        margin: 0;
-        padding: 0;
-        text-transform: capitalize; // for when object keys are used to generate label text, eg billing preferences
-    }
-
     .field-wrapper {
         &:has(:valid) {
             .field-status__icon--valid {
