@@ -1070,9 +1070,6 @@ export const useOrganisationStore = defineStore('organisationStore', {
             if (response?.data?.status) {
                 const index = this.customerGroups.findIndex((group => group.id == id));
                 this.customerGroups[index].customers = response.data.users;
-                // return response.data.users;
-                // this.getCustomerGroupsList();
-
                 return true;
             }
             return response;
@@ -1086,11 +1083,37 @@ export const useOrganisationStore = defineStore('organisationStore', {
             return response;
         },
         async addMembership({data}) {
-            console.log('organisation store / add membership', data);
             const response = await useOrganisationAPI({endpoint: `addMembership`, data});
             if (response.data?.status) {
                 this.purchaseTypes.memberships.push(response.data.membership);
                 return true;
+            }
+            return response;
+        },
+        async deleteMembership({id}) {
+            const response = await useOrganisationAPI({endpoint: `deleteMembership`, id});
+            if (response.data?.status) {
+                const index = this.purchaseTypes.memberships.findIndex((element => element.id == id));
+                this.purchaseTypes.memberships.splice(index, 1);
+                return true;
+            }
+            return response;
+        },
+        async updateMembership({id, data}) {
+            const response = await useOrganisationAPI({endpoint: `updateMembership`, id, data});
+            if (response.data?.status) {
+                const indexToUpdate = this.purchaseTypes.memberships.findIndex((element => element.id == id));
+                this.purchaseTypes.memberships[indexToUpdate] = data;
+                return true;
+            }
+            return response;
+        },
+        async getAllUsersForMembership({id}) {
+            const response = await useOrganisationAPI({endpoint: `getAllUsersForMembership`, id});
+            if (response.data?.status) {
+                const index = this.purchaseTypes.memberships.findIndex((element => element.id == id));
+                this.purchaseTypes.memberships[index].users = response.data;
+                return response.data;
             }
             return response;
         }

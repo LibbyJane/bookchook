@@ -47,6 +47,27 @@
     --tw-backdrop-saturate:  ;
     --tw-backdrop-sepia:  }
 
+.table-with-card {
+    @include breakpoint(med) {
+        display: flex;
+            //justify-content: space-between;
+            justify-content: start;
+            gap: var(--space-med);
+    }
+}
+
+.table-with-card--row-selected {
+    .hide-if-row-selected {
+        @include breakpoint(med) {
+            display: none;
+        }
+    }
+}
+
+.table-with-card__card {
+    flex: 1;
+}
+
 .bh-table-responsive {
     @include scrollbars;
     border-radius: var(--border-radius);

@@ -44,6 +44,16 @@
         padding-block: var(--card-padding);
     }
 
+    .card--header-bk-alt & {
+        background-color: hsla(var(--c-accent-hsl), 0.09);
+        color: var(--c-text);
+        background-image: radial-gradient(hsla(var(--c-accent-hsl), 0.29) 1px, hsla(var(--c-accent-hsl), 0.09) 1px);
+        background-size: 20px 20px;
+
+        margin-bottom: var(--card-padding);
+        padding-block: var(--card-padding);
+    }
+
     button {
         opacity: 0.6;
 

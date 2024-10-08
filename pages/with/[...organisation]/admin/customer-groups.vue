@@ -20,40 +20,38 @@
         </template>
     </Card>
 
-    <section class="customer-groups" :class="selectedGroup ? 'customer-groups--group-selected' : null" >
-        <div class="customer-group-listing" >
-            <vue3-datatable
-                v-if="organisationStore.customerGroups"
-                :rows="organisationStore.customerGroups"
-                :columns="cols"
-                :sortable="true"
-                :key="organisationStore.customerGroups?.length"
-                :totalRows="organisationStore.customerGroups?.length"
-                sortColumn="created_dtm"
-                sortDirection="desc"
-                :columnFilter="false"
-                pageSize="20"
-                :pageSizeOptions="[20, 50, 100]"
-                :showPageSize="organisationStore.customerGroups?.length > 20"
-                :pagination="organisationStore.customerGroups?.length > 20"
-                noDataContent="You don’t have any customer groups to display."
-                :loader="true"
-                skin="bh-table-hover"
-                v-on:rowClick="handleRowClick"
-            >
-                <template #group_name="data">
-                    <strong>{{ data.value.group_name }}</strong>
-                </template>
+    <section class="table-with-card" :class="selectedGroup ? 'customer-groups--group-selected' : null" >
+        <vue3-datatable
+            v-if="organisationStore.customerGroups"
+            :rows="organisationStore.customerGroups"
+            :columns="cols"
+            :sortable="true"
+            :key="organisationStore.customerGroups?.length"
+            :totalRows="organisationStore.customerGroups?.length"
+            sortColumn="created_dtm"
+            sortDirection="desc"
+            :columnFilter="false"
+            pageSize="20"
+            :pageSizeOptions="[20, 50, 100]"
+            :showPageSize="organisationStore.customerGroups?.length > 20"
+            :pagination="organisationStore.customerGroups?.length > 20"
+            noDataContent="You don’t have any customer groups to display."
+            :loader="true"
+            skin="bh-table-hover"
+            v-on:rowClick="handleRowClick"
+        >
+            <template #group_name="data">
+                <strong>{{ data.value.group_name }}</strong>
+            </template>
 
-                <template #actions="data">
-                    <ArrowRightCircle />
-                </template>
-            </vue3-datatable>
-        </div>
+            <template #actions="data">
+                <ArrowRightCircle />
+            </template>
+        </vue3-datatable>
         <div ref="selectedCustomerGroupElem" aria-hidden="true"></div>
         <Card v-if="selectedGroup" :id="selectedGroup.id" :cssClass="`customer-group sticky card--header-bk`" :title="getGroupName">
             <template #header>
-                <p class="p-small m-top">{{ selectedGroup.description }}</p>
+                <p class="p-small m-top m-bottom-0">{{ selectedGroup.description }}</p>
             </template>
             <template #actions>
                 <button type="button" class="btn btn--sm" v-on:click="handleEditGroupClick()" title="Edit Customer Group">
@@ -409,22 +407,16 @@
     }
 
     .customer-groups {
-        @include breakpoint(med) {
-            display: flex;
-            justify-content: space-between;
-            gap: var(--space-med);
+        table {
+            max-width: 500px;
+        }
+
+        tr {
+            cursor: pointer;
         }
 
         textarea {
             min-height: 5rem;
-        }
-    }
-
-    .customer-group-listing {
-        max-width: 500px;
-
-        tr {
-            cursor: pointer;
         }
     }
 
