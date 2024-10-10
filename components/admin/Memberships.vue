@@ -25,7 +25,7 @@
             v-if="organisationStore.purchaseTypes.memberships"
             :rows="organisationStore.purchaseTypes.memberships"
             :columns="cols"
-            :sortable="true"
+            :sortable="organisationStore.purchaseTypes.memberships?.length > 2"
             :key="organisationStore.purchaseTypes.memberships?.length"
             :totalRows="organisationStore.purchaseTypes.memberships?.length"
             sortDirection="desc"
@@ -51,7 +51,22 @@
         </vue3-datatable>
         <div class="table-with-card__card">
             <div ref="selectedItemElem" aria-hidden="true"></div>
-            <Card v-if="selectedItem" :id="selectedItem.id" :cssClass="`membership sticky ${selectedItem.is_public ? 'card--header-bk' : 'card--header-bk-alt' }`" :title="`${selectedItem.name} (${selectedItem.is_public ? 'publically available' : 'invitation only'})`">
+            <!-- <Card v-if="selectedItem" :id="selectedItem.id" :cssClass="`membership sticky ${selectedItem.is_public ? 'card--header-bk' : 'card--header-bk-alt' }`"> -->
+            <Card v-if="selectedItem" :id="selectedItem.id" class="membership sticky card--header-bk">
+                <template #header>
+                    <h3 class="card__header-heading">
+                        {{ selectedItem.name }}
+                    </h3>
+                    <p class="card__header-subheading pill">
+                        <template v-if="selectedItem.is_public">
+                            Publically Available
+                        </template>
+                        <template v-if="!selectedItem.is_public">
+                            <Lock />Invitation Only
+                        </template>
+                    </p>
+                </template>
+
                 <template #actions>
                 <button type="button" class="btn btn--sm" v-on:click="handleEditButtonClick()" title="Edit">
                     <Xmark v-if="inEditMode" />
@@ -92,11 +107,11 @@
                     <Header elemType="h6" :title="`${selectedItem.users?.length ? selectedItem.users.length : 'No' } active member${ selectedItem.users?.length == 1 ? '' : 's' }`">
                         <template #actions>
                             <button type="button" class="btn btn--secondary" v-on:click="toggleAddMembershipOptionVisibility">
-                                <template v-if="!showAddNewForm">
+                                <template v-if="!showAddUserForm">
                                     <Plus />
                                     Add User
                                 </template>
-                                <template v-if="showAddNewForm">
+                                <template v-if="showAddUserForm">
                                     <Xmark />
                                     Cancel
                                 </template>
@@ -108,7 +123,7 @@
                         v-if="selectedItem && selectedItem.users?.length"
                         :rows="selectedItem.users"
                         :columns="membershipUsersCols"
-                        :sortable="true"
+                        :sortable="selectedItem.users?.length > 2"
                         :sortColumn="expires_dtm"
                         :sortDirection="desc"
                         :columnFilter="false"
@@ -143,7 +158,7 @@
 
 <script setup>
     import { ref, reactive } from 'vue';
-    import { Plus, EditPencil, Xmark, Trash, ArrowRightCircle} from '@iconoir/vue';
+    import { Plus, EditPencil, Xmark, Trash, ArrowRightCircle, OpenBook, BookLock, Lock} from '@iconoir/vue';
     import { formatDtmShort, daysUntilDtm } from '@/utils/dates';
     import Header from '@/components/admin/PageHeader.vue';
     import Vue3Datatable from "@bhplugin/vue3-datatable";
@@ -235,7 +250,7 @@
     await useAsyncData(() => organisationStore.getOrganisationBillingSettings());
 
     function toggleAddMembershipOptionVisibility() {
-       showAddNewForm.value = !showAddNewForm.value;
+        showAddNewForm.value = !showAddNewForm.value;
           // fields.name.value = "";
         // fields.description.value = "";
         // if (showAddNewForm.value) {
@@ -354,6 +369,9 @@
     async function handleMembershipUserRowClick() {
         console.log('do something?');
     }
+
+    // Add user to membership
+    const showAddUserForm = ref(null);
 </script>
 
 <style lang="scss">

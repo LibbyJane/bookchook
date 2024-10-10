@@ -99,25 +99,34 @@ em {
     font-weight: 500;
 }
 
-blockquote {
-    // background: #f9f9f9;
-    border-left: 10px solid hsla(var(--c-text-hsl), 0.15);
-    margin: 0 0 var(--space-med);
-    padding: var(--space-sm) var(--space);
-    quotes: "\201C""\201D""\2018""\2019";
-  }
-  blockquote:before {
-    color: hsla(var(--c-text-hsl), 0.15);
-    content: open-quote;
-    font-size: 4rem;
-    line-height: 0.1em;
-    margin-right: 0.25em;
-    vertical-align: -0.4em;
-    background-color: pink;
-  }
-  blockquote p {
-    display: inline;
-  }
+::selection {
+    background-color: var(--c-accent-light);
+    // background-color: hsla(calc(var(--c-accent-hue) - 10), var(--c-accent-sat), var(--c-accent-lum), 0.9);
+    // background-color: var(--c-header-accent);
+
+    color: var(--c-accent-contrast);
+    filter: hue-rotate(180deg);
+}
+
+// blockquote {
+//     // background: #f9f9f9;
+//     border-left: 10px solid hsla(var(--c-text-hsl), 0.15);
+//     margin: 0 0 var(--space-med);
+//     padding: var(--space-sm) var(--space);
+//     quotes: "\201C""\201D""\2018""\2019";
+//   }
+//   blockquote:before {
+//     color: hsla(var(--c-text-hsl), 0.15);
+//     content: open-quote;
+//     font-size: 4rem;
+//     line-height: 0.1em;
+//     margin-right: 0.25em;
+//     vertical-align: -0.4em;
+//     background-color: pink;
+//   }
+//   blockquote p {
+//     display: inline;
+//   }
 
 
 

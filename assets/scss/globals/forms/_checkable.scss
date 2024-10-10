@@ -60,7 +60,8 @@ input[type="radio"] {
 
 
     &:has(input:checked) {
-        background: var(--c-success);
+        //background: var(--c-success);
+        background: var(--c-accent);
         // background: radial-gradient(ellipse farthest-corner at center center, var(--c-success-light) 0%, var(--c-success) 100%);
         // background: linear-gradient(-90deg, var(--c-success-light) 0%, var(--c-success) 100%);
 
@@ -72,7 +73,8 @@ input[type="radio"] {
         }
 
         ~.toggle-switch__on-label {
-            color: var(--c-success);
+            //color: var(--c-success);
+            color: var(--c-accent);
             opacity: 1;
         }
     }

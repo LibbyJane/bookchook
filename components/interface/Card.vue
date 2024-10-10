@@ -3,7 +3,7 @@
         <header class="card__header">
             <div class="card__header-title">
                 <!-- <slot name="header-icon"></slot> -->
-                <h2 v-if="title" class="card__header--heading" :class="titleCssClass">
+                <h2 v-if="title" class="card__header-heading" :class="titleCssClass">
                     {{ title }}
                 </h2>
                 <slot name="header"></slot>

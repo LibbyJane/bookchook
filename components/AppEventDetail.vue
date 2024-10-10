@@ -2,7 +2,7 @@
     <section class="schedule-card__wrapper container sticky" v-if="eventData">
         <div class="schedule-card">
             <header class="card__header">
-                <h4 class="card__header--heading">{{ eventData.title }}</h4>
+                <h4 class="card__header-heading">{{ eventData.title }}</h4>
                 <a v-if="eventActive" href="#tickets" class="btn btn--secondary">
                     <span class="btn__text">Book</span>
                     <ArrowIcon />

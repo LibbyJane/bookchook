@@ -146,7 +146,7 @@
             :class="{ 'editing': inEditMode == key }"
         >
             <template #header>
-                <h4 class="card__header--heading">{{ pt.name }}</h4>
+                <h4 class="card__header-heading">{{ pt.name }}</h4>
             </template>
             <template #actions>
                 <button type="button" class="btn btn--sm btn--tertiary" v-on:click="inEditMode == key ? inEditMode = null : inEditMode = key">

@@ -26,7 +26,7 @@
             :class="{ 'editing': inEditMode == key }"
         >
             <template #header>
-                <h3 class="card__header--heading" v-if="inEditMode != key">{{ location.name }}</h3>
+                <h3 class="card__header-heading" v-if="inEditMode != key">{{ location.name }}</h3>
             </template>
             <template #actions>
                 <button type="button" class="btn btn--sm btn--tertiary" v-on:click="inEditMode == key ? inEditMode = null : inEditMode = key">
