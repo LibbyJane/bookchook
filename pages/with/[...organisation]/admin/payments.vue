@@ -9,6 +9,5 @@
 
 <script setup>
     import Header from '@/components/admin/PageHeader.vue';
-
     import Memberships from '@/components/admin/Memberships.vue';
 </script>

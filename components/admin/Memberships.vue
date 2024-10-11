@@ -104,9 +104,9 @@
                     <p>{{ selectedItem.description }}</p>
                     <p><strong>{{ organisationStore.settings.billing.currency_symbol }}{{ selectedItem.price }} for {{ selectedItem.duration }} {{ (selectedItem.duration_unit).toLowerCase() }}</strong></p>
 
-                    <Header elemType="h6" :title="`${selectedItem.users?.length ? selectedItem.users.length : 'No' } active member${ selectedItem.users?.length == 1 ? '' : 's' }`">
+                    <Header elemType="h6" :title="`${selectedItem.membership_users?.length ? selectedItem.membership_users.length : 'No' } active member${ selectedItem.membership_users?.length == 1 ? '' : 's' }`">
                         <template #actions>
-                            <button type="button" class="btn btn--secondary" v-on:click="toggleAddMembershipOptionVisibility">
+                            <button type="button" class="btn btn--secondary" v-on:click="toggleAddUserFormVisibility">
                                 <template v-if="!showAddUserForm">
                                     <Plus />
                                     Add User
@@ -118,25 +118,33 @@
                             </button>
                         </template>
                     </Header>
+                    <!-- <AddUser v-if="showAddUserForm" :endpoint="organisationStore.addMembership" :callback="handleAddMembershipOption" /> -->
+
+
+                    <CustomerList v-if="showAddUserForm" :initialSelection="selectedItem.membership_users" :callback="handleUsersAdded" />
+
 
                     <vue3-datatable
-                        v-if="selectedItem && selectedItem.users?.length"
-                        :rows="selectedItem.users"
+                        v-if="selectedItem && selectedItem.membership_users?.length"
+                        :rows="selectedItem.membership_users"
                         :columns="membershipUsersCols"
-                        :sortable="selectedItem.users?.length > 2"
+                        :sortable="selectedItem.membership_users?.length > 1"
                         :sortColumn="expires_dtm"
                         :sortDirection="desc"
                         :columnFilter="false"
                         pageSize="100"
                         :pageSizeOptions="[100, 200, 1000]"
-                        :showPageSize="selectedItem.users?.length > 100"
-                        :pagination="selectedItem.users?.length > 100"
+                        :showPageSize="selectedItem.membership_users?.length > 100"
+                        :pagination="selectedItem.membership_users?.length > 100"
                         :loader="true"
                         skin="bh-table-hover"
                         v-on:rowClick="handleMembershipUserRowClick"
                     >
-                        <template #user="data">
-                            {{ data.value.user.first_name }} {{ data.value.user.last_name }}
+                        <template #first_name="data">
+                            {{ data.value.user.first_name }}
+                        </template>
+                        <template #last_name="data">
+                            {{ data.value.user.last_name }}
                         </template>
                         <template #created_dtm="data">
                             {{ formatDtmShort(data.value.created_dtm) }}
@@ -158,14 +166,17 @@
 
 <script setup>
     import { ref, reactive } from 'vue';
-    import { Plus, EditPencil, Xmark, Trash, ArrowRightCircle, OpenBook, BookLock, Lock} from '@iconoir/vue';
+    import { Plus, EditPencil, Xmark, Trash, ArrowRightCircle, Lock} from '@iconoir/vue';
+    import { useOrganisationStore } from '@/stores/organisation';
     import { formatDtmShort, daysUntilDtm } from '@/utils/dates';
     import Header from '@/components/admin/PageHeader.vue';
+    import CustomerList from '@/components/admin/CustomerList.vue';
+
     import Vue3Datatable from "@bhplugin/vue3-datatable";
     import Card from '@/components/interface/Card.vue';
     import GenericForm from '@/components/forms/GenericForm.vue';
     import Dialog from '@/components/interface/Dialog.vue';
-    import { useOrganisationStore } from '@/stores/organisation';
+
 
     const organisationStore = useOrganisationStore();
     const showAddNewForm = ref(null);
@@ -184,7 +195,8 @@
     ]);
 
     const membershipUsersCols = ref([
-        { field: "user", title: "Name"},
+        { field: "first_name", title: "First Name" },
+        { field: "last_name", title: "Last Name" },
         { field: "created_dtm", title: "Created"},
         { field: "expires_dtm", title: "Expires"},
         { field: "remaining", title: "Days Remaining"},
@@ -279,7 +291,7 @@
         selectedItem.value = data;
         // resetselectedItem();
 
-        if (!selectedItem.value?.users) {
+        if (!selectedItem.value?.membership_users) {
             const response = await organisationStore.getAllUsersForMembership({id: data.id});
             console.log('response', response);
 
@@ -289,7 +301,7 @@
                     text: 'User data could not be loaded. Please try again later.'
                 });
             }
-            selectedItem.value.users = response.membership_users;
+            selectedItem.value.membership_users = response.membership_users;
         }
 
         // history.pushState({}, "", route.path + '#' + data.id);
@@ -371,7 +383,47 @@
     }
 
     // Add user to membership
+
     const showAddUserForm = ref(null);
+
+    let userFieldDefaults = {
+        user: {
+            label: "Select",
+            value: {},
+            options: [],
+            required: true,
+            error: null,
+            placeholder: ""
+        }
+    }
+
+    const addUserFields = reactive({...userFieldDefaults});
+
+
+    async function toggleAddUserFormVisibility() {
+        showAddUserForm.value = !showAddUserForm.value;
+
+        if (!organisationStore.customers?.length) {
+            await organisationStore.getOrganisationCustomers();
+        }
+
+        addUserFields.user.options = organisationStore.customers;
+
+
+          // fields.name.value = "";
+        // fields.description.value = "";
+        // if (showAddNewForm.value) {
+        //     resetselectedItem();
+        //     return;
+        // }
+    }
+
+    function handleUsersAdded() {
+        console.log('do something');
+    }
+
+
+
 </script>
 
 <style lang="scss">

@@ -17,9 +17,9 @@
                     v-on:keyup="handleChange(key)"
                     v-on:change="handleChange(key)"
                     :id="key"
-                    :type="field.type ? field.type : null"
                     :required="field.required"
                     :placeholder="field.placeholder"
+                    :type="field.type ? field.type : null"
                 />
 
                 <textarea v-else-if="field.type == 'textarea'"
@@ -27,9 +27,21 @@
                     v-on:keyup="handleChange(key)"
                     v-on:change="handleChange(key)"
                     :id="key"
-                    :type="field.type ? field.type : null"
                     :required="field.required"
                     :placeholder="field.placeholder"></textarea>
+
+                <!-- <select v-else-if="field.type == 'select'"
+                    v-model="fields[key].value"
+                    v-on:keyup="handleChange(key)"
+                    v-on:change="handleChange(key)"
+                    :id="key"
+                    :type="field.type ? field.type : null"
+                    :required="field.required"
+                    :placeholder="field.placeholder"
+                >
+                    <option :selected="!fields[key].value">Please choose</option>
+                    <option v-for="option in field.options" :value="option.value">{{ option.text }}</option>
+                </select> -->
 
                 <div class="toggle-switch" v-else-if="field.type == 'toggle'">
                     <span v-if="field.offLabel" class="toggle-switch__off-label">{{ field.offLabel }}</span>

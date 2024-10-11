@@ -1,13 +1,13 @@
 <template>
-    <div v-if="data" class="selectable-list">
+    <div v-if="organisationStore.customers" class="selectable-list">
         <vue3-datatable
-            :rows="data"
+            :rows="organisationStore.customers"
             :columns="cols"
             :sortable="true"
             :columnFilter="true"
             :pageSizeOptions="[50, 100]"
-            :showPageSize="data.length > 49"
-            :pagination="data.length > 49"
+            :showPageSize="organisationStore.customers.length > 49"
+            :pagination="organisationStore.customers.length > 49"
             :stickyHeader="true"
             height="50vh"
             noDataContent="No matches found."
@@ -25,14 +25,13 @@
 </template>
 
 <script setup>
-    import { ref, onMounted, onUpdated, computed, watch, nextTick } from 'vue';
+    import { ref, onMounted } from 'vue';
     import Vue3Datatable from "@bhplugin/vue3-datatable";
 
+    const organisationStore = useOrganisationStore();
+    await organisationStore.getOrganisationCustomers();
+
     const props = defineProps({
-        data: {
-            type: Object,
-            required: true
-        },
         initialSelection: {
             type: Array,
             required: false

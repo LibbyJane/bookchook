@@ -88,24 +88,6 @@
 
                 <GenericForm v-if="inEditMode" title="Edit Customer Group" :id="selectedGroup.id" :fields="selectedGroupFields" :endpoint="organisationStore.updateCustomerGroup" :callback="handleEditCustomerGroup" :showReset="false" />
 
-                <!-- <section class="section">
-                    <header class="section__header">
-                        <h4 class="section__header-title">Discounts and Offers</h4>
-                        <button type="button" class="btn btn--sm btn--secondary" v-on:click="addNewOffer = !addNewOffer" title="Add Offer">
-                            <EditPencil v-if="!editGroupCustomers" />
-                            <span v-if="!editGroupCustomers">Add Discount or Offer</span>
-
-                            <Xmark v-if="editGroupCustomers" />
-                            <span v-if="editGroupCustomers">Cancel</span>
-                        </button>
-
-                        <button v-if="editGroupCustomers" type="button" class="btn btn--sm btn--success" v-on:click="handleEditCustomerGroupCustomers">
-                            <FloppyDisk />
-                            Save Customers
-                        </button>
-                    </header>
-                </section> -->
-
                 <section class="section">
                     <header class="section__header">
                         <h4 class="section__header-title">Customers</h4>
@@ -138,7 +120,7 @@
                         <li v-for="customer in selectedCustomers">{{ customer.first_name }} {{ customer.last_name }}</li>
                     </ul>
 
-                    <CustomerList v-if="editGroupCustomers" :data="organisationStore.customers" :initialSelection="selectedGroup.customers" :callback="handleSelectedCustomersUpdate" />
+                    <CustomerList v-if="editGroupCustomers" :initialSelection="selectedGroup.customers" :callback="handleSelectedCustomersUpdate" />
                 </section>
             </template>
 
@@ -168,7 +150,6 @@
 
     const organisationStore = useOrganisationStore();
     await useAsyncData(() => organisationStore.getCustomerGroupsList());
-    organisationStore.getOrganisationCustomers();
 
     const snackbar = useSnackbar();
     const route = useRoute();
