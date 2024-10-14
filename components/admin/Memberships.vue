@@ -20,6 +20,7 @@
         </template>
     </Card>
 
+    <pre>{{ selectedItem }}</pre>
     <section class="table-with-card" :class="selectedItem ? 'table-with-card--row-selected' : null">
         <vue3-datatable
             v-if="organisationStore.purchaseTypes.memberships"
@@ -121,8 +122,8 @@
                     <!-- <AddUser v-if="showAddUserForm" :endpoint="organisationStore.addMembership" :callback="handleAddMembershipOption" /> -->
 
 
-                    <CustomerList v-if="showAddUserForm" :initialSelection="selectedItem.membership_users" :callback="handleUsersAdded" />
-
+                    <!-- <CustomerList v-if="showAddUserForm" :initialSelection="selectedItem.membership_users" :callback="handleUsersAdded" /> -->
+                    <GenericForm v-if="showAddUserForm" :fields="addUserFields" :endpoint="organisationStore.addUserToMembership" :callback="handleUserAdded" :showReset="false" />
 
                     <vue3-datatable
                         v-if="selectedItem && selectedItem.membership_users?.length"
@@ -170,19 +171,23 @@
     import { useOrganisationStore } from '@/stores/organisation';
     import { formatDtmShort, daysUntilDtm } from '@/utils/dates';
     import Header from '@/components/admin/PageHeader.vue';
-    import CustomerList from '@/components/admin/CustomerList.vue';
 
     import Vue3Datatable from "@bhplugin/vue3-datatable";
     import Card from '@/components/interface/Card.vue';
     import GenericForm from '@/components/forms/GenericForm.vue';
     import Dialog from '@/components/interface/Dialog.vue';
-
+    import { getUsersForSelect } from '@/utils/forms';
+import exp from 'constants';
 
     const organisationStore = useOrganisationStore();
+    await useAsyncData(() => organisationStore.getOrganisationMemberships());
+    await useAsyncData(() => organisationStore.getOrganisationBillingSettings());
+
     const showAddNewForm = ref(null);
     const selectedItem = ref(null);
     const selectedItemElem = ref(null);
     const snackbar = useSnackbar();
+
 
     const route = useRoute();
 
@@ -258,8 +263,7 @@
 
     let editFields;
 
-    await useAsyncData(() => organisationStore.getOrganisationMemberships());
-    await useAsyncData(() => organisationStore.getOrganisationBillingSettings());
+
 
     function toggleAddMembershipOptionVisibility() {
         showAddNewForm.value = !showAddNewForm.value;
@@ -385,15 +389,32 @@
     // Add user to membership
 
     const showAddUserForm = ref(null);
+    const usersForSelect =  await getUsersForSelect();
+    const firstOption = {value: null, text: "Please select", disabled: true};
 
     let userFieldDefaults = {
         user: {
-            label: "Select",
-            value: {},
-            options: [],
+            label: "Customer",
+            type: "select",
+            cssClass: "inline",
+            value: -1,
+            options: [firstOption, ...usersForSelect],
             required: true,
             error: null,
             placeholder: ""
+        },
+        expiry_date: {
+            label: "End Date",
+            type: "date",
+            cssClass: "inline",
+            value: new Date(),
+            required: true,
+            error: null,
+            placeholder: ""
+        },
+        membership_id: {
+            type: "hidden",
+            value: null
         }
     }
 
@@ -402,12 +423,18 @@
 
     async function toggleAddUserFormVisibility() {
         showAddUserForm.value = !showAddUserForm.value;
+        addUserFields.membership_id.value = selectedItem.value.membership_id;
+        addUserFields.user.options =  [firstOption, ...usersForSelect];
 
-        if (!organisationStore.customers?.length) {
-            await organisationStore.getOrganisationCustomers();
-        }
+        selectedItem.value.membership_users.forEach(user => {
+            const index = usersForSelect.findIndex((element) => element.value == user.user.id);
+            if (index > -1) usersForSelect[index].disabled = true;
+        });
 
-        addUserFields.user.options = organisationStore.customers;
+        const today = new Date();
+        let expiry = new Date(today.setMonth(today.getMonth() + selectedItem.value.duration));
+
+        addUserFields.expiry_date.value = `${expiry.getFullYear()}-${expiry.getMonth() + 1}-${expiry.getDate()}`;
 
 
           // fields.name.value = "";
@@ -419,7 +446,7 @@
     }
 
     function handleUsersAdded() {
-        console.log('do something');
+        console.log('do')
     }
 
 

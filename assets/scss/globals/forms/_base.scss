@@ -61,8 +61,15 @@ form {
 fieldset {
     border: var(--border-width) solid var(--c-border);
     border-radius: var(--border-radius);
+    display: flex;
     margin-bottom: var(--space);
     padding: var(--content-padding-all);
+}
+
+.fieldset--flex {
+    display: flex;
+        gap: 0 var(--space);
+    flex-wrap: wrap;
 }
 
 legend {

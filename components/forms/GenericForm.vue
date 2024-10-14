@@ -1,10 +1,11 @@
 <template>
     <form v-on:submit="handleSubmit" class="form" :class="{ 'loading': form.state == 'loading', 'form-error': form.error, cssClass } " ref="formElement">
-        <fieldset>
+        <fieldset class="fieldset--flex">
             <h5 v-if="title" class="m-bottom">{{ title }}</h5>
             <Field
                 v-for="(field, key) in fields"
                 id="key"
+                :cssClass="field.cssClass"
                 :labelText="field.label ? field.label : getLabelText(key)"
                 :required="field.required"
                 :showValidationStatus="field.type != 'toggle'"
@@ -12,6 +13,7 @@
                 :hidden="field.type && field.type == 'hidden'"
                 :help="field.help"
             >
+
                 <input v-if="displayAsInput(field)"
                     v-model="fields[key].value"
                     v-on:keyup="handleChange(key)"
@@ -30,7 +32,7 @@
                     :required="field.required"
                     :placeholder="field.placeholder"></textarea>
 
-                <!-- <select v-else-if="field.type == 'select'"
+                <select v-else-if="field.type == 'select'"
                     v-model="fields[key].value"
                     v-on:keyup="handleChange(key)"
                     v-on:change="handleChange(key)"
@@ -39,9 +41,9 @@
                     :required="field.required"
                     :placeholder="field.placeholder"
                 >
-                    <option :selected="!fields[key].value">Please choose</option>
-                    <option v-for="option in field.options" :value="option.value">{{ option.text }}</option>
-                </select> -->
+                    <slot />
+                    <option v-for="option in field.options" :value="option.value" :disabled="option.disabled">{{ option.text }}</option>
+                </select>
 
                 <div class="toggle-switch" v-else-if="field.type == 'toggle'">
                     <span v-if="field.offLabel" class="toggle-switch__off-label">{{ field.offLabel }}</span>
@@ -56,6 +58,9 @@
                     </span>
                     <span v-if="field.onLabel" class="toggle-switch__on-label">{{ field.onLabel }}</span>
                 </div>
+
+                <!-- <VDatePicker v-else-if="field.type == 'date'" v-model="fields[key].value" :attributes="field.datePickerAttrs"
+                 /> -->
             </Field>
         </fieldset>
 
@@ -124,7 +129,7 @@
         const fieldType = field.type.toLowerCase();
 
 
-        if (fieldType == 'text' || fieldType == 'number' || fieldType == 'password' || fieldType == 'input' || fieldType == 'hidden') {
+        if (fieldType == 'text' || fieldType == 'number' || fieldType == 'password' || fieldType == 'date' || fieldType == 'input' || fieldType == 'hidden') {
             return true;
         }
     }
@@ -157,13 +162,24 @@
         };
 
         for (let [key, value] of Object.entries(props.fields)) {
-                payload.data[key] = value.value;
-        }
-        console.log('gf endpoint', props.endpoint);
+            payload.data[key] = value.value;
 
-        console.log('gf payload', payload);
+            if (value.type == 'date') {
+                console.log('k, v', key, value);
+                const dateParts = value.value.split('-');
+                const year = parseInt(dateParts[0]);
+                const monthIndex = parseInt(dateParts[1]) - 1;
+                const day = parseInt(dateParts[2]);
+
+                console.log('dateParts', dateParts, (new Date(year, monthIndex, day)).toISOString());
+
+                payload.data[key] = (new Date(year, monthIndex, day)).toISOString();
+            }
+        }
+        // console.log('gf endpoint', props.endpoint);
+        // console.log('gf payload', payload);
         const outcome = await props.endpoint(payload);
-        console.log('gf outcome', outcome);
+        // console.log('gf outcome', outcome);
 
         form.state = '';
         let errorMessage;

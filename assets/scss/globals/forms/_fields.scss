@@ -54,7 +54,26 @@ select  {
         opacity: 0.6;
         text-transform: none;
     }
+
+    .theme-light & {
+        color-scheme: light;
+    }
+
+    .theme-dark & {
+        color-scheme: dark;
+    }
 }
+
+// ::-webkit-datetime-edit { padding: 1em; background-color: palevioletred;}
+// ::-webkit-datetime-edit-fields-wrapper { background: teal; }
+// ::-webkit-datetime-edit-text { color: red; padding: 0 0.3em; }
+// ::-webkit-datetime-edit-month-field { color: rgb(10, 165, 165); }
+// ::-webkit-datetime-edit-day-field { color: green; }
+// ::-webkit-datetime-edit-year-field { color: purple; }
+// ::-webkit-inner-spin-button { background-color: yellow; }
+// ::-webkit-calendar-picker { color: lime; background: rgb(255, 0, 162); }
+// ::-webkit-calendar-picker-indicator { color: lime; background: rgb(255, 0, 162); }
+
 
 [disabled],
 .disabled {

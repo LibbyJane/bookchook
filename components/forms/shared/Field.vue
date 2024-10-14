@@ -39,6 +39,12 @@
 
 <style lang="scss">
     .field-wrapper {
+        flex: 0 0 100%;
+
+        &.inline {
+            flex: 1 1 auto;
+        }
+
         &:has(:valid) {
             .field-status__icon--valid {
                 display: block;

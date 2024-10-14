@@ -1118,17 +1118,18 @@ export const useOrganisationStore = defineStore('organisationStore', {
             return response;
         },
         async addUserToMembership({data}) {
-            const response = await useOrganisationAPI({endpoint: `addUserToMembership`, data});
-            if (response.data?.status) {
-                const index = this.purchaseTypes.memberships.findIndex((element => element.id == data.membership_id));
-                if (this.purchaseTypes.memberships[index].membership_users) {
-                    this.purchaseTypes.memberships[index].membership_users.push(response.data.membership_user);
-                    return true;
-                }
-                await this.getAllUsersForMembership(data.membership_id);
-                return true;
-            }
-            return response;
+            console.log('add user', data);
+            // const response = await useOrganisationAPI({endpoint: `addUserToMembership`, data});
+            // if (response.data?.status) {
+            //     const index = this.purchaseTypes.memberships.findIndex((element => element.id == data.membership_id));
+            //     if (this.purchaseTypes.memberships[index].membership_users) {
+            //         this.purchaseTypes.memberships[index].membership_users.push(response.data.membership_user);
+            //         return true;
+            //     }
+            //     await this.getAllUsersForMembership(data.membership_id);
+            //     return true;
+            // }
+            // return response;
         },
     }
 })
