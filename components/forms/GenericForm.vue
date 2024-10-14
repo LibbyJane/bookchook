@@ -45,6 +45,26 @@
                     <option v-for="option in field.options" :value="option.value" :disabled="option.disabled">{{ option.text }}</option>
                 </select>
 
+                <div v-else-if="field.type == 'comboBox'" class="combobox">
+                    <input
+                        type="search"
+                        v-on:input="$event => filterComboBox(key, $event.target.value)"
+                        v-on:focus="$event => filterComboBox(key, $event.target.value)"
+                        :required="field.required"
+                        :id="key"
+                        :placeholder="field.placeholder"
+                        :autofocus="field.autofocus"
+                        v-model="fields[key].searchValue"
+                    />
+                    <ul class="combobox__options">
+                        <li v-for="option in field.options">
+                            <label v-if="!option.hidden" v-on:click="handleCbChange(key, option.text)">
+                                <input type="radio" name="`cb-${key}`" :value="option.value" v-model="fields[key].value" :disabled="option.disabled" />{{ option.text }}
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+
                 <div class="toggle-switch" v-else-if="field.type == 'toggle'">
                     <span v-if="field.offLabel" class="toggle-switch__off-label">{{ field.offLabel }}</span>
                     <span class="toggle-switch__input">
@@ -78,7 +98,7 @@
 
 <script setup>
 
-    import { ref, reactive, nextTick } from 'vue';
+    import { ref, reactive, nextTick} from 'vue';
     import { RefreshDouble } from '@iconoir/vue';
 
     import Error from '@/components/forms/shared/Error.vue';
@@ -132,6 +152,28 @@
         if (fieldType == 'text' || fieldType == 'number' || fieldType == 'password' || fieldType == 'date' || fieldType == 'input' || fieldType == 'hidden') {
             return true;
         }
+    }
+
+    const filterComboBox = (key, val) => {
+        val = val.toLowerCase();
+        props.fields[key].options.forEach(option => {
+            const searchMatched = val && option.text?.toLowerCase().indexOf(val) > -1;
+
+            if (!val) {
+                option.hidden = false;
+                props.fields[key].value = null;
+            } else if (!searchMatched) {
+                option.hidden = true;
+            } else {
+                option.hidden = false;
+            }
+        });
+
+        this.handleChange(key);
+    }
+
+    function handleCbChange(key, display) {
+        props.fields[key].searchValue = display;
     }
 
     const handleChange = (id) => {

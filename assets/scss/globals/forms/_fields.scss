@@ -76,7 +76,8 @@ select  {
 
 
 [disabled],
-.disabled {
+.disabled,
+label:has(:disabled) {
     filter: grayscale(1);
     opacity: 0.6;
     pointer-events: none;
@@ -158,5 +159,63 @@ input[autocomplete="postal-code"] {
 
     .icon {
         grid-area: icon;
+    }
+}
+
+.combobox {
+    input[type="search"] {
+        margin: 0;
+
+        &:focus {
+            ~ .combobox__options {
+                @include scrollbars($alt-theme: true);
+                max-height: 50vh;
+                overflow-y: auto;
+                opacity: 1;
+                z-index: var(--zi-base);
+                padding: var(--space-sm);
+            }
+        }
+    }
+}
+
+.combobox__options {
+    // background-color: var(--c-input-bg);
+    // color: var(--c-text-inc-contrast);
+    box-shadow: var(--box-shadow-elevate);
+    list-style: none;
+    margin: 0;
+    padding: var(--space-sm) 0;
+    max-height: 0;
+    // overflow: hidden; // breaking functionality
+    transition: all var(--transition-speed) (--transition-type-show);
+    z-index: -1;
+    opacity: 0;
+
+    li {
+        position: relative;
+
+        &:empty {
+            display: none;
+        }
+    }
+
+    label {
+        #{$hover} {
+            color: var(--c-accent);
+        }
+    }
+
+    input {
+        &,
+        &:disabled {
+            position: absolute;
+            opacity: 0;
+        }
+
+    }
+
+    label {
+        padding-inline: 0;
     }
 }

@@ -79,9 +79,14 @@
     --sb-radius: 99em;
 }
 
-@mixin scrollbars($overflowX: hidden) {
+@mixin scrollbars($overflowX: hidden, $alt-theme: false) {
     overflow-x: $overflowX;
     overflow-y: auto;
+
+    @if $alt-theme {
+        --sb-track-color: var(--c-background);
+        --sb-thumb-color: hsla(var(--c-text-hsl), 0.05);
+    }
 
     &::-webkit-scrollbar {
         width: var(--sb-size);

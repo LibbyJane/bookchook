@@ -177,7 +177,6 @@
     import GenericForm from '@/components/forms/GenericForm.vue';
     import Dialog from '@/components/interface/Dialog.vue';
     import { getUsersForSelect } from '@/utils/forms';
-import exp from 'constants';
 
     const organisationStore = useOrganisationStore();
     await useAsyncData(() => organisationStore.getOrganisationMemberships());
@@ -395,10 +394,12 @@ import exp from 'constants';
     let userFieldDefaults = {
         user: {
             label: "Customer",
-            type: "select",
+            type: "comboBox",
             cssClass: "inline",
             value: -1,
-            options: [firstOption, ...usersForSelect],
+            options: usersForSelect,
+            searchValue: null,
+            autofocus: true,
             required: true,
             error: null,
             placeholder: ""
@@ -424,7 +425,8 @@ import exp from 'constants';
     async function toggleAddUserFormVisibility() {
         showAddUserForm.value = !showAddUserForm.value;
         addUserFields.membership_id.value = selectedItem.value.membership_id;
-        addUserFields.user.options =  [firstOption, ...usersForSelect];
+        // addUserFields.user.options =  [firstOption, ...usersForSelect];
+        addUserFields.user.options = usersForSelect;
 
         selectedItem.value.membership_users.forEach(user => {
             const index = usersForSelect.findIndex((element) => element.value == user.user.id);

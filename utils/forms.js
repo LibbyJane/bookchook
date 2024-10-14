@@ -9,7 +9,9 @@ export async function getUsersForSelect($pinia, initial) {
     organisationStore.customers.forEach(customer => {
         users.push({
             value: customer.id,
-            text: `${customer.first_name} ${customer.last_name}`
+            text: `${customer.first_name} ${customer.last_name}`,
+            disabled: false,
+            hidden: false
         });
     });
 
