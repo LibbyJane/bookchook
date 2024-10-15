@@ -163,36 +163,52 @@ input[autocomplete="postal-code"] {
 }
 
 .combobox {
+    outline: 1px solid lime;
+    &:focus-within {
+        .combobox__options {
+            @include scrollbars($alt-theme: true);
+            box-shadow: var(--box-shadow-elevate);
+            max-height: 50vh;
+            overflow: auto;
+            opacity: 1;
+            z-index: var(--zi-base);
+            padding-block: var(--space-sm);
+            pointer-events: all;
+        }
+
+    }
     input[type="search"] {
         margin: 0;
-
-        &:focus {
-            ~ .combobox__options {
-                @include scrollbars($alt-theme: true);
-                max-height: 50vh;
-                overflow-y: auto;
-                opacity: 1;
-                z-index: var(--zi-base);
-                padding: var(--space-sm);
-            }
-        }
     }
 }
 
 .combobox__options {
     // background-color: var(--c-input-bg);
     // color: var(--c-text-inc-contrast);
-    box-shadow: var(--box-shadow-elevate);
+
     list-style: none;
     margin: 0;
     padding: var(--space-sm) 0;
-    max-height: 0;
+    // max-height: 0;
     // overflow: hidden; // breaking functionality
-    transition: all var(--transition-speed) (--transition-type-show);
+    // transition-delay: 1500ms;
+    // pointer-events: none;
+    // transition: all var(--transition-speed-slow) var(--transition-type-show);
+    // transition: all 500ms var(--transition-type-show);
+
     z-index: -1;
     opacity: 0;
 
+    // &:has(input:focus-within) {
+    //     max-height: 0 !important;
+    // // overflow: hidden; // breaking functionality
+    // // transition-del ay: var(--transition-speed);
+    // pointer-events: none;
+    // }
+
     li {
+        margin: 0;
+        padding: 0;
         position: relative;
 
         &:empty {
@@ -201,6 +217,10 @@ input[autocomplete="postal-code"] {
     }
 
     label {
+        display: flex;
+        padding: var(--space-xs) 0;
+        position: relative;
+
         #{$hover} {
             color: var(--c-accent);
         }
@@ -210,12 +230,13 @@ input[autocomplete="postal-code"] {
         &,
         &:disabled {
             position: absolute;
-            opacity: 0;
+            inset: 0;
+            margin: 0;
+            padding: 0;
+            z-index: 1;
+            // opacity: 0;
         }
 
     }
 
-    label {
-        padding-inline: 0;
-    }
 }

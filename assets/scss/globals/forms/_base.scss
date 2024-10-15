@@ -13,6 +13,12 @@ form {
         align-self: start;
         min-width: 10rem;
     }
+
+    // todo: work out a better solution for combobox overflow
+    .btn-bar {
+        position: relative;
+        z-index: var(--zi-base);
+    }
 }
 
 /* HTML: <div class="loader"></div> */

@@ -60,7 +60,7 @@ const endpoints = {
         method: 'POST'
     }
     , addUserToMembership: {
-        uri: `private/membership`,
+        uri: `private/membership/user`,
         method: 'POST'
     }
     , getAllMemberships: {

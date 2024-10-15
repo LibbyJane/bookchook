@@ -20,7 +20,6 @@
         </template>
     </Card>
 
-    <pre>{{ selectedItem }}</pre>
     <section class="table-with-card" :class="selectedItem ? 'table-with-card--row-selected' : null">
         <vue3-datatable
             v-if="organisationStore.purchaseTypes.memberships"
@@ -123,7 +122,7 @@
 
 
                     <!-- <CustomerList v-if="showAddUserForm" :initialSelection="selectedItem.membership_users" :callback="handleUsersAdded" /> -->
-                    <GenericForm v-if="showAddUserForm" :fields="addUserFields" :endpoint="organisationStore.addUserToMembership" :callback="handleUserAdded" :showReset="false" />
+                    <GenericForm v-if="showAddUserForm" :fields="addUserFields" :endpoint="organisationStore.addUserToMembership" :callback="handleUserAddedToMembership" :showReset="false" />
 
                     <vue3-datatable
                         v-if="selectedItem && selectedItem.membership_users?.length"
@@ -182,6 +181,8 @@
     await useAsyncData(() => organisationStore.getOrganisationMemberships());
     await useAsyncData(() => organisationStore.getOrganisationBillingSettings());
 
+
+    console.log('?b', this);
     const showAddNewForm = ref(null);
     const selectedItem = ref(null);
     const selectedItemElem = ref(null);
@@ -296,7 +297,6 @@
 
         if (!selectedItem.value?.membership_users) {
             const response = await organisationStore.getAllUsersForMembership({id: data.id});
-            console.log('response', response);
 
             if (response.error) {
                 snackbar.add({
@@ -382,7 +382,6 @@
 
 
     async function handleMembershipUserRowClick() {
-        console.log('do something?');
     }
 
     // Add user to membership
@@ -392,14 +391,13 @@
     const firstOption = {value: null, text: "Please select", disabled: true};
 
     let userFieldDefaults = {
-        user: {
+        user_id: {
             label: "Customer",
             type: "comboBox",
             cssClass: "inline",
             value: -1,
             options: usersForSelect,
             searchValue: null,
-            autofocus: true,
             required: true,
             error: null,
             placeholder: ""
@@ -424,9 +422,9 @@
 
     async function toggleAddUserFormVisibility() {
         showAddUserForm.value = !showAddUserForm.value;
-        addUserFields.membership_id.value = selectedItem.value.membership_id;
+        addUserFields.membership_id.value = selectedItem.value.id;
         // addUserFields.user.options =  [firstOption, ...usersForSelect];
-        addUserFields.user.options = usersForSelect;
+        addUserFields.user_id.options = usersForSelect;
 
         selectedItem.value.membership_users.forEach(user => {
             const index = usersForSelect.findIndex((element) => element.value == user.user.id);
@@ -447,8 +445,12 @@
         // }
     }
 
-    function handleUsersAdded() {
-        console.log('do')
+    function handleUserAddedToMembership() {
+        snackbar.add({
+            type: 'success',
+            text: 'Customer added to membership'
+        });
+
     }
 
 

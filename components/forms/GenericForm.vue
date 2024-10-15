@@ -14,6 +14,13 @@
                 :help="field.help"
             >
 
+                <ComboBox
+                    v-if="field.type == 'comboBox'"
+                    :field="field"
+                    @field-change="handleFieldChange"
+                />
+
+
                 <input v-if="displayAsInput(field)"
                     v-model="fields[key].value"
                     v-on:keyup="handleChange(key)"
@@ -45,22 +52,22 @@
                     <option v-for="option in field.options" :value="option.value" :disabled="option.disabled">{{ option.text }}</option>
                 </select>
 
-                <div v-else-if="field.type == 'comboBox'" class="combobox">
+                <div v-else-if="field.type == 'comboBox'" class="combobox" >
+                                     <!-- v-on:focus="$event => filterComboBox(key, $event.target.value)" :class="{ 'combobox--open': form.state == 'loading'}" -->
                     <input
                         type="search"
-                        v-on:input="$event => filterComboBox(key, $event.target.value)"
-                        v-on:focus="$event => filterComboBox(key, $event.target.value)"
+                        v-on:input="$event => filterComboBox(key, $event)"
                         :required="field.required"
                         :id="key"
                         :placeholder="field.placeholder"
-                        :autofocus="field.autofocus"
                         v-model="fields[key].searchValue"
                     />
-                    <ul class="combobox__options">
+                    <ul class="combobox__options" >
                         <li v-for="option in field.options">
-                            <label v-if="!option.hidden" v-on:click="handleCbChange(key, option.text)">
-                                <input type="radio" name="`cb-${key}`" :value="option.value" v-model="fields[key].value" :disabled="option.disabled" />{{ option.text }}
+                            <label v-if="!option.hidden">
+                                {{ option.text }}
                             </label>
+                            <input type="radio" name="`cb-${key}`" :value="option.value" v-model="fields[key].value" :disabled="option.disabled" v-on:click="handleCbChange(key, option.text)" />
                         </li>
                     </ul>
                 </div>
@@ -100,7 +107,7 @@
 
     import { ref, reactive, nextTick} from 'vue';
     import { RefreshDouble } from '@iconoir/vue';
-
+    import ComboBox from '@/components/forms/shared/ComboBox.vue';
     import Error from '@/components/forms/shared/Error.vue';
     import Field from '@/components/forms/shared/Field.vue';
 
@@ -129,6 +136,13 @@
         }
     });
 
+    console.log('this', this);
+
+//     this.$nuxt.$on('fieldChange', (e) => {
+//         console.log('field change', e);
+//   });
+
+
     const formElement = ref(null);
     const resetButton = ref(null);
 
@@ -136,7 +150,11 @@
         pristine: true,
         state: 'init',
         error: null
-    })
+    });
+
+    function handleFieldChange(e) {
+        console.log('field change', e);
+    }
 
     function getLabelText(key) {
         let transformedText = key.replace('_', ' ');
@@ -154,8 +172,9 @@
         }
     }
 
-    const filterComboBox = (key, val) => {
-        val = val.toLowerCase();
+    const filterComboBox = (key, e) => {
+        const val = e.target.value.toLowerCase();
+
         props.fields[key].options.forEach(option => {
             const searchMatched = val && option.text?.toLowerCase().indexOf(val) > -1;
 
@@ -169,11 +188,13 @@
             }
         });
 
-        this.handleChange(key);
+        console.log('?', e);
+        handleChange(key);
     }
 
     function handleCbChange(key, display) {
         props.fields[key].searchValue = display;
+        handleChange(key);
     }
 
     const handleChange = (id) => {
@@ -204,17 +225,15 @@
         };
 
         for (let [key, value] of Object.entries(props.fields)) {
+            // console.log('gf submit key, value', key, value);
             payload.data[key] = value.value;
 
             if (value.type == 'date') {
-                console.log('k, v', key, value);
                 const dateParts = value.value.split('-');
                 const year = parseInt(dateParts[0]);
                 const monthIndex = parseInt(dateParts[1]) - 1;
                 const day = parseInt(dateParts[2]);
-
-                console.log('dateParts', dateParts, (new Date(year, monthIndex, day)).toISOString());
-
+                // console.log('dateParts', dateParts, (new Date(year, monthIndex, day)).toISOString());
                 payload.data[key] = (new Date(year, monthIndex, day)).toISOString();
             }
         }
@@ -239,7 +258,9 @@
             return;
         }
 
-        props.callback(outcome.data);
+        if (outcome.data) {
+            props.callback(outcome.data);
+        }
 
         if (resetButton?.value?.click()) {
             await nextTick();
