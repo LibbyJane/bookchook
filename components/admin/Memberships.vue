@@ -444,8 +444,6 @@
         // addUserFields.user.options =  [firstOption, ...usersForSelect];
         addUserFields.value.user_id.options = usersForSelect;
 
-
-
         selectedItem.value.membership_users.forEach(user => {
             const index = usersForSelect.findIndex((element) => element.value == user.user.id);
             if (index > -1) usersForSelect[index].disabled = true;
@@ -472,7 +470,8 @@
             type: 'success',
             text: 'Customer added to membership'
         });
-        addUserFields.value.user_id = null;
+        console.log('')
+        addUserFields.value.user_id.value = null;
         showAddUserForm.value = false;
         membershipUsersKey.value++;
     }
