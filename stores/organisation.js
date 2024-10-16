@@ -1086,7 +1086,8 @@ export const useOrganisationStore = defineStore('organisationStore', {
             const response = await useOrganisationAPI({endpoint: `addMembership`, data});
             if (response.data?.status) {
                 this.purchaseTypes.memberships.push(response.data.membership);
-                return true;
+                console.log('return', response);
+                return {data: response.data };
             }
             return response;
         },
@@ -1095,16 +1096,17 @@ export const useOrganisationStore = defineStore('organisationStore', {
             if (response.data?.status) {
                 const index = this.purchaseTypes.memberships.findIndex((element => element.id == id));
                 this.purchaseTypes.memberships.splice(index, 1);
-                return true;
+                return response.data;
             }
             return response;
         },
         async updateMembership({id, data}) {
             const response = await useOrganisationAPI({endpoint: `updateMembership`, id, data});
+            console.log('r?', response);
             if (response.data?.status) {
                 const indexToUpdate = this.purchaseTypes.memberships.findIndex((element => element.id == id));
                 this.purchaseTypes.memberships[indexToUpdate] = data;
-                return true;
+                return {data: this.purchaseTypes.memberships[indexToUpdate] };
             }
             return response;
         },

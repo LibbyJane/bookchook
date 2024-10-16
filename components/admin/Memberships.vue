@@ -14,9 +14,9 @@
         </template>
     </Header>
 
-    <Card v-if="showAddNewForm" title="Add new membership type" titleCssClass="h4">
+    <Card v-if="showAddNewForm" title="Add new membership" titleCssClass="h4">
         <template #body>
-            <GenericForm id="addMembershipForm" :fields="fields" :endpoint="organisationStore.addMembership" :callback="handleAddMembershipOption" />
+            <GenericForm id="addMembershipForm" :fields="fields" :endpoint="organisationStore.addMembership" :callback="handleAddMembership" />
         </template>
     </Card>
 
@@ -26,7 +26,7 @@
             :rows="organisationStore.purchaseTypes.memberships"
             :columns="cols"
             :sortable="organisationStore.purchaseTypes.memberships?.length > 2"
-            :key="organisationStore.purchaseTypes.memberships?.length"
+            :key="key"
             :totalRows="organisationStore.purchaseTypes.memberships?.length"
             sortDirection="desc"
             :columnFilter="false"
@@ -118,10 +118,11 @@
                             </button>
                         </template>
                     </Header>
-                    <!-- <AddUser v-if="showAddUserForm" :endpoint="organisationStore.addMembership" :callback="handleAddMembershipOption" /> -->
+                    <!-- <AddUser v-if="showAddUserForm" :endpoint="organisationStore.addMembership" :callback="handleAddMembership" /> -->
 
 
                     <!-- <CustomerList v-if="showAddUserForm" :initialSelection="selectedItem.membership_users" :callback="handleUsersAdded" /> -->
+
                     <GenericForm v-if="showAddUserForm" :fields="addUserFields" :endpoint="organisationStore.addUserToMembership" :callback="handleUserAddedToMembership" :showReset="false" />
 
                     <vue3-datatable
@@ -129,6 +130,7 @@
                         :rows="selectedItem.membership_users"
                         :columns="membershipUsersCols"
                         :sortable="selectedItem.membership_users?.length > 1"
+                        :key="membershipUsersKey"
                         :sortColumn="expires_dtm"
                         :sortDirection="desc"
                         :columnFilter="false"
@@ -168,7 +170,7 @@
     import { ref, reactive } from 'vue';
     import { Plus, EditPencil, Xmark, Trash, ArrowRightCircle, Lock} from '@iconoir/vue';
     import { useOrganisationStore } from '@/stores/organisation';
-    import { formatDtmShort, daysUntilDtm } from '@/utils/dates';
+    import { formatDtmShort, daysUntilDtm, formatDateForDatepicker } from '@/utils/dates';
     import Header from '@/components/admin/PageHeader.vue';
 
     import Vue3Datatable from "@bhplugin/vue3-datatable";
@@ -181,16 +183,10 @@
     await useAsyncData(() => organisationStore.getOrganisationMemberships());
     await useAsyncData(() => organisationStore.getOrganisationBillingSettings());
 
-
-    console.log('?b', this);
     const showAddNewForm = ref(null);
     const selectedItem = ref(null);
     const selectedItemElem = ref(null);
     const snackbar = useSnackbar();
-
-
-    const route = useRoute();
-
 
     const cols = ref([
         { field: "name", title: "Name", cellClass: "td-name" },
@@ -263,8 +259,6 @@
 
     let editFields;
 
-
-
     function toggleAddMembershipOptionVisibility() {
         showAddNewForm.value = !showAddNewForm.value;
           // fields.name.value = "";
@@ -275,28 +269,23 @@
         // }
     }
 
-    function handleAddMembershipOption() {
-        showAddNewForm.value = null;
+    async function handleAddMembership(data) {
+        console.log(`new membership added`, data);
+        showAddNewForm.value = false;
+        key.value++;
 
         snackbar.add({
             type: 'success',
-            text: 'Payment option added'
+            text: 'New membership added'
         });
+
+        selectedItem.value = data.membership;
+        await getSelectedItemMembershipUsers();
     }
 
-
-    async function handleMembershipRowClick(data) {
-        if (selectedItem.value?.id == data.id) {
-            selectedItem.value = null;
-            // history.pushState({}, null, route.path)
-            return;
-        }
-
-        selectedItem.value = data;
-        // resetselectedItem();
-
+    async function getSelectedItemMembershipUsers() {
         if (!selectedItem.value?.membership_users) {
-            const response = await organisationStore.getAllUsersForMembership({id: data.id});
+            const response = await organisationStore.getAllUsersForMembership({id: selectedItem.value?.id });
 
             if (response.error) {
                 snackbar.add({
@@ -306,8 +295,19 @@
             }
             selectedItem.value.membership_users = response.membership_users;
         }
+    }
 
-        // history.pushState({}, "", route.path + '#' + data.id);
+
+    async function handleMembershipRowClick(data) {
+        if (selectedItem.value?.id == data.id) {
+            selectedItem.value = null;
+            return;
+        }
+        inEditMode.value = false;
+        showConfirmDelete.value = false;
+        selectedItem.value = data;
+
+        await getSelectedItemMembershipUsers();
         selectedItemElem.value.scrollIntoView();
     }
 
@@ -326,24 +326,36 @@
         showConfirmDelete.value = false;
     }
 
-    function resetselectedItem() {
+    function resetSelectedItem() {
         editFields = {...fieldDefaults};
-        selectedCustomers.value = null;
-        // selectedItemFields.name.value = selectedItem.value.group_name;
-        // selectedItemFields.description.value = selectedItem.value.description;
-        inEditMode.value = false;
-        showConfirmDelete.value = false;
-        editGroupCustomers.value = false;
+        // selectedCustomers.value = null;
+        // // selectedItemFields.name.value = selectedItem.value.group_name;
+        // // selectedItemFields.description.value = selectedItem.value.description;
+        // inEditMode.value = false;
+        // showConfirmDelete.value = false;
+        // editGroupCustomers.value = false;
+        // addUserFields = {...userFieldDefaults};
     }
 
-    async function handleEdit(id) {
+
+    const key = ref(1);
+    const membershipUsersKey = ref(1);
+
+    function handleEdit(data) {
+        selectedItem.value = {...selectedItem.value, ...data};
         snackbar.add({
             type: 'success',
             text: 'Membership updated'
         });
         inEditMode.value = false;
-        await organisationStore.getOrganisationMemberships();
-        selectedItem.value = organisationStore.customerGroups.find((element => element.id == id));
+        key.value++;
+        // await organisationStore.getOrganisationMemberships();
+        // const index = this.purchaseTypes.memberships.findIndex((element => element.id == data.membership.id));
+
+        // console.log('handle edit index', index);
+        // console.log('handle edit index', organisationStore.purchaseTypes.memberships[index]);
+
+        // selectedItem.value = organisationStore.purchaseTypes.memberships[index];
     }
 
 
@@ -373,7 +385,7 @@
         }
 
         selectedItem.value = null;
-
+        key.value++;
         snackbar.add({
             type: 'success',
             text: 'Membership deleted'
@@ -406,7 +418,7 @@
             label: "End Date",
             type: "date",
             cssClass: "inline",
-            value: new Date(),
+            value: null,
             required: true,
             error: null,
             placeholder: ""
@@ -417,14 +429,22 @@
         }
     }
 
-    const addUserFields = reactive({...userFieldDefaults});
+    let addUserFields = ref({...userFieldDefaults});
+
 
 
     async function toggleAddUserFormVisibility() {
-        showAddUserForm.value = !showAddUserForm.value;
-        addUserFields.membership_id.value = selectedItem.value.id;
+        if (showAddUserForm.value == true) {
+            showAddUserForm.value = false;
+            addUserFields.value = {...userFieldDefaults};
+            return;
+        }
+
+        addUserFields.value.membership_id.value = selectedItem.value.id;
         // addUserFields.user.options =  [firstOption, ...usersForSelect];
-        addUserFields.user_id.options = usersForSelect;
+        addUserFields.value.user_id.options = usersForSelect;
+
+
 
         selectedItem.value.membership_users.forEach(user => {
             const index = usersForSelect.findIndex((element) => element.value == user.user.id);
@@ -434,7 +454,9 @@
         const today = new Date();
         let expiry = new Date(today.setMonth(today.getMonth() + selectedItem.value.duration));
 
-        addUserFields.expiry_date.value = `${expiry.getFullYear()}-${expiry.getMonth() + 1}-${expiry.getDate()}`;
+        addUserFields.value.expiry_date.value = formatDateForDatepicker(expiry);
+        showAddUserForm.value = true;
+        // console.log('dates', today, expiry, addUserFields);
 
 
           // fields.name.value = "";
@@ -450,7 +472,9 @@
             type: 'success',
             text: 'Customer added to membership'
         });
-
+        addUserFields.value.user_id = null;
+        showAddUserForm.value = false;
+        membershipUsersKey.value++;
     }
 
 

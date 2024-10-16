@@ -1,9 +1,8 @@
 <template>
-    <h1>ComboBox</h1>
-    <div class="combobox" >
-                                     <!-- v-on:focus="$event => filterComboBox(key, $event.target.value)" :class="{ 'combobox--open': form.state == 'loading'}" -->
-                                      <!-- <pre>{{ field }}</pre> -->
-                                      <pre>{{ searchValue }}</pre>
+    <div
+        :id="id"
+        class="combobox"
+    >
         <input
             type="search"
             v-on:input="$event => filterComboBox($event)"
@@ -12,16 +11,20 @@
             :placeholder="field.placeholder"
             :value="searchValue"
             ref="comboboxInput"
+            tabindex="0"
         />
         <Transition>
-            <ul class="combobox__options" v-if="showOptions"
+            <ul class="combobox__options" v-if="showOptions" ref="optionsList" tabindex="-1"
             >
-                <li v-for="option in field.options">
-                    <label v-if="!option.hidden">
-                        {{ option.text }}
-                    </label>
-                    <input type="radio" name="`cb-${field.label}`" :value="option.value" v-model="field.value" :disabled="option.disabled" v-on:click="handleCbChange(option.text)" />
-                </li>
+                <template v-for="option in field.options"  >
+                    <li v-if="!option.hidden" tabindex="-1">
+                        <label  v-on:keyup.enter="handleSelectOption($event)"  tabindex="0">
+                            {{ option.text }}
+                            <input type="radio" :id="`cb-${option.text.replaceAll(' ', '')}`" :name="`cb-${field.label.replaceAll(' ', '')}`" :data-display="option.text" :value="option.value" v-model="field.value" :disabled="option.disabled" v-on:click="handleCbChange(option.text)" v-on:keyup.enter="handleSelectOption($event)"
+                            />
+                        </label>
+                    </li>
+                </template>
             </ul>
         </Transition>
     </div>
@@ -30,15 +33,21 @@
 <script setup>
     const emit = defineEmits(['fieldChange']);
 
-    const searchValue = ref('test');
+    const searchValue = ref('');
+    const optionsList = ref(null);
     const comboboxInput = ref(null);
     const showOptions = ref(false);
 
     const props = defineProps({
-        field: {
-
-        }
+        id: null,
+        field: {}
     });
+
+    function handleSelectOption(e) {
+        props.field.value = e.srcElement.type == 'radio' ? e.srcElement.value : e.srcElement.firstElementChild.value;
+        searchValue.value = e.srcElement.type == 'radio' ? e.srcElement.dataset.display : e.srcElement.firstElementChild.dataset.display;
+        showOptions.value = false;
+    }
 
     const filterComboBox = (e) => {
         const val = e.target.value.toLowerCase();
@@ -68,15 +77,69 @@
 
 
 <style lang="scss">
+
 .v-enter-active,
 .v-leave-active {
-  transition: all 0.5s ease;
+    max-height: 100vh;
 }
 
 .v-enter-from,
 .v-leave-to {
     max-height: 0;
-  opacity: 0;
+}
+
+
+.combobox {
+    input[type="search"] {
+        margin: 0;
+    }
+}
+
+.combobox__options {
+    @include scrollbars($alt-theme: true);
+    box-shadow: var(--box-shadow-elevate);
+    max-height: 50vh;
+    overflow: auto;
+    opacity: 1;
+    z-index: var(--zi-base);
+    list-style: none;
+    margin: 0;
+    padding: var(--space-sm);
+
+    li {
+        margin: 0;
+        padding: 0;
+        position: relative;
+
+        &:empty {
+            display: none;
+        }
+    }
+
+    label {
+        cursor: pointer;
+        display: flex;
+        padding: var(--space-xs) 0;
+        position: relative;
+
+        #{$hover} {
+            color: var(--c-accent);
+        }
+    }
+
+    input {
+        &,
+        &:disabled {
+            position: absolute;
+            inset: 0;
+            margin: 0;
+            padding: 0;
+            z-index: 1;
+            opacity: 0;
+        }
+
+    }
+
 }
 
 </style>

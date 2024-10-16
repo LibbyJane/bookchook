@@ -124,12 +124,11 @@ export async function useOrganisationAPI({endpoint, data, id, qs, $pinia }) {
         if (endpoints[endpoint].uriAddendum) {
             config.url = config.url + `/${endpoints[endpoint].uriAddendum}`;
         }
-
-        console.log('final config', config);
+        // console.log('final config', config);
 
         try {
             const response = await axios(config);
-            console.log('response', response);
+            // console.log('response', response);
             return response;
         } catch (error) {
             // console.log('error', error)

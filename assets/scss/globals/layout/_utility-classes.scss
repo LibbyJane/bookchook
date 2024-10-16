@@ -51,6 +51,17 @@
 .flex {
     display: flex;
 }
+
+.v-enter-active,
+.v-leave-active {
+    opacity: 0;
+    transition: var(--transition);
+}
+
+.v-enter-from,
+.v-leave-to {
+    opacity: 0;
+}
 // .pill.pill.pill.pill {
 //     background-color: var(--c-background-alt);
 //     border-radius: 99em;

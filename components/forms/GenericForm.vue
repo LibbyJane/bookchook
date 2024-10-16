@@ -17,9 +17,9 @@
                 <ComboBox
                     v-if="field.type == 'comboBox'"
                     :field="field"
-                    @field-change="handleFieldChange"
+                    :id="key"
+                    v-on:field-change="handleChange(key)"
                 />
-
 
                 <input v-if="displayAsInput(field)"
                     v-model="fields[key].value"
@@ -51,26 +51,6 @@
                     <slot />
                     <option v-for="option in field.options" :value="option.value" :disabled="option.disabled">{{ option.text }}</option>
                 </select>
-
-                <div v-else-if="field.type == 'comboBox'" class="combobox" >
-                                     <!-- v-on:focus="$event => filterComboBox(key, $event.target.value)" :class="{ 'combobox--open': form.state == 'loading'}" -->
-                    <input
-                        type="search"
-                        v-on:input="$event => filterComboBox(key, $event)"
-                        :required="field.required"
-                        :id="key"
-                        :placeholder="field.placeholder"
-                        v-model="fields[key].searchValue"
-                    />
-                    <ul class="combobox__options" >
-                        <li v-for="option in field.options">
-                            <label v-if="!option.hidden">
-                                {{ option.text }}
-                            </label>
-                            <input type="radio" name="`cb-${key}`" :value="option.value" v-model="fields[key].value" :disabled="option.disabled" v-on:click="handleCbChange(key, option.text)" />
-                        </li>
-                    </ul>
-                </div>
 
                 <div class="toggle-switch" v-else-if="field.type == 'toggle'">
                     <span v-if="field.offLabel" class="toggle-switch__off-label">{{ field.offLabel }}</span>
@@ -136,12 +116,6 @@
         }
     });
 
-    console.log('this', this);
-
-//     this.$nuxt.$on('fieldChange', (e) => {
-//         console.log('field change', e);
-//   });
-
 
     const formElement = ref(null);
     const resetButton = ref(null);
@@ -170,31 +144,6 @@
         if (fieldType == 'text' || fieldType == 'number' || fieldType == 'password' || fieldType == 'date' || fieldType == 'input' || fieldType == 'hidden') {
             return true;
         }
-    }
-
-    const filterComboBox = (key, e) => {
-        const val = e.target.value.toLowerCase();
-
-        props.fields[key].options.forEach(option => {
-            const searchMatched = val && option.text?.toLowerCase().indexOf(val) > -1;
-
-            if (!val) {
-                option.hidden = false;
-                props.fields[key].value = null;
-            } else if (!searchMatched) {
-                option.hidden = true;
-            } else {
-                option.hidden = false;
-            }
-        });
-
-        console.log('?', e);
-        handleChange(key);
-    }
-
-    function handleCbChange(key, display) {
-        props.fields[key].searchValue = display;
-        handleChange(key);
     }
 
     const handleChange = (id) => {
@@ -258,9 +207,7 @@
             return;
         }
 
-        if (outcome.data) {
-            props.callback(outcome.data);
-        }
+        props.callback(outcome.data);
 
         if (resetButton?.value?.click()) {
             await nextTick();

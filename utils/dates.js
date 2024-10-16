@@ -2,7 +2,7 @@ export function formatDtmLong(dtm) {
     return new Intl.DateTimeFormat('default', {dateStyle: 'long'}).format(new Date(dtm * 1000));
 }
 
-export function formatDtmShort(dtm, country_code = 'default') {
+export function formatDtmShort(dtm, country_code = navigator.language || navigator.userLanguage) {
     return new Intl.DateTimeFormat(country_code, {dateStyle: 'short'}).format(new Date(dtm * 1000));
 }
 
@@ -17,4 +17,11 @@ export function daysUntilDtm(dtm) {
     const daysRemaining = Math.ceil(diffInSeconds / 86400);
 
     return daysRemaining;
+}
+
+export function formatDateForDatepicker(date = new Date()) {
+    const year = String(date.getFullYear());
+    const month = String(date.getMonth() + 1);
+    const day = String(date.getDate());
+    return `${year}-${month.length == 1 ? '0' + month : month }-${day.length == 1 ? '0' + day : day}`;
 }
