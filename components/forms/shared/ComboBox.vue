@@ -2,17 +2,24 @@
     <div
         :id="id"
         class="combobox"
+        v-on:keyup.esc="showOptions = false;"
     >
-        <input
-            type="search"
-            v-on:input="$event => filterComboBox($event)"
-            v-on:focus="showOptions = true"
-            :required="field.required"
-            :placeholder="field.placeholder"
-            :value="searchValue"
-            ref="comboboxInput"
-            tabindex="0"
-        />
+        <div class="combox__search-wrapper">
+            <input
+                type="search"
+                class="combobox__search"
+                v-on:input="$event => filterComboBox($event)"
+                v-on:focus="showOptions = true"
+                :required="field.required"
+                :placeholder="field.placeholder"
+                :value="searchValue"
+                ref="comboboxInput"
+                tabindex="0"
+            />
+            <Search />
+            <Xmark />
+        </div>
+
         <Transition>
             <ul class="combobox__options" v-if="showOptions" ref="optionsList" tabindex="-1"
             >
@@ -31,6 +38,8 @@
 </template>
 
 <script setup>
+    import { Search, Xmark} from '@iconoir/vue';
+
     const emit = defineEmits(['fieldChange']);
 
     const searchValue = ref('');
@@ -77,69 +86,67 @@
 
 
 <style lang="scss">
+    .v-enter-active,
+    .v-leave-active {
+        max-height: 100vh;
+    }
 
-.v-enter-active,
-.v-leave-active {
-    max-height: 100vh;
-}
+    .v-enter-from,
+    .v-leave-to {
+        max-height: 0;
+    }
 
-.v-enter-from,
-.v-leave-to {
-    max-height: 0;
-}
-
-
-.combobox {
-    input[type="search"] {
+    .combobox__search-wrapper {
         margin: 0;
     }
-}
 
-.combobox__options {
-    @include scrollbars($alt-theme: true);
-    box-shadow: var(--box-shadow-elevate);
-    max-height: 50vh;
-    overflow: auto;
-    opacity: 1;
-    z-index: var(--zi-base);
-    list-style: none;
-    margin: 0;
-    padding: var(--space-sm);
-
-    li {
+    .combobox__search {
+        appearance: none;
         margin: 0;
-        padding: 0;
-        position: relative;
-
-        &:empty {
-            display: none;
-        }
     }
 
-    label {
-        cursor: pointer;
-        display: flex;
-        padding: var(--space-xs) 0;
-        position: relative;
+    .combobox__options {
+        @include scrollbars($alt-theme: true);
+        box-shadow: var(--box-shadow-elevate);
+        max-height: 50vh;
+        overflow: auto;
+        opacity: 1;
+        z-index: var(--zi-base);
+        list-style: none;
+        margin: 0;
+        padding: var(--space-sm);
 
-        #{$hover} {
-            color: var(--c-accent);
-        }
-    }
-
-    input {
-        &,
-        &:disabled {
-            position: absolute;
-            inset: 0;
+        li {
             margin: 0;
             padding: 0;
-            z-index: 1;
-            opacity: 0;
+            position: relative;
+
+            &:empty {
+                display: none;
+            }
         }
 
+        label {
+            cursor: pointer;
+            display: flex;
+            padding: var(--space-xs) 0;
+            position: relative;
+
+            #{$hover} {
+                color: var(--c-accent);
+            }
+        }
+
+        input {
+            &,
+            &:disabled {
+                position: absolute;
+                inset: 0;
+                margin: 0;
+                padding: 0;
+                z-index: 1;
+                opacity: 0;
+            }
+        }
     }
-
-}
-
 </style>

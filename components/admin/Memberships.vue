@@ -118,10 +118,6 @@
                             </button>
                         </template>
                     </Header>
-                    <!-- <AddUser v-if="showAddUserForm" :endpoint="organisationStore.addMembership" :callback="handleAddMembership" /> -->
-
-
-                    <!-- <CustomerList v-if="showAddUserForm" :initialSelection="selectedItem.membership_users" :callback="handleUsersAdded" /> -->
 
                     <GenericForm v-if="showAddUserForm" :fields="addUserFields" :endpoint="organisationStore.addUserToMembership" :callback="handleUserAddedToMembership" :showReset="false" />
 
@@ -182,6 +178,7 @@
     const organisationStore = useOrganisationStore();
     await useAsyncData(() => organisationStore.getOrganisationMemberships());
     await useAsyncData(() => organisationStore.getOrganisationBillingSettings());
+    const usersForSelect = await getUsersForSelect();
 
     const showAddNewForm = ref(null);
     const selectedItem = ref(null);
@@ -306,6 +303,7 @@
         inEditMode.value = false;
         showConfirmDelete.value = false;
         selectedItem.value = data;
+        showAddUserForm.value = false;
 
         await getSelectedItemMembershipUsers();
         selectedItemElem.value.scrollIntoView();
@@ -398,8 +396,8 @@
 
     // Add user to membership
 
-    const showAddUserForm = ref(null);
-    const usersForSelect =  await getUsersForSelect();
+    const showAddUserForm = ref(false);
+    console.log('usersForSelect initial', usersForSelect);
     const firstOption = {value: null, text: "Please select", disabled: true};
 
     let userFieldDefaults = {
@@ -429,40 +427,43 @@
         }
     }
 
-    let addUserFields = ref({...userFieldDefaults});
+    let addUserFields = reactive(userFieldDefaults);
+    const test = ref(1);
 
-
-
-    async function toggleAddUserFormVisibility() {
+    function toggleAddUserFormVisibility() {
         if (showAddUserForm.value == true) {
             showAddUserForm.value = false;
-            addUserFields.value = {...userFieldDefaults};
             return;
         }
-
-        addUserFields.value.membership_id.value = selectedItem.value.id;
+        test.value = 2;
+        addUserFields.user_id.value = -1;
         // addUserFields.user.options =  [firstOption, ...usersForSelect];
-        addUserFields.value.user_id.options = usersForSelect;
+        // addUserFields.user_id.options = usersForSelect;
+        addUserFields.user_id.searchValue = '';
+        addUserFields.user_id.error = null;
+        addUserFields.expiry_date.error = null;
+        addUserFields.membership_id.value = selectedItem.value.id;
+
+        test.value = 3;
+
+        addUserFields.user_id.options.forEach(user => {
+            user.disabled = false;
+            user.hidden = false;
+        })
 
         selectedItem.value.membership_users.forEach(user => {
-            const index = usersForSelect.findIndex((element) => element.value == user.user.id);
-            if (index > -1) usersForSelect[index].disabled = true;
+            const index = addUserFields.user_id.options.findIndex((element) => element.value == user.user.id);
+            if (index > -1) addUserFields.user_id.options[index].disabled = true;
+            test.value++;
         });
 
         const today = new Date();
         let expiry = new Date(today.setMonth(today.getMonth() + selectedItem.value.duration));
 
-        addUserFields.value.expiry_date.value = formatDateForDatepicker(expiry);
+        addUserFields.expiry_date.value = formatDateForDatepicker(expiry);
         showAddUserForm.value = true;
-        // console.log('dates', today, expiry, addUserFields);
+        test.value++;
 
-
-          // fields.name.value = "";
-        // fields.description.value = "";
-        // if (showAddNewForm.value) {
-        //     resetselectedItem();
-        //     return;
-        // }
     }
 
     function handleUserAddedToMembership() {
@@ -471,7 +472,7 @@
             text: 'Customer added to membership'
         });
         console.log('')
-        addUserFields.value.user_id.value = null;
+        addUserFields.user_id.value = null;
         showAddUserForm.value = false;
         membershipUsersKey.value++;
     }

@@ -91,7 +91,7 @@ const endpoints = {
 }
 
 export async function useOrganisationAPI({endpoint, data, id, qs, $pinia }) {
-    console.log('use organisation api', endpoint, data, id, qs, $pinia);
+    // console.log('use organisation api', endpoint, data, id, qs, $pinia);
     const userStore = useUserStore($pinia)
 
     // console.log('useOrganisationAPI config:', config);
