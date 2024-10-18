@@ -126,10 +126,6 @@
         error: null
     });
 
-    function handleFieldChange(e) {
-        console.log('field change', e);
-    }
-
     function getLabelText(key) {
         let transformedText = key.replace('_', ' ');
         return transformedText;

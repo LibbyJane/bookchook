@@ -1086,7 +1086,6 @@ export const useOrganisationStore = defineStore('organisationStore', {
             const response = await useOrganisationAPI({endpoint: `addMembership`, data});
             if (response.data?.status) {
                 this.purchaseTypes.memberships.push(response.data.membership);
-                console.log('return', response);
                 return {data: response.data };
             }
             return response;
@@ -1102,7 +1101,6 @@ export const useOrganisationStore = defineStore('organisationStore', {
         },
         async updateMembership({id, data}) {
             const response = await useOrganisationAPI({endpoint: `updateMembership`, id, data});
-            console.log('r?', response);
             if (response.data?.status) {
                 const indexToUpdate = this.purchaseTypes.memberships.findIndex((element => element.id == id));
                 this.purchaseTypes.memberships[indexToUpdate] = data;
@@ -1120,10 +1118,7 @@ export const useOrganisationStore = defineStore('organisationStore', {
             return response;
         },
         async addUserToMembership({data}) {
-            console.log('autm id, index', data.membership_id, this.purchaseTypes.memberships.findIndex((element => element.id == data.membership_id)));
-            console.log('store', this.purchaseTypes.memberships);
             const response = await useOrganisationAPI({endpoint: `addUserToMembership`, data});
-            console.log('add user response', response);
             if (response.data?.status) {
                 const index = this.purchaseTypes.memberships.findIndex((element => element.id == data.membership_id));
                 this.purchaseTypes.memberships[index].membership_users.push(response.data.membership_user);

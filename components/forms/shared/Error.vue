@@ -1,5 +1,5 @@
 <template>
-    <p class="error" v-if="message">
+    <p class="error" :class="cssClass" v-if="message">
         <AlertIcon css-class="icon--sm" />
         <div class="error__message">
             {{ message }}
@@ -15,6 +15,7 @@
         message: {
             type: String,
         },
+        cssClass: ""
     });
 </script>
 

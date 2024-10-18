@@ -23,6 +23,9 @@ $breakpoints: (
     --content-padding-all: var(--content-padding) var(--content-padding) var(--space-sm);
     --max-text-width: 75ch;
 
+    --field-padding: var(--space-sm);
+    --field-margin: var(--space);
+
     @include breakpoint(lg) {
         --content-padding: var(--space-med);
     }

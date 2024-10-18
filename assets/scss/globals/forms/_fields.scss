@@ -8,7 +8,7 @@ select  {
     background-color: var(--c-input-bg);
     // for validation icons
     background-size: var(--icon-size-xs);
-    background-position: var(--space-sm) center;
+    background-position: var(--field-padding) center;
     background-repeat: no-repeat;
     border: 0 none;
     // border: thin solid var(--c-border);
@@ -18,8 +18,8 @@ select  {
     font-weight: normal;
     font-size: var(--p);
     line-height: var(--line-height-sm);
-    margin: 0 0 var(--space);
-    padding: var(--space-sm);
+    margin: 0 0 var(--field-margin);
+    padding: var(--field-padding);
     // padding-left: 1.5rem;
     width: 100%;
 
@@ -55,6 +55,16 @@ select  {
         text-transform: none;
     }
 
+    .theme-light & {
+        color-scheme: light;
+    }
+
+    .theme-dark & {
+        color-scheme: dark;
+    }
+}
+
+datalist {
     .theme-light & {
         color-scheme: light;
     }

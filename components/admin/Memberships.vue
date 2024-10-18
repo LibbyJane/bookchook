@@ -253,7 +253,6 @@
     }
 
     const fields = reactive({...fieldDefaults});
-
     let editFields;
 
     function toggleAddMembershipOptionVisibility() {
@@ -267,7 +266,6 @@
     }
 
     async function handleAddMembership(data) {
-        console.log(`new membership added`, data);
         showAddNewForm.value = false;
         key.value++;
 
@@ -324,18 +322,6 @@
         showConfirmDelete.value = false;
     }
 
-    function resetSelectedItem() {
-        editFields = {...fieldDefaults};
-        // selectedCustomers.value = null;
-        // // selectedItemFields.name.value = selectedItem.value.group_name;
-        // // selectedItemFields.description.value = selectedItem.value.description;
-        // inEditMode.value = false;
-        // showConfirmDelete.value = false;
-        // editGroupCustomers.value = false;
-        // addUserFields = {...userFieldDefaults};
-    }
-
-
     const key = ref(1);
     const membershipUsersKey = ref(1);
 
@@ -347,13 +333,6 @@
         });
         inEditMode.value = false;
         key.value++;
-        // await organisationStore.getOrganisationMemberships();
-        // const index = this.purchaseTypes.memberships.findIndex((element => element.id == data.membership.id));
-
-        // console.log('handle edit index', index);
-        // console.log('handle edit index', organisationStore.purchaseTypes.memberships[index]);
-
-        // selectedItem.value = organisationStore.purchaseTypes.memberships[index];
     }
 
 
@@ -397,20 +376,19 @@
     // Add user to membership
 
     const showAddUserForm = ref(false);
-    console.log('usersForSelect initial', usersForSelect);
-    const firstOption = {value: null, text: "Please select", disabled: true};
 
     let userFieldDefaults = {
         user_id: {
             label: "Customer",
             type: "comboBox",
             cssClass: "inline",
-            value: -1,
+            value: null,
+            minLength: 25,
             options: usersForSelect,
             searchValue: null,
             required: true,
             error: null,
-            placeholder: ""
+            placeholder: "Please Select"
         },
         expiry_date: {
             label: "End Date",
@@ -436,7 +414,7 @@
             return;
         }
         test.value = 2;
-        addUserFields.user_id.value = -1;
+        addUserFields.user_id.value = null;
         // addUserFields.user.options =  [firstOption, ...usersForSelect];
         // addUserFields.user_id.options = usersForSelect;
         addUserFields.user_id.searchValue = '';
